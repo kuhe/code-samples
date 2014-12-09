@@ -1,4 +1,4 @@
-Code Sample (PHP)
+Code Sample (PHP ZF1)
 
 Model
 =====

@@ -4,7 +4,7 @@ Code Sample (JavaScript)
 JS-request-factory
 ==================
 
-Set an object describing the requests you want to make, and receive a group of easily invoked jqXHR requests cast to a front end object data model.
+Set an object describing the requests you want to make, and receive a group of easily invoked jqXHR/$http.post requests cast to a front end object data model.
 
     All functions produced from instructions object through a single request model.
     JSON transfer to and from backend.
