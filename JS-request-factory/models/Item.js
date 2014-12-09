@@ -1,10 +1,10 @@
-FDO.State = function(data) {
+NS.Item = function(data) {
     this.init(data)
 };
 
-FDO.State.prototype = angular.extend(new FDO.DataObject, {
-    identifier : 'State',
-    constructor : FDO.State,
+NS.Item.prototype = angular.extend(new NS.DataObject, {
+    identifier : 'Item',
+    constructor : NS.Item,
     columns : {
         country_code : 'countryCode',
         state_code : 'code',

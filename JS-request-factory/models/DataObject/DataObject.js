@@ -1,10 +1,10 @@
-FDO.DataObject = function() {
+NS.DataObject = function() {
     this.init();
 };
 
-FDO.DataObject.prototype = {
+NS.DataObject.prototype = {
     identifier : 'DataObject',
-    constructor : FDO.DataObject,
+    constructor : NS.DataObject,
     columns : {
         'db' : 'semantic'
     },

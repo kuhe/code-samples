@@ -1,9 +1,9 @@
 /**
- * Manufactures CRUD requests for controller urls defined below in "definitions"
+ * Manufactures CRUD requests for controller urls defined in the "definitions" file
  */
-FDO.Api = function(newInstance) {
-    if (FDO.Api.prototype.instance && !newInstance) return FDO.Api.prototype.instance;
-    FDO.Api.prototype.instance = this;
+NS.Api = function(newInstance) {
+    if (NS.Api.prototype.instance && !newInstance) return NS.Api.prototype.instance;
+    NS.Api.prototype.instance = this;
     return this.init();
 };
 
@@ -22,10 +22,10 @@ FDO.Api = function(newInstance) {
             if (typeof output == 'undefined') return;
             if (!constructor) return output;
 
-            var returnArray = FDO.duck(constructor) == Array;
+            var returnArray = NS.duck(constructor) == Array;
             if (returnArray) constructor = constructor[0];
 
-            if (!returnArray && FDO.duck(output) == Array && output.length == 1) {
+            if (!returnArray && NS.duck(output) == Array && output.length == 1) {
                 output = output[0];
             }
 
@@ -47,16 +47,16 @@ FDO.Api = function(newInstance) {
      * Add a property under any CRUD operation that is an object with 'apiRoute', 'input' [optional], and 'output'. Input/output can be constructors.
      * The api will instantiate with such a method.
      *
-     * e.g. under read, test : { apiRoute: 'base/test', input: {hello: 1}, output: FDO.Discount }
-     * will allow FDO.Api to instantiate with asynchronous callable
-     * (new FDO.Api).read.test([int @hello], [callable @callback(data)])
-     * Where data represents the request response cast to an array (0 or more elements) of the output type, here FDO.Discount
+     * e.g. under read, test : { apiRoute: 'base/test', input: {hello: 1}, output: NS.Discount }
+     * will allow NS.Api to instantiate with asynchronous callable
+     * (new NS.Api).read.test([int @hello], [callable @callback(data)])
+     * Where data represents the request response cast to an array (0 or more elements) of the output type, here NS.Discount
      */
-    var definitions = FDO.apiDefinitions;
-    FDO.Api.prototype = {
+    var definitions = NS.apiDefinitions;
+    NS.Api.prototype = {
         ajax : null,
         last : {},
-        instance: null instanceof FDO.Api,
+        instance: null instanceof NS.Api,
         REQUEST_ROOT : '/',
         init : function() {
             var giraffe = this;
@@ -110,7 +110,7 @@ FDO.Api = function(newInstance) {
                 }
             }
             var giraffe = this;
-            if (!this.ajax) throw 'FDO.Api ajax not set';
+            if (!this.ajax) throw 'NS.Api ajax not set';
             var promise = this.ajax.post(this.REQUEST_ROOT + address, payload);
             promise.success(function(result, status, headers, config) {
                 giraffe.last = {
@@ -165,7 +165,7 @@ FDO.Api = function(newInstance) {
                                             });
                                         }
                                         var callback = arguments[arguments.length - 1];
-                                        (new FDO.Api).simpleRequest(signature.apiRoute, payload, callback, signature.output, signature.complexOutput);
+                                        (new NS.Api).simpleRequest(signature.apiRoute, payload, callback, signature.output, signature.complexOutput);
                                     };
                                     fn.help = signature;
                                     fn.help.inputTypes = {};

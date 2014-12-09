@@ -1,18 +1,7 @@
-var namespace, FDO;
-namespace = FDO = {};
+var namespace, NS;
+namespace = NS = {};
 
-FDO.tiers = {
-    TIER_1 : 'Premium',
-    TIER_2 : 'Platinum',
-    TIER_3 : 'Professional'
-};
-
-FDO.exposeScope = true;
-FDO.operatingMode = {};
-FDO.operatingMode.legacy = false;
-FDO.cacheKey = Math.floor(Math.random()*1000000);
-
-FDO.duck = function(a) {
+NS.duck = function(a) {
     if (typeof a === 'object' || typeof a === 'function') {
         if (typeof a.constructor === 'function') return a.constructor;
         if (typeof a.prototype === 'object' && typeof a.prototype.constructor === 'function') return Function;
@@ -29,36 +18,11 @@ FDO.duck = function(a) {
     if (typeof a === 'null') return null;
 };
 
-FDO.Post = function(url, data) {
-    this.ingest(url, data);
-};
+// factory-ize it
 
-FDO.Post.prototype = {
-    form : null,
-    ingest : function(url, data) {
-        var form = $('<form/>').attr('action', url);
-        form.attr('method', 'post');
-        if (FDO.duck(data) == Object) {
-            for (var i in data) {
-                if (data.hasOwnProperty(i)) {
-                    var input = $('<input/>');
-                    input.attr('name', i);
-                    input.val(data[i]);
-                    input.attr('value', data[i]); // for visual reference
-                    form.append(input);
-                }
-            }
-        }
-        form.css('display', 'none');
-        $('body').append(form);
-        this.form = form;
-        return this;
-    },
-    submit : function() {
-        this.form.submit();
-    },
-    debug : function() {
-        console.log(this.form);
-        window.f = this.form;
-    }
-};
+angular.module('nsApi', [])
+    .factory('nsApi', ['$http', function($http) {
+        this.$get = function() {};
+        NS.Api.prototype.ajax = $http;
+        return new NS.Api;
+    }]);

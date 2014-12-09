@@ -10,7 +10,7 @@ Set an object describing the requests you want to make, and receive a group of e
     JSON transfer to and from backend.
     Result can be cast to desired client model class.
     Sequential or object arguments.
-    Client side cache options.
+    Client side cache options (see old version).
     Singleton
     Support for synchronizing multiple request callbacks.
     
