@@ -1,4 +1,4 @@
-var InputPooler = LA.InputPooler = (function() {
+var InputPooler = NS.InputPooler = (function() {
     var InputPooler = function() {
         if (InputPooler.instance) return InputPooler.instance;
         InputPooler.instance = this;
