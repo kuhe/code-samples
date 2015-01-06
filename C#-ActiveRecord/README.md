@@ -1,5 +1,6 @@
 Code Sample (C#)
 
+(Arguments for the validity, testability, and soundness of active record pattern aside...)
 
 ActiveRecord overlay for Visual C# Entity Framework
 ==================
