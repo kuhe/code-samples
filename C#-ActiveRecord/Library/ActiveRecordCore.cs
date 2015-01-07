@@ -29,14 +29,14 @@ namespace WebApplication1.Library.Model
             {
                 data.Id = null;
                 GetModel().Add(data);
-                GetDb().Entry(data).State = EntityState.Added;
+                GetContext().Entry(data).State = EntityState.Added;
             }
             else
             {
-                GetDb().Set<T>().Attach(data);
-                GetDb().ChangeTracker.Entries<T>().First(e => e.Entity == data).State = EntityState.Modified;
+                GetContext().Set<T>().Attach(data);
+                GetContext().ChangeTracker.Entries<T>().First(e => e.Entity == data).State = EntityState.Modified;
             }
-            GetDb().SaveChanges();
+            GetContext().SaveChanges();
             return this;
         }
         public bool Delete()

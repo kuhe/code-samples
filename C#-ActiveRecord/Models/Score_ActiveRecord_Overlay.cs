@@ -6,8 +6,9 @@ namespace WebApplication1.Models
     {
         protected override void Initialize()
         {
-            SetModel(new FlashCardEntities().Scores);
-            SetDb(new FlashCardEntities());
+            FlashCardEntities context = new FlashCardEntities();
+            Context = context;
+            Model = context.Scores;
         }
     }
 }

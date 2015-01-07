@@ -5,6 +5,5 @@ namespace WebApplication1.Library.Model
         where T : DataObject<T>, new()
     {
         int? Id { get; set; }
-        T Ingest(DataObject<T> dataObject);
     }
 }

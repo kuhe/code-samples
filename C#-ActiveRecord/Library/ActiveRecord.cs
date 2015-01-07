@@ -8,14 +8,6 @@ namespace WebApplication1.Library.Model
         /** type of the entity framework base class */
         where T : ActiveRecord<T>, new()
     {
-        public ActiveRecord()
-        {
-            
-        } 
-        public ActiveRecord(T type) : base(type)
-        {
-
-        }
         protected override void Initialize()
         {
             throw new Exception("You must set the static property DbSet to entities.TableName");

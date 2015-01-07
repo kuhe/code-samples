@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using JSON = System.Web.Helpers.Json;
 
@@ -9,10 +8,6 @@ namespace WebApplication1.Library.Model
         where T : DataObject<T>, new()
     {
         public int? Id { set; get; }
-        public T Ingest(DataObject<T> dataObject)
-        {
-            throw new Exception("Implement in ActiveRecord");
-        } 
         public static T CreateInstance()
         {
             T newDataObject = new T();
@@ -20,21 +15,21 @@ namespace WebApplication1.Library.Model
             return newDataObject;
         }
         protected abstract void Initialize();
-        protected static DbContext Db = null;
-        public static DbContext GetDb()
+        protected static DbContext Context;
+        public static DbContext GetContext()
         {
-            if (Db == null)
+            if (Context == null)
             {
                 CreateInstance();
             }
-            return Db;
+            return Context;
         }
-        public static DbContext SetDb(DbContext db)
+        public static DbContext SetContext(DbContext context)
         {
-            Db = db;
-            return Db;
+            Context = context;
+            return context;
         }
-        protected static DbSet<T> Model = null;
+        protected static DbSet<T> Model;
         public static DbSet<T> GetModel()
         {
             if (Model == null)
@@ -47,12 +42,6 @@ namespace WebApplication1.Library.Model
         {
             Model = model;
             return Model;
-        }
-        protected DataObject()
-        {
-        }
-        protected DataObject(T type)
-        {
         }
     }
 }
