@@ -16,7 +16,6 @@ namespace WebApplication1.Models
     
     public partial class Score
     {
-        public int Id { get; set; }
         public string UserName { get; set; }
         public Nullable<System.DateTime> QuestionTime { get; set; }
         public string Equation { get; set; }
