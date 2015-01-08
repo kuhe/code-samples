@@ -1,8 +1,7 @@
 ﻿
 namespace WebApplication1.Library.Model
 {
-    public interface IDataObjectBase<T>
-        where T : DataObject<T>, new()
+    public interface IDataObjectBase
     {
         int? Id { get; set; }
     }

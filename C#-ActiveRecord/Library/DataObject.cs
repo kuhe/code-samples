@@ -1,47 +1,44 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using JSON = System.Web.Helpers.Json;
 
 namespace WebApplication1.Library.Model
 {
-    public abstract class DataObject<T> : IDataObjectBase<T>
+    public abstract class DataObject<T> : IDataObjectBase
         where T : DataObject<T>, new()
     {
-        public int? Id { set; get; }
-        public static T CreateInstance()
+        public int? Id { get; set; }
+        private static void CreateInstance()
         {
             T newDataObject = new T();
             newDataObject.Initialize();
-            return newDataObject;
         }
         protected abstract void Initialize();
-        protected static DbContext Context;
-        public static DbContext GetContext()
+        private static DbContext _context;
+        protected static DbContext Context
         {
-            if (Context == null)
+            get
             {
-                CreateInstance();
+                if (_context == null)
+                {
+                    CreateInstance();
+                }
+                return _context;
             }
-            return Context;
+            set { _context = value; }
         }
-        public static DbContext SetContext(DbContext context)
+
+        private static DbSet<T> _model;
+        protected static DbSet<T> Model
         {
-            Context = context;
-            return context;
-        }
-        protected static DbSet<T> Model;
-        public static DbSet<T> GetModel()
-        {
-            if (Model == null)
+            get
             {
-                CreateInstance();
+                if (_model == null)
+                {
+                    CreateInstance();
+                }
+                return _model;
             }
-            return Model; 
-        }
-        public static DbSet<T> SetModel(DbSet<T> model)
-        {
-            Model = model;
-            return Model;
+            set { _model = value; }
         }
     }
 }
