@@ -11,18 +11,21 @@ Define new class. Just add a method Initialize that sets the Model (DbSet<TEntit
     {
         protected override void Initialize()
         {
-            SetModel(new FlashCardEntities().Scores);
-            SetDb(new FlashCardEntities());
+            FlashCardEntities context = new FlashCardEntities();
+            Context = context;
+            Model = context.Scores;
         }
     }
     
 Subsequently, 
 
-        Score s = Scores.Get(); // get all
-        Score s = Scores.Get(2); // get by id
-        Score s = Scores.Get(x => x.UserName == "Student"); // get by lambda
+        IQueryable<Score> s = Scores.Get(); // get all
+        IQueryable<Score> s = Scores.Get(2); // get by id
+        IQueryable<Score> s = Scores.Get(x => x.UserName == "Student"); // get by lambda
         Score s = Scores.GetOne(x => x.StudentAnswer == 64); // GetOne convenience method
         
-        s.save(); // update or insert at any time
-        s.Id = null; // nullable Id for row duplication inserts
-        s.save(); // creates new row and s.Id is now the new insert Id (Actually I'm not sure that part works yet)
+        s.Save(); // update
+        s.Delete(); // delete
+        s.Add(); // insert, returns a new object with new Id (necessitates inclusion of call to Persist())
+        
+        Score.Persist() // execute db update, same as SaveChanges()
