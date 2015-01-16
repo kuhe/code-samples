@@ -19,10 +19,10 @@ Define new class. Just add a method Initialize that sets the Model (DbSet<TEntit
     
 Subsequently, 
 
-        IQueryable<Score> s = Scores.Get(); // get all
-        IQueryable<Score> s = Scores.Get(2); // get by id
-        IQueryable<Score> s = Scores.Get(x => x.UserName == "Student"); // get by lambda
-        Score s = Scores.GetOne(x => x.StudentAnswer == 64); // GetOne convenience method
+        IQueryable<Score> s = Score.Get(); // get all
+        IQueryable<Score> s = Score.Get(2); // get by id
+        IQueryable<Score> s = Score.Get(x => x.UserName == "Student"); // get by lambda
+        Score s = Score.GetOne(x => x.StudentAnswer == 64); // GetOne convenience method
         
         s.Save(); // update
         s.Delete(); // delete
