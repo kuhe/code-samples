@@ -1,6 +1,6 @@
 <?php
 
-namespace AR\Db;
+namespace ApplicationCommon\Db;
 use Zend\Db\ResultSet\ResultSet;
 
 class DataResultSet extends ResultSet {

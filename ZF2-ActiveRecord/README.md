@@ -8,8 +8,10 @@ Likely a violation of many good principles, but it's so convenient to use!
 
 Static reads:
 
-    $widgets = Widget::get(array|null); // summons the data mapper from behind-the-scenes cache, returns the result set as instances of itself
-    $widget = Widget::getOne(array|null);
+    $widgets = Widget::get(Predicate|array|null); // summons the data mapper from behind-the-scenes cache, returns the result set as instances of itself
+    $widget = Widget::getOne(Predicate|array|null);
+    // e.g.
+    $widget = Widget::getOne(['name' => 'Roberts']);
 
 Instance writes:
 

@@ -2,25 +2,26 @@
 
 namespace ApplicationTest\Model;
 
-use AR\Db\DataResultSet;
-use AR\Model\ActiveRecord;
-use AR\Db\DataMapper;
+use ApplicationCommon\Db\DataResultSet;
+use ApplicationCommon\Db\TableGateway\ReadOnlyReadyTableGateway;
+use ApplicationCommon\Model\ActiveRecord;
+use ApplicationCommon\Db\DataMapper;
 use Exception;
 use PHPUnit_Framework_TestCase as TestCase;
-
+use Bootstrap;
 use Zend\Db\Adapter\Exception\RuntimeException;
 
 
 class Widget extends ActiveRecord {
     public $id;
     public $name;
-    protected $adapterServiceName = 'adapter';
+    protected $adapterServiceName = 'generic_adapter';
     protected $tableName = '_test';
 }
 class Sprocket extends ActiveRecord {
     public $id;
     public $name;
-    protected $adapterServiceName = 'adapter';
+    protected $adapterServiceName = 'generic_adapter';
     protected $tableName = '_test';
 }
 
@@ -70,15 +71,11 @@ class ActiveRecordTest extends TestCase {
     public function testRead() {
         $records = Sprocket::get();
         $this->assertTrue($records instanceof DataResultSet);
-        return count($records);
+        $rowCount = $records;
+        $this->assertTrue(is_integer(count($rowCount)));
     }
 
-    /**
-     * @param $rowCount int
-     * @depends testRead
-     */
     public function testWrite($rowCount) {
-        $this->assertTrue(is_integer($rowCount));
         $record = new Sprocket();
         $record->name = 'test';
         $id = $record->save();
@@ -96,7 +93,7 @@ class ActiveRecordTest extends TestCase {
 
         $sprockets = Sprocket::get();
         $this->assertEquals(count($sprockets), $rowCount);
-        $this->assertFalse(Sprocket::getOne($id) instanceof Sprocket);
+        $this->assertFalse(Sprocket::getOne($id) instanceof Sprocket, 'should have been deleted');
     }
 
     public function testCast() {

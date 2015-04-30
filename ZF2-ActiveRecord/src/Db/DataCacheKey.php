@@ -1,11 +1,14 @@
 <?php
 
-namespace AR\Db;
+namespace ApplicationCommon\Db;
 
 class DataCacheKey {
     public $key = '';
     public function __invoke($parameters) {
-        return json_encode($parameters);
+        return $this->hash($parameters);
+    }
+    public function hash($key) {
+         return json_encode($key);
     }
     public function __construct($key = null) {
         if ($key === null) {

@@ -1,12 +1,11 @@
 <?php
 
-namespace AR\Model;
+namespace ApplicationCommon\Model;
 
 /**
  * Class ActiveRecord
- * @package AR\Model
+ * @package ApplicationCommon\Model
  *
- * Calling it what it is.
  * But it violates SRP in SOLID!
  *
  */

@@ -1,8 +1,12 @@
+var frameworkIterator = angular; // any generic iterator would do
+
 /**
- * Manufactures CRUD requests for controller urls defined in the "definitions" file
+ * Manufactures CRUD requests for controller urls defined in "definitions"
  */
-NS.Api = function(newInstance) {
+NS.Api = function(newInstance, definitions) {
     if (NS.Api.prototype.instance && !newInstance) return NS.Api.prototype.instance;
+    if (!definitions) definitions = NS.apiDefinitions;
+    this.help = definitions;
     NS.Api.prototype.instance = this;
     return this.init();
 };
@@ -10,6 +14,8 @@ NS.Api = function(newInstance) {
 (function() {
     var Caster = {
         ingest : function(data, constructor, complexConstructor) {
+            if (!data) return data;
+            if (typeof data == 'object' && data.length == 1 && !data[0]) return data[0];
             var output = data;
             if (complexConstructor) {
                 for (var i in output) {
@@ -29,14 +35,14 @@ NS.Api = function(newInstance) {
                 output = output[0];
             }
 
-            if (constructor.prototype && constructor.prototype.identifier && constructor.prototype.constructor == constructor) {
-                if (typeof data.length == 'number') {
+            if (constructor.prototype && constructor.prototype.constructor == constructor) {
+                if (typeof output == 'object' && typeof output.length == 'number') {
                     output = {};
-                    angular.forEach(data, function(item, key) {
+                    frameworkiterator.forEach(data, function(item, key) {
                         var instance = new constructor(item);
                         output[instance.id] = instance;
                     });
-                } else if (typeof data == 'object') {
+                } else if (typeof output == 'object') {
                     return returnArray ? [new constructor(data)] : new constructor(data);
                 }
             }
@@ -47,20 +53,20 @@ NS.Api = function(newInstance) {
      * Add a property under any CRUD operation that is an object with 'apiRoute', 'input' [optional], and 'output'. Input/output can be constructors.
      * The api will instantiate with such a method.
      *
-     * e.g. under read, test : { apiRoute: 'base/test', input: {hello: 1}, output: NS.Discount }
+     * e.g. under read, test : { apiRoute: 'base/test', input: {hello: 1}, output: NS.ClassName }
      * will allow NS.Api to instantiate with asynchronous callable
      * (new NS.Api).read.test([int @hello], [callable @callback(data)])
-     * Where data represents the request response cast to an array (0 or more elements) of the output type, here NS.Discount
+     * Where data represents the request response cast to an array (0 or more elements) of the output type, here NS.ClassName
      */
-    var definitions = NS.apiDefinitions;
     NS.Api.prototype = {
         ajax : null,
         last : {},
         instance: null instanceof NS.Api,
         REQUEST_ROOT : '/',
+        help : null,
         init : function() {
             var giraffe = this;
-            angular.forEach(['create', 'read', 'update', 'delete'], function(action) {
+            frameworkiterator.forEach(['create', 'read', 'update', 'delete'], function(action) {
                 var data = {};
                 var trigger;
                 giraffe[action] = function(calls) {
@@ -102,6 +108,7 @@ NS.Api = function(newInstance) {
             });
             this.whoGetsTheGetters();
             this.get = this.read;
+            this.remove = this['delete'];
         },
         simpleRequest : function(address, payload, callback, resultSetType, complexConstructor) {
             if (typeof payload != 'object') {
@@ -129,13 +136,14 @@ NS.Api = function(newInstance) {
             });
         },
         whoGetsTheGetters : function() {
+            var definitions = this.help;
             for (var operation in definitions) {
                 if (definitions.hasOwnProperty(operation)) {
                     for (var call in definitions[operation]) {
                         if (definitions[operation].hasOwnProperty(call)) {
                             if (['name'].indexOf(call) === -1 && definitions[operation][call].apiRoute) {
                                 var signature = definitions[operation][call];
-                                this[operation][call] = (function(signature) {
+                                this[operation][call] = (function(signature, operation, call) {
                                     var inputs = signature.input;
                                     var fn = function() {
                                         var i = 0,
@@ -143,22 +151,23 @@ NS.Api = function(newInstance) {
                                         var args = arguments;
                                         if (typeof args[0] != 'object') {
                                             if (typeof inputs == 'object') {
-                                                angular.forEach(inputs, function(item, key) {
+                                                frameworkiterator.forEach(inputs, function(item, key) {
                                                     var input = args[i];
+                                                    if (!input) return true;
                                                     if (typeof input.toData == 'function') input = input.toData();
                                                     payload[key] = input;
                                                     if (payload[key].constructor !== inputs[key]) {
-                                                        console.log(payload[key], 'input type unexpected', inputs[key]);
+                                                        console.log(operation, call, key, 'got', payload[key], 'expected', inputs[key]);
                                                     }
                                                     i++;
                                                 });
                                             }
                                         } else {
                                             payload = arguments[0];
-                                            angular.forEach(payload, function(item, key) {
+                                            frameworkiterator.forEach(payload, function(item, key) {
                                                 if (typeof inputs == 'object') {
                                                     if (payload[key].constructor !== inputs[key]) {
-                                                        console.log(payload[key], 'input type unexpected', inputs[key]);
+                                                        console.log(operation, call, key, 'got', payload[key], 'expected', inputs[key]);
                                                     }
                                                 }
                                                 if (typeof item.toData == 'function') payload[key] = item.toData();
@@ -169,18 +178,32 @@ NS.Api = function(newInstance) {
                                     };
                                     fn.help = signature;
                                     fn.help.inputTypes = {};
-                                    angular.forEach(fn.help.input, function(item, key) {
-                                        if (typeof item == 'function') {
-                                            fn.help.inputTypes[key] = item.prototype.identifier;
-                                        } else {
-                                            fn.help.inputTypes[key] = typeof item;
+                                    var inputCount = 0;
+                                    frameworkiterator.forEach(fn.help.input, function(item, key) {
+                                        if ([Function, Object, Array].indexOf(NS.duck(item)) > -1) {
+                                            if (NS.duck(item.prototype) == Object && NS.duck(item.prototype.identifier) === String) {
+                                                fn.help.inputTypes[key] = item.prototype.identifier;
+                                            } else {
+                                                fn.help.inputTypes[key] = 'mixed'
+                                            }
                                         }
+                                        inputCount++;
                                     });
-                                    if (typeof fn.help.output == 'function') {
-                                        fn.help.outputType = fn.help.output.prototype.identifier;
+                                    if (!inputCount) {
+                                        delete fn.help.inputTypes;
+                                    }
+                                    if ([Function, Object, Array].indexOf(NS.duck(fn.help.output)) > -1) {
+                                        if (NS.duck(fn.help.output.prototype) == Object && NS.duck(fn.help.output.prototype.identifier) === String) {
+                                            fn.help.outputType = fn.help.output.prototype.identifier;
+                                        } else if (NS.duck(fn.help.output) === Array) {
+                                            // todo check type better
+                                            fn.help.outputType = 'Array<'+fn.help.output[0].prototype.identifier+'>'
+                                        } else {
+                                            fn.help.outputType = 'mixed'
+                                        }
                                     }
                                     return fn;
-                                })(signature);
+                                })(signature, operation, call);
                             }
                         }
                     }

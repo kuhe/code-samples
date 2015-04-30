@@ -33,5 +33,17 @@ NS.DataObject.prototype = {
             }
         }
         return data;
+    },
+    toDate : function(dateString) {
+        dateString = dateString + ' ';
+        if (!dateString) return null;
+        var n = -1,
+            date = dateString;
+        while (isNaN(date) && n > -20 && typeof dateString.slice == 'function') {
+            date = new Date(dateString.slice(0,n));
+            n--;
+        }
+        if (!(date instanceof Date)) return null;
+        return date;
     }
 };

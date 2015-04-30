@@ -1,1 +1,1 @@
-<?php namespace AR;
+<?php namespace ApplicationCommon;

@@ -1,25 +1,26 @@
 <?php
 
-namespace AR\Model;
+namespace ApplicationCommon\Model;
 
-use AR\Db\DataMapper;
+use ApplicationCommon\Db\DataMapper;
 use Exception;
+use Zend\Crypt\Password\Bcrypt;
 use Zend\Db\Adapter;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Db\Sql\Update;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Delete;
-use Zend\Db\TableGateway\TableGateway;
+use ApplicationCommon\Db\TableGateway\ReadOnlyReadyTableGateway;
 use ReflectionObject;
 use ReflectionProperty;
-use AR\Db\DataResultSet;
-use AR\Db\DataCache;
-use AR\Db\DataCacheKey;
+use ApplicationCommon\Db\DataResultSet;
+use ApplicationCommon\Db\DataCache;
+use ApplicationCommon\Db\DataCacheKey;
 
 /**
  * Class DataObject
- * @package AR\Model
+ * @package ApplicationCommon\Model
  *
  * Specify the adapter service name and table name in child classes.
  * Classes derived from this are intended to provide instantiation for a generic and extensible object representation of a table row.
@@ -54,7 +55,7 @@ use AR\Db\DataCacheKey;
  * $giraffe->save(); // writes to DB, and you're done
  *
  */
-abstract class DataObject {
+abstract class DataObject extends AbstractBase implements ActiveRecordInterface {
 
     /**
      * @var string, required in any child class
@@ -67,7 +68,7 @@ abstract class DataObject {
     protected $tableName = '';
 
     /**
-     * @var \AR\Db\DataMapper
+     * @var \ApplicationCommon\Db\DataMapper
      */
     protected $mapper;
     protected static $serviceLocator;
@@ -82,6 +83,21 @@ abstract class DataObject {
     const STATUS_ACTIVE = 1;
     const STATUS_DRAFT = 2;
     const STATUS_INACTIVE = 0;
+
+    /**
+     * @param $string
+     * @return bool
+     */
+    public function isBcryptString($string) {
+        return substr($string, 0, 4) === '$2a$' || substr($string, 0, 4) === '$2y$';
+    }
+
+    public function encrypt($string) {
+        if (!($this->isBcryptString($string))) {
+            $string = (new Bcrypt)->create($string);
+        }
+        return $string;
+    }
 
     /**
      * @return static
@@ -109,7 +125,7 @@ abstract class DataObject {
         }
         if (is_numeric($id)) {
             $this->initialize();
-            $this->ingest(static::get($id));
+            $this->ingest(static::getOne($id));
         } else {
             $initialize && $this->initialize();
         }
@@ -142,7 +158,7 @@ abstract class DataObject {
             if ($key) {
                 $set = 'set' . ucfirst($key);
                 // $this->$set($this->getDataValue($data, $key), $value);
-                $this->$set($data[$key], $value);
+                $this->$set($data[$key]);
             }
         }
     }
@@ -154,6 +170,21 @@ abstract class DataObject {
      */
     public function ingest($data) {
         if ($data instanceof DataObject) $data = $data->toArray();
+        $this->exchangeArray($data);
+        return $this;
+    }
+    /**
+     * @param $data
+     * @return static
+     */
+    public function ingestStrict($data) {
+        if ($data instanceof DataObject) $data = $data->toArray();
+        $fields = $this->getFields();
+        foreach ($data as $k => $v) {
+            if (!in_array($k, $fields)) {
+                unset($data[$k]);
+            }
+        }
         $this->exchangeArray($data);
         return $this;
     }
@@ -176,8 +207,9 @@ abstract class DataObject {
         return $array;
     }
 
+    const TIMESTAMP_FORMAT = 'Y-m-d H:i:s';
     public function getTimestamp() {
-        return date('Y-m-d H:i:s');
+        return date(static::TIMESTAMP_FORMAT);
     }
 
     public function toJson() {
@@ -218,21 +250,21 @@ abstract class DataObject {
 
         $compound = count($this->key) > 1;
 
-        $update = true;
+        $update = !!count($this->key);
         $restriction = array();
-        foreach ($this->key as $keyName) {
+        foreach ($this->key ?: array() as $keyName) {
             if (!isset($this->$keyName) || $this->$keyName === '') {
                 if ($compound) {
                     throw new Exception('compound key missing element '. $keyName);
                 }
                 $update = false;
             } else {
-                if (!$compound && $update && !is_numeric($keyName)) {
+                if (!$compound && $update && !is_numeric($this->$keyName)) {
                     $update = static::getOne(array($keyName => $this->$keyName)) instanceof static;
                 }
             }
             $restriction[$keyName] = $this->$keyName;
-            if (!$compound && (is_numeric($keyName) || (!isset($this->$keyName) || $this->$keyName === ''))) {
+            if (!$compound && (is_numeric($this->$keyName) || (!isset($this->$keyName) || $this->$keyName === ''))) {
                 unset($data[$keyName]);
             }
         }
@@ -246,16 +278,23 @@ abstract class DataObject {
             if ($debugQuery) {
                 return end(DataMapper::$queriesLog);
             }
-            $this->mapper->getTableGateway()->updateWith($update);
-//            DataCache::set(
-//                new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => $data[$this->key[0]])),
-//                $this->ingest($data)
-//            );
+            try {
+                $this->mapper->getTableGateway()->updateWith($update);
+            } catch (Exception $e) {
+                if (getenv('APPLICATION_ENV') !== 'production') {
+                    _echo(DataMapper::$queriesLog);
+                }
+                throw $e;
+            }
+            DataCache::set(
+                new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => (string) $data[$this->key[0]])),
+                $this->ingest($data)
+            );
             if ($compound) {
                 return $restriction;
             } else {
                 $keyIndex = $this->key[0];
-                return $this->$keyIndex;
+                return $keyIndex ? $this->$keyIndex : true;
             }
         } else if (!$updateOnly) {
             if (!$compound) {
@@ -269,17 +308,28 @@ abstract class DataObject {
             if ($debugQuery) {
                 return end(DataMapper::$queriesLog);
             }
-            $this->mapper->getTableGateway()->insertWith($insert);
+            try {
+                $this->mapper->getTableGateway()->insertWith($insert);
+            } catch (Exception $e) {
+                if (getenv('APPLICATION_ENV') !== 'production') {
+                    _echo(DataMapper::$queriesLog);
+                }
+                throw $e;
+            }
             $identity = $this->mapper->getInsertIdentity();
-//            DataCache::set(
-//                new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => $identity)),
-//                $this->ingest($data)
-//            );
+            DataCache::set(
+                new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => (string) $identity)),
+                $this->ingest($data)
+            );
             if ($compound) {
                 return $restriction;
             } else {
                 $keyIndex = $this->key[0];
-                $this->$keyIndex = $identity;
+                if ($keyIndex) {
+                    $this->$keyIndex = $identity;
+                } else {
+                    $identity = null;
+                }
                 return $identity;
             }
         }
@@ -323,7 +373,10 @@ abstract class DataObject {
         if (is_numeric($mixed)) {
             $id = floor($mixed);
             $delete->where(array($this->key[0] => $id));
-        } else if (is_array($mixed)) {
+            DataCache::clear(
+                new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => (string) $id))
+            );
+        } else if (is_array($mixed) && !empty($mixed)) {
             $delete->where($mixed);
         } else {
             $restriction = array();
@@ -332,6 +385,9 @@ abstract class DataObject {
                     throw new Exception('improperly qualified deletion');
                 }
                 $restriction[$keyName] = $this->$keyName;
+                DataCache::clear(
+                    new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => (string) $this->$keyName))
+                );
             }
             $delete->where($restriction);
         }
@@ -358,16 +414,19 @@ abstract class DataObject {
     /**
      * @param array|int $params id or where clause(s)
      * @param int $limit
-     * @return static|DataResultSet[static]
+     * @param array $join
+     * @param bool $debugQuery
+     * @return DataResultSet<static>
      * @throws Exception
      */
-    public static function get($params = null, $limit = null, $debugQuery = false) {
+    public static function get($params = null, $limit = null, $debugQuery = false, array $join = array()) {
         static::instance()->getMapper()->setColumns(static::instance()->columns);
-        return static::instance()->getMapper()->get($params, $limit, $debugQuery);
+        return static::instance()->getMapper()->get($params, $limit, $debugQuery, $join);
     }
 
     /**
      * @param array|int $params id or where clause(s)
+     * @param bool $debugQuery
      * @return static
      * @throws Exception
      */

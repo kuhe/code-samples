@@ -6,29 +6,28 @@ JS-request-factory
 
 Set an object describing the requests you want to make, and receive a group of easily invoked jqXHR/$http.post requests cast to a front end object data model.
 
-    All functions produced from instructions object through a single request model.
+    All functions produced from apiDefinitions (i.e. ajax signatures) object through a single request model.
     JSON transfer to and from backend.
     Result can be cast to desired client model class.
     Sequential or object arguments.
     Client side cache options (see old version).
-    Singleton
     Support for synchronizing multiple request callbacks.
-    
 
 Example Instruction Input:
 
     requests = {
       read : {
         user : {
-          help : {
-            input : {
-              id : 1
-            },
-            output : User
-          }
+          input : {
+            email : String
+          },
+          output : User
         },
         item : {
-          ...
+          input : {
+            id : Number
+          },
+          output : User
         }
       },
       update : {
@@ -36,14 +35,26 @@ Example Instruction Input:
       }
     }
     
-Example Api created:
+Examples:
 
-    (new Api).get.user('me@mail.com', [optional callback as last argument])
+    (new Api).get.user('me@mail.com', function(user) {
+        assert(user instanceof User === true)
+    })
+    (new Api).get.user({email: 'me@mail.com'}, function(user) {
+        assert(user instanceof User === true)
+    })
+
     (new Api).get.item(1)
+    (new Api).get.item({id : 1})
     
-    api = new Api;
-    api.get([
+    (new Api).get([
       ['user', {email: 'me@gmail.com'}],
       ['item' , {id: 1}],
-      callback that fires when both requests finish, that has an array of the results as argument
+      function(results) {
+        controller.user = results.user;
+        controller.item = results.item;
+        if (controller.user instanceof User && controller.item instanceof Item) {
+          ...
+        }
+      }
     ])

@@ -1,25 +1,23 @@
 <?php
 
-namespace AR\Db;
+namespace ApplicationCommon\Db;
 
-use Zend\Db\Sql\AbstractSql;
-use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
+use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\SqlInterface;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\Sql\Select;
-use Zend\Db\TableGateway\TableGateway;
-use AR\Model\DataObject;
+use ApplicationCommon\Db\TableGateway\ReadOnlyReadyTableGateway;
+use ApplicationCommon\Model\DataObject;
 use Zend\Di\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\Db\Adapter\Adapter as DbAdapter;
 
 /**
  * Class DataMapper
- * @package AR\Db
- * provides read operations and table gateway internalization for AR\Db\DataObject
+ * @package ApplicationCommon\Db
+ * provides read operations and table gateway internalization for ApplicationCommon\Db\DataObject
  */
-class DataMapper implements ServiceManagerAwareInterface {
+class DataMapper extends BaseMapper {
 
     protected $tableGateway;
     public $key = 'id';
@@ -48,7 +46,7 @@ class DataMapper implements ServiceManagerAwareInterface {
     /**
      * @param DataObject $object
      * @param ServiceLocatorInterface|ServiceManager $serviceLocator
-     * @return TableGateway
+     * @return ReadOnlyReadyTableGateway
      */
     public static function gateway(DataObject $object, $serviceLocator) {
         if (static::$gateways[get_class($object)]) {
@@ -57,27 +55,31 @@ class DataMapper implements ServiceManagerAwareInterface {
         $dbAdapter = $serviceLocator->get($object->getAdapterServiceName());
         $instance = get_class($object);
         $resultSetPrototype = new DataResultSet(DataResultSet::TYPE_ARRAYOBJECT, new $instance(null, false));
-        $gateway = new TableGateway($object->getTableName(), $dbAdapter, null, $resultSetPrototype);
+        $gateway = new ReadOnlyReadyTableGateway($object->getTableName(), $dbAdapter, null, $resultSetPrototype);
         return static::$gateways[get_class($object)] = $gateway;
     }
 
     /**
-     * @param null $mixed
+     * @param int|null|Where|\Closure|string|array|Predicate\PredicateInterface $mixed
      * @param $limit integer
      * @param $debugQuery bool return the sql string
-     * @return \AR\Model\DataObject
+     * @param array $join
+     * @return DataResultSet<\ApplicationCommon\Model\DataObject>|DataObject
      * @throws \Exception
      */
-    public function get($mixed = null, $limit = null, $debugQuery = false) {
+    public function get($mixed = null, $limit = null, $debugQuery = false, array $join = array()) {
         if (is_numeric($mixed)) {
             $id = floor($mixed);
             $select = new Select($this->tableGateway->getTable());
             $select->where(array($this->key[0] => $id));
         } else if ($mixed === null) {
-            $select = (new Select($this->tableGateway->getTable()))->order($this->key[0].' desc');
+            $select = (new Select($this->tableGateway->getTable()))->order($this->tableGateway->getTable().'.'.$this->key[0].' desc');
         } else {
-            $select = (new Select($this->tableGateway->getTable()))->order($this->key[0].' desc');
+            $select = (new Select($this->tableGateway->getTable()))->order($this->tableGateway->getTable().'.'.$this->key[0].' desc');
             $select->where($mixed);
+        }
+        if (!empty($join)) {
+            $select->join($join['name'], $join['on'], $join['columns'], $join['type']);
         }
         if (!empty($this->columns)) {
             $select->columns($this->columns);
@@ -90,17 +92,21 @@ class DataMapper implements ServiceManagerAwareInterface {
         }
         try {
             if (is_numeric($mixed)) {
-                return $this->getTableGateway()->selectWith($select)->current();
-//            return DataCache::get(new DataCacheKey(array($this->tableGateway->getTable() => $mixed)),
-//                function() use ($select) {
-//                    return $this->getTableGateway()->selectWith($select)->current();
-//                }
-//            );
+                // return $this->getTableGateway()->selectWith($select)->current();
+                return DataCache::get(new DataCacheKey(array($this->tableGateway->getTable() => (string) $mixed)),
+                    function() use ($select) {
+                        return $this->getTableGateway()->selectWith($select)->current();
+                    }
+                );
             }
             return $this->getTableGateway()->selectWith($select);
         } catch (\Exception $e) {
-            _echo(DataMapper::$queriesLog);
-            throw $e;
+            if (getenv('APPLICATION_ENV') == 'production') {
+                return new DataResultSet();
+            } else {
+                _echo(DataMapper::$queriesLog);
+                throw $e;
+            }
         }
     }
 
@@ -125,11 +131,12 @@ class DataMapper implements ServiceManagerAwareInterface {
     /**
      * @param mixed $mixed
      * @param $debugQuery bool return the sql string
-     * @return \AR\Model\DataObject
+     * @return \ApplicationCommon\Model\DataObject
      */
     public function getOne($mixed = null, $debugQuery = false) {
         $this->trace[] = __METHOD__;
-        return ($result = $this->get($mixed, 1, $debugQuery)) instanceof DataResultSet ? $result->current() : $result;
+        $response = ($result = $this->get($mixed, 1, $debugQuery)) instanceof DataResultSet ? $result->current() : $result;
+        return $response;
     }
 
     public function getInsertIdentity($useDefaultMechanism = false) {
@@ -140,33 +147,6 @@ class DataMapper implements ServiceManagerAwareInterface {
             $results = $adapter->query('SELECT @@IDENTITY as Current_Identity', $adapter::QUERY_MODE_EXECUTE);
             return $results->current()->Current_Identity;
         }
-    }
-
-    public function getServiceManager() {
-        return $this->serviceManager;
-    }
-
-    public function setServiceManager(ServiceManager $serviceManager) {
-        $this->serviceManager = $serviceManager;
-    }
-
-    public function setDbAdapter($dbAdapter) {
-        $this->dbAdapter = $dbAdapter;
-    }
-
-    public function getDbAdapter() {
-        return $this->dbAdapter;
-    }
-
-    /**
-     * @return TableGateWay
-     */
-    public function getTableGateway() {
-        return $this->tableGateway;
-    }
-
-    public function setTableGateway(TableGateway $tableGateway) {
-        $this->tableGateway = $tableGateway;
     }
 
 }
