@@ -1,4 +1,4 @@
-Learning Reference (GNU C++11)
+Learning Reference (GCC C++11)
 
 ====
 

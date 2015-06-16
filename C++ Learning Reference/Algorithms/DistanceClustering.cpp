@@ -75,12 +75,9 @@ string DistanceClustering::solve(int stopAt) {
 }
 
 vector<int> DistanceClustering::hamming1Xor() {
+    // todo
     vector<int> container;
-    for (int i = 0; i < )
-}
-
-vector<int> DistanceClustering::hamming1Xor() {
-
+    return container;
 }
 
 string DistanceClustering::solveHamming() {
@@ -89,7 +86,7 @@ string DistanceClustering::solveHamming() {
     for (auto &node : hammingNodes) {
         vector<int> hamming2, hamming1;
         for (auto &one : hamming1Xor()) {
-
+            // todo
         }
     }
     return "";

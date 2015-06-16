@@ -3,11 +3,14 @@
 #include "Algorithms/GreedyScheduler.h"
 #include "Algorithms/Prim.h"
 #include "Algorithms/DistanceClustering.h"
+#include "Tests/test_structures.h"
 
 using namespace std;
 
 int main() {
     cout << "Hello, World!" << endl;
+
+    test_structures();
 
     bool runLegacy = false;
 
@@ -24,13 +27,17 @@ int main() {
         cout << "Prim's: " + solution3 << endl;
     }
 
-    DistanceClustering dc;
-    string solution4 = dc.solve(4);
-    cout << "Distance clustering: " + solution4 << endl;
+    bool runIncompleteSolutions = false;
 
-    DistanceClustering dc2;
-    string solution5 = dc2.solveHamming();
-    cout << "Large Hamming cluster: " + solution5 << endl;
+    if (runIncompleteSolutions) {
+        DistanceClustering dc;
+        string solution4 = dc.solve(4);
+        cout << "Distance clustering: " + solution4 << endl;
+
+        DistanceClustering dc2;
+        string solution5 = dc2.solveHamming();
+        cout << "Large Hamming cluster: " + solution5 << endl;
+    }
 
     cout << "Yay..." << endl;
     // cin.get();

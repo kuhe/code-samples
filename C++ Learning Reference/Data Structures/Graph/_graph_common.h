@@ -8,7 +8,6 @@
 
 using namespace std;
 
-class Item;
 class Edge;
 class GraphNode;
 class Tree;
