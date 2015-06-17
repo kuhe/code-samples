@@ -20,18 +20,26 @@ int test_structures() {
            d = "you";
 
 
-    LinkedList<string> lln(a);
-    LinkedList<string> lln2(lln, b);
-    LinkedList<string> lln3(lln2, c);
-    LinkedList<string> lln4(lln3, d);
-//
-    console_test(lln.next->data, b);
-//    LinkedList<string> test = lln[0];
+    List<string> lln(a);
+    List<string> lln2(lln, b);
+    List<string> lln3(lln2, c);
+//    List<string> lln4(d);
+//    lln.push(lln4);
+//    lln.push(d);
+
+    lln.print();
+
     console_test(lln[0].data, a);
     console_test(lln[1].data, b);
     console_test(lln[2].data, c);
-    console_test(lln[3].data, d);
-    console_test((*lln.end()).data, (string) d);
+//    console_test(lln[3].data, d);
+//    console_test(lln[4].data, a);
+
+//     console_test((*lln.end()).data, (string) d);
+
+//    lln.shift();
+//
+//    console_test(lln[0].data, b);
 
     return 0;
 };
