@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <assert.h>
 #include "Algorithms/GreedyScheduler.h"
 #include "Algorithms/Prim.h"
 #include "Algorithms/DistanceClustering.h"
@@ -10,7 +11,8 @@ using namespace std;
 int main() {
     cout << "Hello, World!" << endl;
 
-    test_structures();
+    int test = test_structures();
+    assert(0 == test);
 
     bool runLegacy = false;
 
