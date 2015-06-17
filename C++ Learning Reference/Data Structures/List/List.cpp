@@ -47,7 +47,7 @@ List<T>& List<T>::operator [](int i) {
 
 template <typename T>
 List<T>* List<T>::end() {
-    List<T>* list_ptr = this;
+    List<T>* list_ptr = &*this;
     while (nullptr != (*list_ptr).next) {
         list_ptr = (*list_ptr).next;
     }
@@ -55,15 +55,17 @@ List<T>* List<T>::end() {
 }
 
 template <typename T>
-List<T> List<T>::push(List<T>& node) {
+List<T>* List<T>::push(List<T>& node) {
     List<T>* node_ptr = &node;
-    (*end()).next = node_ptr;
-    return node;
+    List<T>& previousNode = *end();
+    previousNode.next = node_ptr;
+    return node_ptr;
 }
 
 template <typename T>
 List<T>* List<T>::push(T nodeData) {
-    return new List<T>(nodeData, *end());
+    List<T>& previousNode = *end();
+    return new List<T>(nodeData, previousNode);
 }
 
 template <typename T>
@@ -92,7 +94,8 @@ List<T> List<T>::pop(int at) {
 }
 template <typename T>
 List<T> List<T>::shift() {
-    List<T> head = *this;
+    List<T>& head = *this;
+    (*this) = *(head.next);
     head.next = nullptr;
     return head;
 }

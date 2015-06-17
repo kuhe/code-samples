@@ -16,7 +16,7 @@ public:
 
     List<T>* end();
     List<T>& operator[](int i);
-    List<T> push(List<T>& node);
+    List<T>* push(List<T>& node);
     List<T>* push(T nodeData);
 
     List<T> pop();
