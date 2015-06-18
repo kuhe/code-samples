@@ -91,13 +91,23 @@ class DataMapper extends BaseMapper {
             return end(DataMapper::$queriesLog);
         }
         try {
-            if (is_numeric($mixed)) {
-                // return $this->getTableGateway()->selectWith($select)->current();
-                return DataCache::get(new DataCacheKey(array($this->tableGateway->getTable() => (string) $mixed)),
-                    function() use ($select) {
-                        return $this->getTableGateway()->selectWith($select)->current();
-                    }
-                );
+            // return $this->getTableGateway()->selectWith($select)->current();
+            if ($mixed && is_numeric($mixed)) {
+                $cache = DataCache::get(new DataCacheKey(array($this->tableGateway->getTable() => (string) $mixed)));
+                if ($cache instanceof static) {
+                    $result = $cache;
+                } else {
+                    $result = $this->getTableGateway()->selectWith($select);
+                }
+                if ($result instanceof static) {
+                    return DataCache::get(new DataCacheKey(array($this->tableGateway->getTable() => (string) $mixed)),
+                        function() use ($result) {
+                            return $result;
+                        }
+                    );
+                } else {
+                    return $result;
+                }
             }
             return $this->getTableGateway()->selectWith($select);
         } catch (\Exception $e) {
@@ -135,7 +145,31 @@ class DataMapper extends BaseMapper {
      */
     public function getOne($mixed = null, $debugQuery = false) {
         $this->trace[] = __METHOD__;
-        $response = ($result = $this->get($mixed, 1, $debugQuery)) instanceof DataResultSet ? $result->current() : $result;
+        if (is_array($mixed) && count($mixed) == 1 && current(array_keys($mixed)) == $this->key[0]) {
+            $cache = DataCache::get(new DataCacheKey(array($this->tableGateway->getTable() => (string) current($mixed))));
+            if ($cache instanceof static) {
+                $result = $cache;
+            } else {
+                $result = $this->get($mixed, 1, $debugQuery);
+                if ($result instanceof DataResultSet) {
+                    $result = $result->current();
+                }
+            }
+            if ($result instanceof static) {
+                return DataCache::get(new DataCacheKey(array($this->tableGateway->getTable() => (string) current($mixed))),
+                    function() use ($result) {
+                        return $result;
+                    }
+                );
+            } else {
+                return $result;
+            }
+        }
+        if (($result = $this->get($mixed, 1, $debugQuery)) instanceof DataResultSet) {
+            $response = $result->current();
+        } else {
+            $response = $result;
+        }
         return $response;
     }
 

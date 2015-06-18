@@ -1,13 +1,12 @@
 <?php
 
-namespace ApplicationCommon\Model;
+namespace FCCommon\Model;
 
 /**
  * Class ActiveRecord
- * @package ApplicationCommon\Model
+ * @package FCCommon\Model
  *
- * But it violates SRP in SOLID!
- *
+ * Calling it what it is.
  */
 abstract class ActiveRecord extends DataObject {
     /**

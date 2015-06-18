@@ -17,11 +17,16 @@ class DataCache {
     public static function add($value) {
         return static::set(null, $value);
     }
+    public static function debug(array $arr) {
+//        if (strpos($arr[1], 'customers') !== false) {
+//            _echo($arr, 1);
+//        }
+    }
     public static function clear($key = null) {
         if (($key === null || !is_string($key)) && !($key instanceof DataCacheKey)) {
             $key = new DataCacheKey($key);
         }
-//        _echo(array('invalidating', $key . ''));
+//        static::debug(array('cooling', $key . ''));
         unset(static::$cache[$key . '']);
         return $key;
     }
@@ -29,7 +34,7 @@ class DataCache {
         if (($key === null || !is_string($key)) && !($key instanceof DataCacheKey)) {
             $key = new DataCacheKey($key);
         }
-//        _echo(array('warming', $key . ''));
+//        static::debug(array('warming', $key . '', get_class($value)));
         static::$cache[$key . ''] = $value;
         return $key;
     }
@@ -37,13 +42,15 @@ class DataCache {
         if (($key === null || !is_string($key)) && !($key instanceof DataCacheKey)) {
             $key = new DataCacheKey($key);
         }
-        if (static::$cache[$key . ''] === null && $lambda !== null) {
-//            _echo(array('cold', $key . ''));
-            $key = static::set($key . '', $lambda());
-            return static::$cache[$key . ''];
+        $value = static::$cache[$key . ''];
+        if ($value === null) {
+//            static::debug(array('cold', $key . ''));
+            if ($lambda !== null) {
+                static::set($key . '', $lambda());
+            }
         } else {
-//            _echo(array('warm', $key . ''));
-            return static::$cache[$key . ''];
+//            static::debug(array('hot', $key . '', get_class($value)));
         }
+        return $value;
     }
 }

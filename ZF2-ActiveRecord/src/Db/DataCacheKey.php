@@ -7,8 +7,8 @@ class DataCacheKey {
     public function __invoke($parameters) {
         return $this->hash($parameters);
     }
-    public function hash($key) {
-         return json_encode($key);
+    public static function hash($key) {
+        return json_encode($key);
     }
     public function __construct($key = null) {
         if ($key === null) {

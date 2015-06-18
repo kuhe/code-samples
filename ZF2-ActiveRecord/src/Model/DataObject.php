@@ -1,9 +1,10 @@
 <?php
 
-namespace ApplicationCommon\Model;
+namespace FCCommon\Model;
 
-use ApplicationCommon\Db\DataMapper;
+use FCCommon\Db\DataMapper;
 use Exception;
+use FCNetSuite\Model\NetSuiteActiveRecord;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Db\Adapter;
 use Zend\Db\ResultSet\ResultSet;
@@ -11,16 +12,16 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Db\Sql\Update;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Delete;
-use ApplicationCommon\Db\TableGateway\ReadOnlyReadyTableGateway;
+use FCCommon\Db\TableGateway\ReadOnlyReadyTableGateway;
 use ReflectionObject;
 use ReflectionProperty;
-use ApplicationCommon\Db\DataResultSet;
-use ApplicationCommon\Db\DataCache;
-use ApplicationCommon\Db\DataCacheKey;
+use FCCommon\Db\DataResultSet;
+use FCCommon\Db\DataCache;
+use FCCommon\Db\DataCacheKey;
 
 /**
  * Class DataObject
- * @package ApplicationCommon\Model
+ * @package FCCommon\Model
  *
  * Specify the adapter service name and table name in child classes.
  * Classes derived from this are intended to provide instantiation for a generic and extensible object representation of a table row.
@@ -68,7 +69,7 @@ abstract class DataObject extends AbstractBase implements ActiveRecordInterface 
     protected $tableName = '';
 
     /**
-     * @var \ApplicationCommon\Db\DataMapper
+     * @var \FCCommon\Db\DataMapper
      */
     protected $mapper;
     protected static $serviceLocator;
@@ -282,17 +283,20 @@ abstract class DataObject extends AbstractBase implements ActiveRecordInterface 
                 $this->mapper->getTableGateway()->updateWith($update);
             } catch (Exception $e) {
                 if (getenv('APPLICATION_ENV') !== 'production') {
-                    _echo(DataMapper::$queriesLog);
+                    _echo(end(DataMapper::$queriesLog));
                 }
                 throw $e;
             }
-            DataCache::set(
-                new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => (string) $data[$this->key[0]])),
-                $this->ingest($data)
-            );
             if ($compound) {
                 return $restriction;
             } else {
+                $key = (string) current($restriction);
+                if ($key) {
+                    DataCache::set(
+                        new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => $key)),
+                        $this->ingest($data)
+                    );
+                }
                 $keyIndex = $this->key[0];
                 return $keyIndex ? $this->$keyIndex : true;
             }
@@ -312,15 +316,17 @@ abstract class DataObject extends AbstractBase implements ActiveRecordInterface 
                 $this->mapper->getTableGateway()->insertWith($insert);
             } catch (Exception $e) {
                 if (getenv('APPLICATION_ENV') !== 'production') {
-                    _echo(DataMapper::$queriesLog);
+                    _echo(end(DataMapper::$queriesLog));
                 }
                 throw $e;
             }
             $identity = $this->mapper->getInsertIdentity();
-            DataCache::set(
-                new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => (string) $identity)),
-                $this->ingest($data)
-            );
+            if ($identity) {
+                DataCache::set(
+                    new DataCacheKey(array($this->getMapper()->getTableGateway()->getTable() => (string) $identity)),
+                    $this->ingest($data)
+                );
+            }
             if ($compound) {
                 return $restriction;
             } else {
@@ -412,7 +418,7 @@ abstract class DataObject extends AbstractBase implements ActiveRecordInterface 
     }
 
     /**
-     * @param array|int $params id or where clause(s)
+     * @param array|int|\Zend\Db\Sql\Predicate\Predicate $params id or where clause(s)
      * @param int $limit
      * @param array $join
      * @param bool $debugQuery
@@ -425,7 +431,7 @@ abstract class DataObject extends AbstractBase implements ActiveRecordInterface 
     }
 
     /**
-     * @param array|int $params id or where clause(s)
+     * @param array|int|\Zend\Db\Sql\Predicate\Predicate $params id or where clause(s)
      * @param bool $debugQuery
      * @return static
      * @throws Exception
