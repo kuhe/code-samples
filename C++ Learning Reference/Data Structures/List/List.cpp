@@ -15,21 +15,21 @@ List<T>::List(List<T>& previous) {
 }
 
 template <typename T>
-List<T>::List(T nodeData) {
+List<T>::List(T item) {
     next = nullptr;
-    data = nodeData;
+    this->item = item;
 }
 
 template <typename T>
-List<T>::List(T nodeData, List<T>& previous) {
+List<T>::List(T item, List<T>& previous) {
     previous.next = this;
-    data = nodeData;
+    this->item = item;
     next = nullptr;
 }
 
 template <typename T>
-List<T>::List(List<T>& previous, T nodeData) {
-    data = nodeData;
+List<T>::List(List<T>& previous, T item) {
+    this->item = item;
     previous.next = this;
     next = nullptr;
 }
@@ -63,9 +63,9 @@ List<T>* List<T>::push(List<T>& node) {
 }
 
 template <typename T>
-List<T>* List<T>::push(T nodeData) {
+List<T>* List<T>::push(T item) {
     List<T>& previousNode = *end();
-    return new List<T>(nodeData, previousNode);
+    return new List<T>(item, previousNode);
 }
 
 template <typename T>
@@ -105,8 +105,8 @@ List<T> List<T>::unshift(List<T>& node){
     return node;
 }
 template <typename T>
-List<T> List<T>::unshift(T nodeData){
-    List<T>* node_ptr = new List<T>(nodeData);
+List<T> List<T>::unshift(T item){
+    List<T>* node_ptr = new List<T>(item);
     (*node_ptr).next = this;
     return *node_ptr;
 }
@@ -117,19 +117,38 @@ List<T> List<T>::excise(int from, int to){
     }
     return *this;
 }
+
 template <typename T>
-List<T> List<T>::slice(int index){
-    return (*this)[index];
+List<T> List<T>::splice(int at, List<T>& list) {
+    List<T>& nodeAt = (*this)[at];
+    (*(list.end())).next = nodeAt.next;
+    nodeAt.next = &list;
+    return *this;
+}
+
+template <typename T>
+List<T> List<T>::splice(int at, T item) {
+    List<T>& nodeAt = (*this)[at];
+    List<T>* newNode_ptr = new List<T>(item);
+    (*newNode_ptr).next = nodeAt.next;
+    nodeAt.next = newNode_ptr;
+    return *this;
+}
+
+template <typename T>
+List<T>& List<T>::slice(int index){
+    List<T>& test = (*this)[index];
+    return test;
 }
 
 template <typename T>
 std::string List<T>::toString() {
     std::string output = "";
     List<T>* list_ptr = this;
-    output += (*list_ptr).data;
+    output += (*list_ptr).item;
     while (nullptr != (*list_ptr).next) {
         list_ptr = (*list_ptr).next;
-        output += (*list_ptr).data;
+        output += (*list_ptr).item;
     }
     return output;
 }

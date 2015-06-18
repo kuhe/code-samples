@@ -5,28 +5,32 @@
 
 template <typename T>
 class List {
+private:
+    List<T> copy();
 public:
-    T data;
+    T item;
     List<T>* next;
     List<T>();
     List<T>(List<T>& previous);
-    List<T>(T nodeData);
-    List<T>(T nodeData, List<T>& previous);
-    List<T>(List<T>& previous, T nodeData);
+    List<T>(T item);
+    List<T>(T item, List<T>& previous);
+    List<T>(List<T>& previous, T item);
 
     List<T>* end();
     List<T>& operator[](int i);
     List<T>* push(List<T>& node);
-    List<T>* push(T nodeData);
+    List<T>* push(T item);
 
     List<T> pop();
     List<T> pop(int at);
     List<T> shift();
     List<T> unshift(List<T>& node);
-    List<T> unshift(T nodeData);
+    List<T> unshift(T item);
 
     List<T> excise(int from, int to);
-    List<T> slice(int index);
+    List<T> splice(int at, List<T>& node);
+    List<T> splice(int at, T item);
+    List<T>& slice(int index);
 
     std::string toString();
     int print();

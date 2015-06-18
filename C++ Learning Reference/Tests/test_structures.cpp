@@ -34,18 +34,18 @@ int test_structures() {
     lln.print();
     cout << "----" << endl;
 
-    console_test(lln[0].data, a);
-    console_test(lln[1].data, b);
-    console_test(lln[2].data, c);
-    console_test(lln[3].data, d);
-    console_test(lln[4].data, d);
-    console_test(lln[5].data, d);
-    console_test(lln[6].data, d);
+    console_test(lln[0].item, a);
+    console_test(lln.slice(1).item, b);
+    console_test(lln[2].item, c);
+    console_test(lln[3].item, d);
+    console_test(lln[4].item, d);
+    console_test(lln[5].item, d);
+    console_test(lln[6].item, d);
 
-    console_test((*lln.end()).data, (string) d);
+    console_test((*lln.end()).item, (string) d);
 
     lln.shift();
-    console_test(lln[0].data, b);
+    console_test(lln[0].item, b);
 
     return 0;
 };
