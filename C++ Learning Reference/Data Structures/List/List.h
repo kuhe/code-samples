@@ -5,11 +5,12 @@
 
 template <typename T>
 class List {
-private:
-    List<T> copy();
 public:
     T item;
     List<T>* next;
+
+    List<T>(const List<T>& other);
+
     List<T>();
     List<T>(List<T>& previous);
     List<T>(T item);

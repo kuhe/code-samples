@@ -24,11 +24,11 @@ int test_structures() {
     List<string> lln2(lln, b);
     List<string> lln3(lln2, c);
     List<string> lln4(d);
-    lln.push(lln4);
+    List<string>* ap = lln.push(lln4);
     List<string> lln5(d);
-    lln.push(lln5);
-    lln.push(d);
-    lln.push(d);
+    List<string>* ap1 = lln.push(lln5);
+    List<string>* ap2 = lln.push(d);
+    List<string>* ap3 = lln.push(d);
 
     cout << "----" << endl;
     lln.print();
@@ -43,9 +43,18 @@ int test_structures() {
     console_test(lln[6].item, d);
 
     console_test((*lln.end()).item, (string) d);
+    lln.pop();
+    lln.pop();
+//    lln.pop();
+//    lln.pop();
+    console_test((*lln.end()).item, (string) d);
 
     lln.shift();
     console_test(lln[0].item, b);
+
+    cout << "----" << endl;
+    lln.print();
+    cout << "----" << endl;
 
     return 0;
 };

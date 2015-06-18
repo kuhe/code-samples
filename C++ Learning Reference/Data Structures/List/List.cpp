@@ -1,7 +1,13 @@
 //
 #include <c++/ostream>
+#include "_list_common.h"
 #include <iostream>
 #include "List.h"
+
+template <typename T>
+List<T>::List(const List<T>& other) : item(other.item) {
+    next = nullptr;
+}
 
 template <typename T>
 List<T>::List() {
@@ -65,12 +71,13 @@ List<T>* List<T>::push(List<T>& node) {
 template <typename T>
 List<T>* List<T>::push(T item) {
     List<T>& previousNode = *end();
-    return new List<T>(item, previousNode);
+    List<T>* list = new List<T>(item, previousNode);
+    return &*list;
 }
 
 template <typename T>
 List<T>::~List() {
-//    delete this->next;
+
 }
 
 template <typename T>
@@ -84,7 +91,9 @@ List<T> List<T>::pop() {
     if (nullptr != prev_ptr) {
         (*prev_ptr).next = nullptr;
     }
-    return *list_ptr;
+    List<T> copy = *list_ptr;
+    delete list_ptr;
+    return copy;
 }
 template <typename T>
 List<T> List<T>::pop(int at) {
