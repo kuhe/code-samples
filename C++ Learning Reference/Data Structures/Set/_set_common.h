@@ -4,9 +4,10 @@
 #include <c++/functional>
 #include <map>
 
-#ifndef _CPPREF_GRAPH_COMMON_H_
-#define _CPPREF_GRAPH_COMMON_H_
+#ifndef _CPPREF_SET_COMMON_H_
+#define _CPPREF_SET_COMMON_H_
 
-using namespace std;
+using std::vector;
+using std::map;
 
-#endif //_CPPREF_GRAPH_COMMON_H_
+#endif //_CPPREF_SET_COMMON_H_

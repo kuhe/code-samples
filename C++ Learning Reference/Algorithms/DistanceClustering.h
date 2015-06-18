@@ -9,7 +9,6 @@
 #ifndef _CPPREF_DISTANCECLUSTERING_H_
 #define _CPPREF_DISTANCECLUSTERING_H_
 
-using namespace std;
 
 class DistanceClustering : public Solver {
 public:

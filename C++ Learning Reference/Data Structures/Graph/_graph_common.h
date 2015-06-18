@@ -6,7 +6,7 @@
 #ifndef _CPPREF_GRAPH_COMMON_H_
 #define _CPPREF_GRAPH_COMMON_H_
 
-using namespace std;
+using std::vector;
 
 class Edge;
 class GraphNode;

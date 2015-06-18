@@ -4,8 +4,6 @@
 #ifndef _CPPREF_GREEDYSCHEDULER_H_
 #define _CPPREF_GREEDYSCHEDULER_H_
 
-using namespace std;
-
 class GreedyScheduler : public Solver {
 public:
     const static string path;

@@ -1,9 +1,10 @@
 #include <string>
+#include <c++/bits/stl_vector.h>
 
 #ifndef _CPPREF_SOLVER_H_
 #define _CPPREF_SOLVER_H_
 
-using namespace std;
+using std::string;
 
 class Solver {
 public:

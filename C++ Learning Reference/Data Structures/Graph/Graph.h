@@ -5,8 +5,6 @@
 #include "Edge.h"
 #include "GraphNode.h"
 
-using namespace std;
-
 class Graph { // undirected
 public:
     vector<GraphNode*> nodes;

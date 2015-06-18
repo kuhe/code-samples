@@ -2,8 +2,8 @@
 #include <iostream>
 #include <assert.h>
 #include "test_structures.h"
+#include "../Utilities/_std_symbols.h"
 
-using namespace std;
 template <typename T, typename V>
 void console_test(T a, V b) {
     cout << a << " " << b << endl;

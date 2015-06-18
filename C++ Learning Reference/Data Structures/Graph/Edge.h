@@ -4,8 +4,6 @@
 #include "_graph_common.h"
 #include "GraphNode.h"
 
-using namespace std;
-
 class Edge {
 public:
     double weight;

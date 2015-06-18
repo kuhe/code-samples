@@ -7,8 +7,6 @@
 #ifndef _CPPREF_PRIM_H_
 #define _CPPREF_PRIM_H_
 
-using namespace std;
-
 class Prim : public Solver {
 public:
     const static string path;

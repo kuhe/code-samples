@@ -4,8 +4,6 @@
 #include "_graph_common.h"
 #include "Edge.h"
 
-using namespace std;
-
 class GraphNode {
 public:
     vector<GraphNode*> paths;
