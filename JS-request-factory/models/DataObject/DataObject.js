@@ -1,3 +1,7 @@
+/**
+ * Provides a base class that maps between data and the front end model
+ * @constructor
+ */
 NS.DataObject = function() {
     this.init();
 };

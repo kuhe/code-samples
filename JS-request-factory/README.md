@@ -13,7 +13,7 @@ Set an object describing the requests you want to make, and receive a group of e
     Client side cache options (see old version).
     Support for synchronizing multiple request callbacks.
 
-Example Instruction Input:
+Example Signature Configuration object:
 
     requests = {
       read : {
@@ -34,19 +34,25 @@ Example Instruction Input:
         ...
       }
     }
-    
-Examples:
 
+Invoking (new Api) then caches the methods generated.
+
+Example, usage of generated api methods:
+
+    // sequential arguments
     (new Api).get.user('me@mail.com', function(user) {
         assert(user instanceof User === true)
     })
+    // or object argument
     (new Api).get.user({email: 'me@mail.com'}, function(user) {
         assert(user instanceof User === true)
     })
 
+    // without callback
     (new Api).get.item(1)
     (new Api).get.item({id : 1})
-    
+
+    // unified callback for multiple asynchronous requests
     (new Api).get([
       ['user', {email: 'me@gmail.com'}],
       ['item' , {id: 1}],

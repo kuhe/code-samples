@@ -1,5 +1,5 @@
 /**
- * calls defined here will be cast to the appropriate types upon output, and warn if input types mismatch
+ * calls defined here will be cast to the appropriate types upon output, and warned if input types mismatch
  */
 NS.apiDefinitions = {
     create: {

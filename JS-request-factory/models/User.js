@@ -6,10 +6,8 @@ NS.Item.prototype = framework.extend(NS.DataObject, {
     identifier : 'Item',
     constructor : NS.Item,
     columns : {
-        country_code : 'countryCode',
-        state_code : 'code',
-        state_name : 'name',
-        state_id : 'id'
+        id: 'id',
+        name: 'name'
     },
     initialize : function() {
 

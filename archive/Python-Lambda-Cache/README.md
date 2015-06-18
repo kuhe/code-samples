@@ -3,7 +3,7 @@ Code Sample (Python)
 Python-Lambda-Cache
 ===================
 
-Cache interface in Python, deferred evaluation with lambdas, can be plugged into e.g. redis
+Cache interface in Python, deferred evaluation with lambdas, can be plugged onto e.g. redis
 
     md_device = MetadataCache()
     
