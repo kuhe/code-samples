@@ -11,7 +11,7 @@ void console_test(T a, V b) {
 }
 template void console_test<string, string>(string a, string b);
 
-
+using Lehr_DS::List;
 int test_structures() {
 
     string a = "hello.",
@@ -48,6 +48,9 @@ int test_structures() {
     console_test(b_test, b);
     console_test(f_test, f);
     console_test(g_test, g);
+
+    lln.splice(3, a);
+    console_test(lln[3], a);
 
     return 0;
 };

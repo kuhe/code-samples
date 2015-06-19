@@ -19,5 +19,4 @@ public:
     double getPriority() const;
 };
 
-
 #endif //_CPPREF_WEIGHTEDJOB_H_
