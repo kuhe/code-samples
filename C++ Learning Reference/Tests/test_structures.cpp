@@ -17,44 +17,39 @@ int test_structures() {
     string a = "hello.",
            b = "how.",
            c = "are.",
-           d = "you.";
+           d = "you.",
+           e = "my.",
+           f = "name.",
+           g = "is.";
 
 
-    List<string> lln(a);
-    List<string> lln2(lln, b);
-    List<string> lln3(lln2, c);
-    List<string> lln4(d);
-    List<string>* ap = lln.push(lln4);
-    List<string> lln5(d);
-    List<string>* ap1 = lln.push(lln5);
-    List<string>* ap2 = lln.push(d);
-    List<string>* ap3 = lln.push(d);
 
-    cout << "----" << endl;
-    lln.print();
-    cout << "----" << endl;
+    List<string>* lln_ptr = new List<string>(c);
+    List<string>& lln = *lln_ptr;
+    lln.push(d);
+    lln.push(e);
+    lln.push(f);
+    lln.push(g);
+    lln.unshift(b);
+    lln.unshift(a);
 
     console_test(lln[0].item, a);
-    console_test(lln.slice(1).item, b);
+    console_test(lln[1].item, b);
     console_test(lln[2].item, c);
     console_test(lln[3].item, d);
-    console_test(lln[4].item, d);
-    console_test(lln[5].item, d);
-    console_test(lln[6].item, d);
+    console_test(lln[4].item, e);
+    console_test(lln[5].item, f);
+    console_test(lln[6].item, g);
 
-    console_test((*lln.end()).item, (string) d);
-    lln.pop();
-    lln.pop();
-//    lln.pop();
-//    lln.pop();
-    console_test((*lln.end()).item, (string) d);
+//    string a_test = lln.shift();
+//    string b_test = lln.shift();
+    string g_test = lln.pop();
+    string f_test = lln.pop();
 
-    lln.shift();
-    console_test(lln[0].item, b);
-
-    cout << "----" << endl;
-    lln.print();
-    cout << "----" << endl;
+//    console_test(a_test, a);
+//    console_test(b_test, b);
+    console_test(f_test, f);
+    console_test(g_test, g);
 
     return 0;
 };
