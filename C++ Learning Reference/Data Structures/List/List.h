@@ -5,30 +5,37 @@
 
 template <typename T>
 class List {
+private:
+    struct Node {
+        T item;
+        Node* next;
+    };
+protected:
+    int length;
 public:
-    T item;
-    List<T>* next;
+    Node* head;
+    Node* tail;
+    int count();
 
     List<T>();
     List<T>(T item);
+    List<T>(const List<T>& copy);
+    ~List<T>();
 
-    List<T>* end();
     List<T>& operator[](int i);
 
     List<T>* push(T item);
     List<T>* unshift(T item);
 
     T pop();
-    T pop(int at);
-//    T shift();
+    T shift();
 
-//    List<T> excise(int from, int to);
-//    List<T> splice(int at, List<T>& node);
-//    List<T> splice(int at, T& item);
-//    List<T>& slice(int index);
-//
-//protected:
-//    ~List<T>();
+    List<T> excise(int at);
+    List<T> excise(int from, int to);
+    List<T> splice(int at, List<T>& node);
+    List<T> splice(int at, T& item);
+    List<T> slice(int index);
+    List<T> slice(int index, int length);
 };
 
 template class List<std::string>;
