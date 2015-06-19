@@ -22,10 +22,8 @@ int test_structures() {
            f = "name.",
            g = "is.";
 
-
-
-    List<string>* lln_ptr = new List<string>(c);
-    List<string>& lln = *lln_ptr;
+    List<string> lln;
+    lln.push(c);
     lln.push(d);
     lln.push(e);
     lln.push(f);
@@ -33,21 +31,21 @@ int test_structures() {
     lln.unshift(b);
     lln.unshift(a);
 
-    console_test(lln[0].item, a);
-    console_test(lln[1].item, b);
-    console_test(lln[2].item, c);
-    console_test(lln[3].item, d);
-    console_test(lln[4].item, e);
-    console_test(lln[5].item, f);
-    console_test(lln[6].item, g);
+    console_test(lln[0], a);
+    console_test(lln[1], b);
+    console_test(lln[2], c);
+    console_test(lln[3], d);
+    console_test(lln[4], e);
+    console_test(lln[5], f);
+    console_test(lln[6], g);
 
-//    string a_test = lln.shift();
-//    string b_test = lln.shift();
+    string a_test = lln.shift();
+    string b_test = lln.shift();
     string g_test = lln.pop();
     string f_test = lln.pop();
 
-//    console_test(a_test, a);
-//    console_test(b_test, b);
+    console_test(a_test, a);
+    console_test(b_test, b);
     console_test(f_test, f);
     console_test(g_test, g);
 

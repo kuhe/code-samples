@@ -5,16 +5,21 @@
 
 template <typename T>
 class List {
-private:
+protected:
+    int length = 0;
+public:
     struct Node {
+    friend class List<T>;
         T item;
         Node* next;
+        Node() {};
+        Node(T item) : item(item) {};
+        Node(Node* next) : next(next) {};
+        Node(T item, Node* next) : item(item), next(next) {};
+        Node(Node* next, T item) : item(item), next(next) {};
     };
-protected:
-    int length;
-public:
-    Node* head;
-    Node* tail;
+    Node* head = nullptr;
+    Node* tail = nullptr;
     int count();
 
     List<T>();
@@ -22,7 +27,8 @@ public:
     List<T>(const List<T>& copy);
     ~List<T>();
 
-    List<T>& operator[](int i);
+    T& operator[](int i);
+    Node* nodeAt(int i);
 
     List<T>* push(T item);
     List<T>* unshift(T item);
