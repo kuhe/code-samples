@@ -51,6 +51,7 @@ int test_structures() {
 
     lln.splice(3, a);
     console_test(lln[3], a);
+    console_test(lln.count(), 4);
 
     return 0;
 };

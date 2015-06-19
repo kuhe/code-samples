@@ -104,6 +104,7 @@ namespace Lehr_DS {
     List<T> List<T>::excise(int at) {
         if (at > 1) {
             nodeAt(at - 1)->next = nodeAt(at + 1);
+            length--;
         } else {
             shift();
         }
@@ -113,6 +114,7 @@ namespace Lehr_DS {
     List<T> List<T>::excise(int from, int to) {
         if (from > 1) {
             nodeAt(from - 1)->next = nodeAt(to + 1);
+            length -= to - from + 1;
         } else {
             int n = 0;
             while (n++ <= to) {
@@ -123,6 +125,7 @@ namespace Lehr_DS {
     }
     template <typename T>
     List<T> List<T>::splice(int before, List<T>& list) {
+        length += list.length;
         if (before > 0) {
             nodeAt(before - 1)->next = list.head;
             if (before >= length) {
@@ -144,6 +147,7 @@ namespace Lehr_DS {
             if (before >= length) {
                 push(item);
             } else {
+                length++;
                 node->next = nodeAt(before);
             }
         } else {
