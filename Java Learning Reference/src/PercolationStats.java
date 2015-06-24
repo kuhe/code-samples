@@ -14,11 +14,22 @@ public class PercolationStats {
 
         while (times-- > 0) {
             Percolation graph = new Percolation(N);
+
+            int[][] sitePositions = new int[(N)*(N)][2];
+            int index = 0;
+            for (int i = 1; i <= N; i++) {
+                for (int j = 1; j <= N; j++) {
+                    sitePositions[index][0] = i;
+                    sitePositions[index][1] = j;
+                    index++;
+                }
+            }
+            StdRandom.shuffle(sitePositions);
+
             int n = 0;
             while (!graph.percolates()) {
-                n++;
-                int row = (int) Math.ceil(StdRandom.uniform() * N);
-                int col = (int) Math.ceil(StdRandom.uniform() * N);
+                int row = sitePositions[n][0];
+                int col = sitePositions[n][1];
                 graph.open(row, col);
 
                 if (visual) {
@@ -26,6 +37,7 @@ public class PercolationStats {
                     PercolationVisualizer.draw(graph, N);
                     StdDraw.show(0);
                 }
+                n++;
             }
             percolatedAtStep[times] = n;
         }
@@ -52,7 +64,8 @@ public class PercolationStats {
     }
     // test client (described below)
     public static void main(String[] args) {
-        PercolationStats stats = new PercolationStats(20, 3);
+        //todo use args for N, T
+        PercolationStats stats = new PercolationStats(200, 1);
         StdOut.println(stats.mean());
     }
 

@@ -90,7 +90,7 @@ public class Percolation {
     }
     private void validateIndex(int i, int j) {
         if (!validIndex(i, j)) {
-            throw new IndexOutOfBoundsException("uh oh");
+            throw new IndexOutOfBoundsException("uh oh " + i + " " + j);
         }
     }
     private boolean validIndex(int i, int j) {
