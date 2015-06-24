@@ -3,14 +3,18 @@
  */
 public class PercolationStats {
 
-    private int[] percolatedAtStep;
-    private static final boolean visual = true;
+    private double[] percolatedAtStep;
+    private static final boolean VISUAL = true;
     private int dimension;
 
     public PercolationStats(int N, int T) {
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException("humbug");
+        }
         int times = T;
+        this.times = T;
         dimension = N;
-        percolatedAtStep = new int[T];
+        percolatedAtStep = new double[T];
 
         while (times-- > 0) {
             Percolation graph = new Percolation(N);
@@ -32,17 +36,16 @@ public class PercolationStats {
                 int col = sitePositions[n][1];
                 graph.open(row, col);
 
-                if (visual) {
-                    StdDraw.show(0);
-                    PercolationVisualizer.draw(graph, N);
-                    StdDraw.show(0);
-                }
+//                if (VISUAL) {
+//                    StdDraw.show(0);
+//                    PercolationVisualizer.draw(graph, N);
+//                    StdDraw.show(0);
+//                }
                 n++;
             }
-            percolatedAtStep[times] = n;
+            percolatedAtStep[times] = (double) n;
         }
     }
-    // sample mean of percolation threshold
     public double mean() {
         int sum = 0;
         for (int i = 0; i < percolatedAtStep.length; i++) {
@@ -50,26 +53,33 @@ public class PercolationStats {
         }
         return ((double) sum) / percolatedAtStep.length / (dimension * dimension);
     }
-    // sample standard deviation of percolation threshold
     public double stddev() {
-        return 0;
+        return StdStats.stddev(percolatedAtStep) / (dimension * dimension);
     }
-    // low  endpoint of 95% confidence interval
+    private double interval() {
+        return 1.96 * stddev() / Math.sqrt(times);
+    }
+    private int times;
     public double confidenceLo() {
-        return 0;
+        return mean() - interval();
     }
-    // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return 0;
+        return mean() + interval();
     }
-    // test client (described below)
     public static void main(String[] args) {
-        //todo use args for N, T
-        PercolationStats stats = new PercolationStats(200, 1);
-        StdOut.println(stats.mean());
-    }
-
-    private void index(int i, int j) {
-
+        int N, T;
+        if (args.length == 2) {
+            N = Integer.parseInt(args[0]);
+            T = Integer.parseInt(args[1]);
+            if (N <= 0 || T <= 0) {
+                throw new IllegalArgumentException("bah");
+            }
+        } else {
+            N = 500; T = 2;
+        }
+        PercolationStats stats = new PercolationStats(N, T);
+        StdOut.println("mean                    = " + stats.mean());
+        StdOut.println("stddev                  = " + stats.stddev());
+        StdOut.println("95% confidence interval = " + stats.confidenceLo() + ", " + stats.confidenceHi());
     }
 }

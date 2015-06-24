@@ -2,16 +2,17 @@
  * womp womp
  */
 public class Percolation {
-    private static final int BLOCKED = 0;
-    private static final int OPEN = 1;
-    private static final int FULL = 2;
-    private int[][] sites;
+    private static final char BLOCKED = '0';
+    private static final char OPEN = '1';
+    private static final char FULL = '2';
+    private static final char DRAINS = '3';
+    private static final char PERCOLATES = '4';
+
+    private char[] sites;
     private int dimension = 0;
 
     private WeightedQuickUnionUF unionFind;
-    private int secondDimensionScalar = 10;
-
-    private int leak = -1;
+    private int secondDimensionScalar = 1;
 
     private boolean percolates = false;
 
@@ -20,30 +21,36 @@ public class Percolation {
             throw new IllegalArgumentException("hah");
         }
         dimension = N;
-        sites = new int[dimension + 1][dimension + 1];
-        double indexDimension = (double) dimension;
-        while (indexDimension > 1) {
-            indexDimension /= 10;
+        int indexDimension = Integer.parseInt(dimension + "" + dimension);
+
+        double indexSize = (double) indexDimension;
+        while (indexSize >= 1) {
+            indexSize /= 10;
             secondDimensionScalar *= 10;
         }
-        unionFind = new WeightedQuickUnionUF(secondDimensionScalar * secondDimensionScalar);
+        secondDimensionScalar = (int) Math.sqrt(secondDimensionScalar);
 
-        for (int n = 0; n <= dimension; n++) {
-            for (int j = 0; j <= dimension; j++) {
-                sites[n][j] = BLOCKED;
-            }
-        }
+        unionFind = new WeightedQuickUnionUF(indexDimension + 1);
+        sites = new char[indexDimension + 1];
+    }
+    private void setToState(int index, char state) {
+        sites[unionFind.find(index)] = state;
+    }
+    private char getState(int index) {
+        return sites[unionFind.find(index)];
     }
     public void open(int i, int j) {
         validateIndex(i, j);
-        sites[i][j] = OPEN;
-        if (leak == -1 && i == 1) {
-            leak = index(1, j);
-            sites[i][j] = FULL;
-        } else if (i == 1) {
-            unionFind.union(index(1, j), leak);
-        }
+
         int base = index(i, j);
+        setToState(base, deriveStatus(getState(base), OPEN));
+
+        if (i == 1) {
+            setToState(base, deriveStatus(getState(base), FULL));
+        }
+        if (i == dimension) {
+            setToState(base, deriveStatus(getState(base), DRAINS));
+        }
 
         int[][] indexes = {{0,1}, {0,-1}, {1,0}, {-1,0}};
         for (int n = 0; n < 4; n++) {
@@ -51,30 +58,46 @@ public class Percolation {
             int rowOffset = pair[0], colOffset = pair[1];
             int target = index(i + rowOffset, j + colOffset);
             if (validIndex(i + rowOffset, j + colOffset) && isOpen(i + rowOffset, j + colOffset)) {
+                char baseStatus = getState(base);
+                char targetStatus = getState(target);
                 unionFind.union(base, target);
+                char newStatus = deriveStatus(targetStatus, baseStatus);
+                setToState(base, newStatus);
+                setToState(target, newStatus);
             }
         }
+    }
+    private char deriveStatus(char target, char base) {
+        char result = base;
+        if (base == DRAINS || target == DRAINS) {
+            result = DRAINS;
+        }
+        if (base == FULL || target == FULL) {
+            result = FULL;
+        }
+        if (base == DRAINS && target == FULL) {
+            result = PERCOLATES;
+        }
+        if (base == FULL && target == DRAINS) {
+            result = PERCOLATES;
+        }
+        if (base == PERCOLATES || target == PERCOLATES) {
+            result = PERCOLATES;
+        }
+        if (result == PERCOLATES) {
+            percolates = true;
+        }
+        return result;
     }
     public boolean isOpen(int i, int j) {
         validateIndex(i, j);
-        return sites[i][j] == OPEN || sites[i][j] == FULL;
+        int site = getState(index(i, j));
+        return site == OPEN || site == FULL || site == DRAINS || site == PERCOLATES;
     }
     public boolean isFull(int i, int j) {
         validateIndex(i, j);
-        boolean full = false;
-        if (sites[i][j] == FULL) {
-            full = true;
-        }
-        if (!full && leak != -1 ) {
-            full = unionFind.connected(index(i, j), leak);
-        }
-        if (full) {
-            sites[i][j] = FULL;
-            if (i == dimension) {
-                percolates = true;
-            }
-        }
-        return full;
+        int site = getState(index(i, j));
+        return site == FULL || site == PERCOLATES;
     }
     public boolean percolates() {
         return percolates;
