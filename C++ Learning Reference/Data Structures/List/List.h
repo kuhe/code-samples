@@ -1,14 +1,14 @@
 #ifndef CPPREF_LINKEDLIST_H
 #define CPPREF_LINKEDLIST_H
 
+#include "ListInterface.h"
 #include <string>
 
-namespace Lehr_DS {
+namespace Lehr {
     template <typename T>
-    class List {
+    class List : public ListInterface<T> {
     protected:
         int length = 0;
-    public:
         struct Node {
             friend class List<T>;
             T item;
@@ -21,6 +21,8 @@ namespace Lehr_DS {
         };
         Node* head = nullptr;
         Node* tail = nullptr;
+        Node* nodeAt(int i);
+    public:
         int count();
 
         List<T>();
@@ -29,7 +31,6 @@ namespace Lehr_DS {
         ~List<T>();
 
         T& operator[](int i);
-        Node* nodeAt(int i);
 
         List<T>* push(T item);
         List<T>* unshift(T item);

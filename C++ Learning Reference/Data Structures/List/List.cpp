@@ -1,8 +1,7 @@
 //
-#include "_list_common.h"
 #include "List.h"
 
-namespace Lehr_DS {
+namespace Lehr {
     template <typename T>
     int List<T>::count() {
         return length;

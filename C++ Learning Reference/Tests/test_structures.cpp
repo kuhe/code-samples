@@ -11,7 +11,7 @@ void console_test(T a, V b) {
 }
 template void console_test<string, string>(string a, string b);
 
-using Lehr_DS::List;
+using Lehr::List;
 int test_structures() {
 
     string a = "hello.",
