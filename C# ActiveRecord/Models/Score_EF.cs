@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using WebApplication1.Library.Model;
+using Application.Library.Model;
 
-namespace WebApplication1.Models
+namespace Application.Models
 {
     using System;
     using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace WebApplication1.Library.Model
+namespace Application.Library.Model
 {
     public class ActiveRecord<T> : DataObject<T>
         where T : ActiveRecord<T>, new()

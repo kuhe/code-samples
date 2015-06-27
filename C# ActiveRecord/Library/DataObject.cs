@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using JSON = System.Web.Helpers.Json;
 
-namespace WebApplication1.Library.Model
+namespace Application.Library.Model
 {
     public abstract class DataObject<T> : IDataObjectBase
         where T : DataObject<T>, new()

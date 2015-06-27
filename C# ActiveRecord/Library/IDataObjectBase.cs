@@ -1,5 +1,5 @@
 ﻿
-namespace WebApplication1.Library.Model
+namespace Application.Library.Model
 {
     public interface IDataObjectBase
     {

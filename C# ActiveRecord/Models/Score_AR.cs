@@ -1,6 +1,6 @@
-﻿using WebApplication1.Library.Model;
+﻿using Application.Library.Model;
 
-namespace WebApplication1.Models
+namespace Application.Models
 {
     public partial class Score : ActiveRecord<Score>
     {
