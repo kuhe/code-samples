@@ -12,7 +12,6 @@ int main() {
     cout << "Hello, World!" << endl;
 
     int test = test_structures();
-    assert(0 == test);
 
     bool runOldSolutions = 0;
     if (runOldSolutions) {

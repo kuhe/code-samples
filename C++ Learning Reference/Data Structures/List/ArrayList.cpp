@@ -92,11 +92,11 @@ namespace Lehr {
         return dummy;
     }
     template <typename T>
-    ArrayList<T> ArrayList<T>::excise(int at) {
+    ArrayList<T>& ArrayList<T>::excise(int at) {
         return excise(at, at);
     }
     template <typename T>
-    ArrayList<T> ArrayList<T>::excise(int from, int to) {
+    ArrayList<T>& ArrayList<T>::excise(int from, int to) {
         if (to < from) return *this;
         for (int i = 0; i + to + 1 < length; i++) {
             data[i + from] = data[i + to + 1];
@@ -105,7 +105,7 @@ namespace Lehr {
         return *this;
     }
     template <typename T>
-    ArrayList<T> ArrayList<T>::splice(int before, ArrayList<T>& list) {
+    ArrayList<T>& ArrayList<T>::splice(int before, ArrayList<T>& list) {
         if (before >= length) {
             for (int i = 0; i < list.length; i++) {
                 push(list[i]);
@@ -123,19 +123,19 @@ namespace Lehr {
         return *this;
     }
     template <typename T>
-    ArrayList<T> ArrayList<T>::splice(int before, T& item) {
+    ArrayList<T>& ArrayList<T>::splice(int before, T& item) {
         ArrayList<T> container(item);
         return splice(before, container);
     }
     template <typename T>
-    ArrayList<T> ArrayList<T>::slice(int index) {
+    ArrayList<T>& ArrayList<T>::slice(int index) {
         while (index--) {
             shift();
         }
         return *this;
     }
     template <typename T>
-    ArrayList<T> ArrayList<T>::slice(int index, int length) {
+    ArrayList<T>& ArrayList<T>::slice(int index, int length) {
         while (index--) {
             shift();
         }

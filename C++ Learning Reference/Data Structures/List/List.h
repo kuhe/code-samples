@@ -41,12 +41,12 @@ namespace Lehr {
         /**
          * mutation methods
          */
-        List<T> excise(int at);
-        List<T> excise(int from, int to);
-        List<T> splice(int before, List<T>& list);
-        List<T> splice(int before, T& item);
-        List<T> slice(int index);
-        List<T> slice(int index, int length);
+        List<T>& excise(int at);
+        List<T>& excise(int from, int to);
+        List<T>& splice(int before, List<T>& list);
+        List<T>& splice(int before, T& item);
+        List<T>& slice(int index);
+        List<T>& slice(int index, int length);
     };
 
     template class List<std::string>;

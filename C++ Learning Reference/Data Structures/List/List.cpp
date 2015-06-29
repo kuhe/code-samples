@@ -11,6 +11,7 @@ namespace Lehr {
     }
     template <typename T>
     List<T>::List(T item) {
+        length = 1;
         head = new List<T>::Node(item);
         tail = head;
     }
@@ -24,8 +25,11 @@ namespace Lehr {
     }
     template <typename T>
     List<T>::~List() {
-        while (length) {
-            shift();
+        Node* cursor = head;
+        while (nullptr != cursor) {
+            Node* deletion = cursor;
+            cursor = cursor->next;
+            delete deletion;
         }
     }
 
@@ -100,7 +104,7 @@ namespace Lehr {
         return data;
     }
     template <typename T>
-    List<T> List<T>::excise(int at) {
+    List<T>& List<T>::excise(int at) {
         if (at > 1) {
             nodeAt(at - 1)->next = nodeAt(at + 1);
             length--;
@@ -110,7 +114,7 @@ namespace Lehr {
         return *this;
     }
     template <typename T>
-    List<T> List<T>::excise(int from, int to) {
+    List<T>& List<T>::excise(int from, int to) {
         if (from > 1) {
             nodeAt(from - 1)->next = nodeAt(to + 1);
             length -= to - from + 1;
@@ -123,46 +127,39 @@ namespace Lehr {
         return *this;
     }
     template <typename T>
-    List<T> List<T>::splice(int before, List<T>& list) {
+    List<T>& List<T>::splice(int before, List<T>& list) {
         length += list.length;
         if (before > 0) {
-            nodeAt(before - 1)->next = list.head;
-            if (before >= length) {
-                tail = list.tail;
-            } else {
-                list.tail->next = nodeAt(before);
+            Node* diverge_at = nodeAt(before - 1);
+            Node* rejoin_at = nodeAt(before);
+            Node* cursor = diverge_at;
+            while (list.length) {
+                Node* node_copy = new Node(list.shift());
+                cursor->next = node_copy;
+                cursor = node_copy;
             }
+            cursor->next = rejoin_at;
         } else {
             list.tail->next = head;
             head = list.head;
         }
+        List<T>& examine = *this;
         return *this;
     }
     template <typename T>
-    List<T> List<T>::splice(int before, T& item) {
-        if (before > 0) {
-            Node* node = new Node(item);
-            nodeAt(before - 1)->next = node;
-            if (before >= length) {
-                push(item);
-            } else {
-                length++;
-                node->next = nodeAt(before);
-            }
-        } else {
-            unshift(item);
-        }
-        return *this;
+    List<T>& List<T>::splice(int before, T& item) {
+        List<T> container(item);
+        return splice(before, container);
     }
     template <typename T>
-    List<T> List<T>::slice(int index) {
+    List<T>& List<T>::slice(int index) {
         while (index--) {
             shift();
         }
         return *this;
     }
     template <typename T>
-    List<T> List<T>::slice(int index, int length) {
+    List<T>& List<T>::slice(int index, int length) {
         while (index--) {
             shift();
         }

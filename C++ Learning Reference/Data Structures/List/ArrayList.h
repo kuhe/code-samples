@@ -15,7 +15,6 @@ namespace Lehr {
         int length = 0;
         T* data = nullptr;
         void resize(int n, int start_index = 0);
-        void copyFrom(T* source, int index = 0);
     public:
         int count();
 
@@ -35,12 +34,12 @@ namespace Lehr {
         /**
          * mutation methods
          */
-        ArrayList<T> excise(int at);
-        ArrayList<T> excise(int from, int to);
-        ArrayList<T> splice(int before, ArrayList<T>& list);
-        ArrayList<T> splice(int before, T& item);
-        ArrayList<T> slice(int index);
-        ArrayList<T> slice(int index, int length);
+        ArrayList<T>& excise(int at);
+        ArrayList<T>& excise(int from, int to);
+        ArrayList<T>& splice(int before, ArrayList<T>& list);
+        ArrayList<T>& splice(int before, T& item);
+        ArrayList<T>& slice(int index);
+        ArrayList<T>& slice(int index, int length);
     };
 
     template class ArrayList<std::string>;
