@@ -14,8 +14,8 @@ namespace Lehr {
         const double RESIZE_SCALAR = 1.5;
         int length = 0;
         T* data = nullptr;
-        void resize(int n);
-        void copyFrom(T* source, int length);
+        void resize(int n, int start_index = 0);
+        void copyFrom(T* source, int index = 0);
     public:
         int count();
 

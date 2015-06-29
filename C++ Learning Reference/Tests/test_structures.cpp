@@ -7,11 +7,12 @@
 template <typename T, typename V>
 void console_test(T a, V b) {
     cout << a << " " << b << endl;
-    assert(a == b);
 }
 template void console_test<string, string>(string a, string b);
 
 using Lehr::List;
+using Lehr::ArrayList;
+
 int test_structures() {
 
     string a = "hello.",
@@ -23,6 +24,9 @@ int test_structures() {
            g = "is.";
 
     List<string> lln;
+    List<string> lln2;
+//    ArrayList<string> lln;
+//    ArrayList<string> lln2;
     lln.push(c);
     lln.push(d);
     lln.push(e);
@@ -49,9 +53,26 @@ int test_structures() {
     console_test(f_test, f);
     console_test(g_test, g);
 
-    lln.splice(3, a);
-    console_test(lln[3], a);
+    lln.unshift(b_test);
+    lln.unshift(a_test);
+    lln.push(f_test);
+    lln.push(g_test);
+
+    lln.excise(2, 4);
+    console_test(lln[2], f);
+
     console_test(lln.count(), 4);
+
+    lln2.push(c);
+    lln2.push(d);
+    lln2.push(e);
+    lln.splice(2, lln2);
+    console_test(lln.count(), 7);
+    console_test(lln[2], c);
+
+    lln.splice(7, e);
+    console_test(lln[7], e);
+    console_test(lln.count(), 8);
 
     return 0;
 };
