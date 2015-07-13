@@ -1,4 +1,3 @@
-
 #ifndef CPPREF__LIST_COMMON_H
 #define CPPREF__LIST_COMMON_H
 

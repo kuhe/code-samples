@@ -18,6 +18,9 @@ namespace Lehr {
             Node(Node* next) : next(next) {};
             Node(T item, Node* next) : item(item), next(next) {};
             Node(Node* next, T item) : item(item), next(next) {};
+            void operator =(T item) {
+                this->item = item;
+            };
         };
         Node* head = nullptr;
         Node* tail = nullptr;
