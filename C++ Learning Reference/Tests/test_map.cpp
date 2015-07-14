@@ -11,6 +11,21 @@ void test(T a, V b) {
 }
 template void test<string, string>(string a, string b);
 
+struct Thing {
+    int value = 0;
+    bool operator ==(const Thing& other) {
+        return value == other.value;
+    }
+    bool operator !=(const Thing& other) {
+        return value != other.value;
+    }
+    void operator =(const Thing other) {
+    }
+    string operator *() {
+        return to_string(value);
+    }
+};
+
 int test_map() {
     string a = "hello.",
            b = "how.",
@@ -37,16 +52,29 @@ int test_map() {
     test(map["phrase"], t2);
 
     /** test with higher size */
-    Map<string, string> map2(1024);
-    map2["greeting"] = "hello";
-    map2["phrase"] = "how are you";
-    map2["phrase_two"] = "but I\'m hopin\' all the same";
-    t1 = map2["greeting"];
-    t2 = map2["greeting"];
-    map2["phrase"] = "I don\'t even know your name";
+    Map<int, string> map2(1024);
+    map2[1] = "hello";
+    map2[2] = "how are you";
+    map2[3] = "but I\'m hopin\' all the same";
+    t1 = map2[1];
+    t2 = map2[1];
+    map2[2] = "I don\'t even know your name";
     test(t1, t2);
     t2 = "I don\'t even know your name";
-    test(map["phrase"], t2);
+    test(map2[2], t2);
+
+    /** test with object keys */
+    Thing l1, l2, l3;
+    Map<Thing, string> map3(1024);
+    map3[l1] = "hello";
+    map3[l2] = "how are you";
+    map3[l3] = "but I\'m hopin\' all the same";
+    t1 = map3[l1];
+    t2 = map3[l1];
+    map3[l2] = "I don\'t even know your name";
+    test(t1, t2);
+    t2 = "I don\'t even know your name";
+    test(map3[l2], t2);
 
     return 0;
 };

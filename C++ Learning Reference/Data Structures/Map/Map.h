@@ -54,16 +54,48 @@ namespace Lehr {
     public:
         int size;
         Hash(int size = 128) : size(size) {}
-        int operator()(const K* key) {
+        int operator ()(const K* key) {
             string name;
-            if (std::is_same<K, string>::value) {
-                name = *key;
-            } else {
-                const void *address = static_cast<const void *>(key);
-                std::stringstream ss;
-                ss << address;
-                name = ss.str();
+            const void *address = static_cast<const void *>(key);
+            std::stringstream ss;
+            ss << address;
+            name = ss.str();
+            return hashString(name);
+        }
+        int hashString(string key) {
+            int h = 0;
+            for (char &c : key) {
+                h = h << 1 ^ c;
             }
+            return h % size;
+        }
+    };
+
+    template <>
+    class Hash<string> {
+    public:
+        int size;
+        Hash(int size = 128) : size(size) {}
+        int operator ()(const string* key) {
+            string name = *key;
+            return hashString(name);
+        }
+        int hashString(string key) {
+            int h = 0;
+            for (char &c : key) {
+                h = h << 1 ^ c;
+            }
+            return h % size;
+        }
+    };
+
+    template <>
+    class Hash<int> {
+    public:
+        int size;
+        Hash(int size = 128) : size(size) {}
+        int operator ()(const int* key) {
+            string name = std::to_string(*key);
             return hashString(name);
         }
         int hashString(string key) {
