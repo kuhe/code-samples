@@ -52,7 +52,10 @@ int test_map() {
     test(map["phrase"], t2);
 
     /** test with higher size */
-    Map<int, string> map2(1024);
+    Map<int, string> map2(128);
+    test(map2.hash(1), map2.hash(1));
+    test(map2.hash(2), map2.hash(2));
+    test(map2.hash(3), map2.hash(3));
     map2[1] = "hello";
     map2[2] = "how are you";
     map2[3] = "but I\'m hopin\' all the same";
@@ -66,6 +69,9 @@ int test_map() {
     /** test with object keys */
     Thing l1, l2, l3;
     Map<Thing, string> map3(1024);
+    test(map3.hash(l1), map3.hash(l1));
+    test(map3.hash(l2), map3.hash(l2));
+    test(map3.hash(l3), map3.hash(l3));
     map3[l1] = "hello";
     map3[l2] = "how are you";
     map3[l3] = "but I\'m hopin\' all the same";

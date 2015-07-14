@@ -7,6 +7,9 @@
 #ifndef CPPREF_SET_H
 #define CPPREF_SET_H
 
+/**
+ * @todo switch to a HashSet?
+ */
 template <typename T>
 class Set {
 public:

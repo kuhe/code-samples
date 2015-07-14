@@ -5,6 +5,9 @@
 #include "_map_common.h"
 
 namespace Lehr {
+    /**
+     * Act as a Linked-List like store for hash collisions.
+     */
     template <typename K, typename V>
     class KeyValuePair {
     public:
@@ -49,10 +52,20 @@ namespace Lehr {
         bool initialized = false;
     };
 
+    class HashBase {
+    public:
+        static int hashString(string key, int size) {
+            int h = 0;
+            for (char &c : key) {
+                h = h << 1 ^ c;
+            }
+            return h % size;
+        }
+    };
+
     template <typename K>
     class Hash {
     public:
-        int size;
         Hash(int size = 128) : size(size) {}
         int operator ()(const K* key) {
             string name;
@@ -60,53 +73,38 @@ namespace Lehr {
             std::stringstream ss;
             ss << address;
             name = ss.str();
-            return hashString(name);
+            return HashBase::hashString(name, size);
         }
-        int hashString(string key) {
-            int h = 0;
-            for (char &c : key) {
-                h = h << 1 ^ c;
-            }
-            return h % size;
-        }
+    private:
+        int size;
     };
-
     template <>
     class Hash<string> {
     public:
-        int size;
         Hash(int size = 128) : size(size) {}
         int operator ()(const string* key) {
             string name = *key;
-            return hashString(name);
+            return HashBase::hashString(name, size);
         }
-        int hashString(string key) {
-            int h = 0;
-            for (char &c : key) {
-                h = h << 1 ^ c;
-            }
-            return h % size;
-        }
+    private:
+        int size;
     };
-
     template <>
     class Hash<int> {
     public:
-        int size;
         Hash(int size = 128) : size(size) {}
         int operator ()(const int* key) {
             string name = std::to_string(*key);
-            return hashString(name);
+            return HashBase::hashString(name, size);
         }
-        int hashString(string key) {
-            int h = 0;
-            for (char &c : key) {
-                h = h << 1 ^ c;
-            }
-            return h % size;
-        }
+    private:
+        int size;
     };
 
+    /**
+     * Basic dictionary that should allow both read and write with
+     * subscript operator. Collisions are chained into a list.
+     */
     template <typename K, typename V>
     class Map {
     public:

@@ -5,6 +5,9 @@
 
 using std::string;
 
+/**
+ * Basic example of an order-able type.
+ */
 class WeightedJob {
 public:
     double weight;
