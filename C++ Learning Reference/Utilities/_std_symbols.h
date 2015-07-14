@@ -1,4 +1,6 @@
 #include <vector>
+#include <string>
+#include <iostream>
 
 #ifndef CPPREF__STD_SYMBOLS_H
 #define CPPREF__STD_SYMBOLS_H

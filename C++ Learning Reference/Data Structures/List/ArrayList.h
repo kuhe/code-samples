@@ -2,6 +2,7 @@
 #define CPPREF_ARRAYLIST_H
 
 #include "ListInterface.h"
+#include "../Map/Map.h"
 #include <string>
 #include <array>
 
