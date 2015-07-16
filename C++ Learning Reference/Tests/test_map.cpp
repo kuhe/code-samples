@@ -5,9 +5,20 @@ using Lehr::List;
 using Lehr::Hash;
 using Lehr::KeyValuePair;
 
+#define yep true
+#define nope false
+
 template <typename T, typename V>
 void test(T a, V b) {
-    cout << a << " " << b << endl;
+    if (yep or nope) {
+        if (a == b) {
+            cout << ".";
+        } else {
+            cout << endl << a << " vs " << b << endl;
+        }
+    } else {
+        cout << a << " " << b << endl;
+    }
 }
 template void test<string, string>(string a, string b);
 
@@ -81,6 +92,6 @@ int test_map() {
     test(t1, t2);
     t2 = "I don\'t even know your name";
     test(map3[l2], t2);
-
+    cout << endl;
     return 0;
 };
