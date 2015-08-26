@@ -1,7 +1,6 @@
 #include "vector"
 #include "fstream"
-#include <c++/iostream>
-#include <c++/bits/stl_algo.h>
+#include <iostream>
 #include "../Utilities/string_util.h"
 #include "Solver.h"
 #include "../Utilities/_std_symbols.h"

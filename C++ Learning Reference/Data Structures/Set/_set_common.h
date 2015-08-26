@@ -3,8 +3,7 @@
 
 #include <vector>
 #include <string>
-#include <c++/bits/stl_algo.h>
-#include <c++/functional>
+#include <functional>
 #include <map>
 
 using std::vector;

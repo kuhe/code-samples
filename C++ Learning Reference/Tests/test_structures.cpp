@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-#include <assert.h>
 #include "test_structures.h"
 #include "../Utilities/_std_symbols.h"
 

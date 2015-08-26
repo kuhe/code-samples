@@ -1,5 +1,5 @@
 #include <string>
-#include <c++/bits/stl_vector.h>
+#include <vector>
 
 #ifndef _CPPREF_SOLVER_H_
 #define _CPPREF_SOLVER_H_
