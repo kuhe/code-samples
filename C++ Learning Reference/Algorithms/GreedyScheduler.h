@@ -1,4 +1,4 @@
-#include "../Data Structures/WeightedJob.h"
+#include "../Data Structures/Student/WeightedJob.h"
 #include "_algo_common.h"
 
 #ifndef _CPPREF_GREEDYSCHEDULER_H_

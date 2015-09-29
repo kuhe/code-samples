@@ -3,7 +3,7 @@
 
 #include <string>
 #include "../Utilities/_std_symbols.h"
-#include "../Data Structures/Map/Map.h"
+#include "../Data Structures/Student/Map/Map.h"
 
 int test_map();
 

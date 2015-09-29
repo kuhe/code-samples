@@ -1,7 +1,7 @@
 #include "_algo_common.h"
-#include "../Data Structures/Graph/_graph_common.h"
-#include "../Data Structures/Graph/Graph.h"
-#include "../Data Structures/Graph/Tree.h"
+#include "../Data Structures/Library/Graph/_graph_common.h"
+#include "../Data Structures/Library/Graph/Graph.h"
+#include "../Data Structures/Library/Graph/Tree.h"
 
 
 #ifndef _CPPREF_PRIM_H_
