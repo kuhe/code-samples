@@ -10,14 +10,13 @@ using Lehr::KeyValuePair;
 
 template <typename T, typename V>
 void test(T a, V b) {
-    if (yep or nope) {
-        if (a == b) {
-            cout << ".";
-        } else {
-            cout << endl << a << " vs " << b << endl;
-        }
+    if (yep) {
+        yep;
+    }
+    if (a == b) {
+        cout << ".";
     } else {
-        cout << a << " " << b << endl;
+        cout << endl << a << " vs " << b << endl;
     }
 }
 template void test<string, string>(string a, string b);

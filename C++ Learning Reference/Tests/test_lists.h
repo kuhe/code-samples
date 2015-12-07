@@ -4,6 +4,6 @@
 
 #include "../Data Structures/Student/List/List.h"
 #include "../Data Structures/Student/List/ArrayList.h"
-int test_structures();
+int test_lists();
 
 #endif //CPPREF_TEST_STRUCTURES_H

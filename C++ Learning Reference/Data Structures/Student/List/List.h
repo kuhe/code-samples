@@ -41,6 +41,8 @@ namespace Lehr {
         T pop();
         T shift();
 
+        int indexOf(T& item);
+
         /**
          * mutation methods
          */
@@ -75,7 +77,7 @@ namespace Lehr {
     List<T>::List(const List<T>& source) {
         List<T>::Node* cursor = source.head;
         while (nullptr != cursor) {
-            this->push(cursor->item);
+            push(cursor->item);
             cursor = cursor->next;
         }
     }
@@ -92,8 +94,9 @@ namespace Lehr {
     template <typename T>
     T& List<T>::operator[](int i) {
         List<T>::Node* cursor = this->head;
-        while (nullptr != cursor->next && i--) {
+        while ((nullptr != cursor->next) && (i > 0)) {
             cursor = cursor->next;
+            i--;
         }
         return cursor->item;
     }
@@ -112,13 +115,15 @@ namespace Lehr {
 
     template <typename T>
     List<T>* List<T>::push(T item) {
-        List<T>::Node* node = new List<T>::Node(item);
+        T copy = item;
+        List<T>::Node* node = new List<T>::Node(copy);
         if (nullptr != tail) {
             tail->next = node;
+            tail = tail->next;
         } else {
             head = node;
+            tail = node;
         }
-        tail = node;
         length++;
         return this;
     }
@@ -160,6 +165,19 @@ namespace Lehr {
         return data;
     }
     template <typename T>
+    int List<T>::indexOf(T& item) {
+        Node* cursor = head;
+        int index = 0;
+        while (nullptr != cursor) {
+            if (cursor->item == item) {
+                return index;
+            }
+            index++;
+            cursor = cursor->next;
+        }
+        return -1;
+    }
+    template <typename T>
     List<T>& List<T>::excise(int at) {
         if (at > 1) {
             nodeAt(at - 1)->next = nodeAt(at + 1);
@@ -184,6 +202,7 @@ namespace Lehr {
     }
     template <typename T>
     List<T>& List<T>::splice(int before, List<T>& list) {
+        int original_length = length;
         length += list.length;
         if (before > 0) {
             Node* diverge_at = nodeAt(before - 1);
@@ -192,9 +211,12 @@ namespace Lehr {
             while (list.length) {
                 Node* node_copy = new Node(list.shift());
                 cursor->next = node_copy;
-                cursor = node_copy;
+                cursor = cursor->next;
             }
             cursor->next = rejoin_at;
+            if (before >= original_length) {
+                tail = cursor;
+            }
         } else {
             list.tail->next = head;
             head = list.head;

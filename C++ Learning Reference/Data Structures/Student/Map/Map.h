@@ -56,8 +56,8 @@ namespace Lehr {
     public:
         static int hashString(string key, int size) {
             int h = 0;
-            for (char &c : key) {
-                h = h << 1 ^ c;
+            for (char& c : key) {
+                h = h << 1 ^ c; // left shift and XOR, if I'm not mistaken
             }
             return h % size;
         }

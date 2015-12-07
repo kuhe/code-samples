@@ -32,6 +32,8 @@ namespace Lehr {
         T pop();
         T shift();
 
+        int indexOf(T& item);
+
         /**
          * mutation methods
          */
@@ -139,14 +141,30 @@ namespace Lehr {
         return dummy;
     }
     template <typename T>
+    int ArrayList<T>::indexOf(T& item) {
+        int index = 0;
+        T& cursor = this->operator[](index);
+        while (index < length) {
+            if (this->operator[](index) == item) {
+                return index;
+            }
+            index++;
+            cursor = this->operator[](index);
+        }
+        return -1;
+    }
+    template <typename T>
     ArrayList<T>& ArrayList<T>::excise(int at) {
         return excise(at, at);
     }
     template <typename T>
     ArrayList<T>& ArrayList<T>::excise(int from, int to) {
         if (to < from) return *this;
-        for (int i = 0; i + to + 1 < length; i++) {
-            data[i + from] = data[i + to + 1];
+        T empty;
+        int offset = to - from + 1;
+        for (int i = from; i <= to; i++) {
+            data[i] = data[i + offset];
+            data[i + offset] = empty;
         }
         length -= 1 + (to - from);
         return *this;
@@ -159,11 +177,16 @@ namespace Lehr {
             }
         } else {
             resize(length + list.length);
-            for (int i = before; i < before + list.length; i++) {
-                if (length >= i + list.length - 1) {
-                    data[i + list.length] = data[i];
-                }
-                data[i] = list[i - before];
+
+            // hello how name is
+            // hello how __ __ __ name is
+            // ^ are you my
+
+            for (int i = before; i <= length; i++) {
+                data[i + list.length] = data[i];
+            }
+            for (int j = before; j < before + list.length; j++) {
+                data[j] = list[j - before];
             }
             length += list.length;
         }

@@ -21,6 +21,8 @@ namespace Lehr {
 
         virtual T pop() = 0;
         virtual T shift() = 0;
+
+        virtual int indexOf(T& item) = 0;
     };
 }
 
