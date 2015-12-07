@@ -33,6 +33,7 @@ namespace Lehr {
         T shift();
 
         int indexOf(T& item);
+        bool contains(T& item);
 
         /**
          * mutation methods
@@ -152,6 +153,10 @@ namespace Lehr {
             cursor = this->operator[](index);
         }
         return -1;
+    }
+    template <typename T>
+    bool ArrayList<T>::contains(T& item) {
+        return indexOf(item) > -1;
     }
     template <typename T>
     ArrayList<T>& ArrayList<T>::excise(int at) {

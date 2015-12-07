@@ -27,8 +27,8 @@ int test_lists() {
            g = "is.",
            h = "indexTest";
 
-//    List<string> lln, lln2;
-    ArrayList<string> lln, lln2;
+    List<string> lln, lln2;
+//    ArrayList<string> lln, lln2;
 
     lln.push(c);
     lln.push(d);
@@ -104,6 +104,8 @@ int test_lists() {
     console_test(0, lln.indexOf(a));
 
     console_test(lln.count(), 10);
+    console_test(true, lln.contains(a));
+    console_test(true, lln.contains(h));
 
     return 0;
 };

@@ -3,48 +3,67 @@
 #define CPPREF_GRAPH_H
 
 #include "_graph_common.h"
-#include "../List/List.h"
 
 namespace Lehr {
     template <typename T>
     class Graph {
     protected:
-        struct Node {
-            friend class Graph<T>;
-            T item;
-            Node() {};
-            Node(T item) : item(item) {};
-            void operator =(T item) {
-                this->item = item;
-            };
-        };
-        struct Edge {
-            friend class Graph<T>;
-            Node* left;
-            Node* right;
-            Edge() {};
-            Edge(Node* l, Node* r) {
-                left = l;
-                right = r;
-            }
-        };
+        List<Node<T>*> nodes;
+        List<Edge<T>*> edges;
     public:
-        List<Node*> nodes;
-        List<Edge*> edges;
-        Graph& addEdge(Node& a, Node& b, int edgeWeight) {
+        Graph& addNode(Node<T>* node) {
+            if (!nodes.contains(node)) {
+                nodes.push(node);
+            }
             return *this;
         }
-        Graph& addEdge(Edge& edge) {
+        Graph& addEdge(Node<T>* a, Node<T>* b, int edgeWeight=0) {
+            if (!nodes.contains(a)) {
+                nodes.push(a);
+            }
+            if (!nodes.contains(b)) {
+                nodes.push(b);
+            }
+            Edge<T> edge(a, b);
+            edge.weight = edgeWeight;
+            edges.push(&edge);
             return *this;
         }
-        bool contains(Node& node) {
-            return 0;
+        Graph& addEdge(Edge<T>* edge) {
+            Node<T>* a, * b;
+            a = edge->left;
+            b = edge->right;
+            if (!nodes.contains(a)) {
+                nodes.push(a);
+            }
+            if (!nodes.contains(b)) {
+                nodes.push(b);
+            }
+            if (!edges.contains(edge)) {
+                edges.push(edge);
+            }
+            return *this;
         }
-        bool contains(Edge& edge) {
-            return 0;
+        bool contains(Node<T>* node) {
+            return nodes.contains(node);
         }
-        int main_test() {
-            Graph graph;
+        bool contains(Edge<T>* edge) {
+            return edges.contains(edge);
+        }
+        static int main_test() {
+            Graph<int> graph;
+            Node<int> n1, n2;
+            Edge<int> edge(&n1, &n2);
+
+            graph.addEdge(&n1, &n2);
+            graph.addEdge(&edge);
+
+            // wip todo
+
+            bool test1 = n1.connects(&n2);
+            bool test2 = n2.connects(&n1);
+            bool test3 = n1.connects(&edge);
+
             return 0;
         }
     };

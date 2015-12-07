@@ -42,6 +42,7 @@ namespace Lehr {
         T shift();
 
         int indexOf(T& item);
+        bool contains(T& item);
 
         /**
          * mutation methods
@@ -176,6 +177,10 @@ namespace Lehr {
             cursor = cursor->next;
         }
         return -1;
+    }
+    template <typename T>
+    bool List<T>::contains(T& item) {
+        return indexOf(item) > -1;
     }
     template <typename T>
     List<T>& List<T>::excise(int at) {

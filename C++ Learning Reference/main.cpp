@@ -13,7 +13,7 @@ int main() {
     int test = test_lists();
     int test2 = test_map();
 
-    Lehr::Graph<int> graph;
+    Lehr::Graph<int>::main_test();
 
     cout << "Yay!" << endl;
     // cin.get();
