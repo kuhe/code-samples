@@ -5,7 +5,11 @@
 
 template <typename T, typename V>
 void console_test(T a, V b) {
-    cout << a << " " << b << endl;
+    if (a == b) {
+        cout << ".";
+    } else {
+        cout << a << " ! " << b << endl;
+    }
 }
 template void console_test<string, string>(string a, string b);
 
