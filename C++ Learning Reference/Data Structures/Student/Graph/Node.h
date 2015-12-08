@@ -14,24 +14,43 @@ namespace Lehr {
 
         void connect(Edge<T>* edge) {
             Node<T>* other = edge->other(this);
-            if (!connects(other)) {
+            if (!adjacent(other)) {
                 nodes.push(other);
             }
-            if (!connects(edge)) {
+            if (!adjacent(edge)) {
                 edges.push(edge);
             }
         }
 
         List<Node<T>*> nodes;
         List<Edge<T>*> edges;
+
+        bool adjacent(Node<T> *node) {
+            return *this == *node || nodes.contains(node);
+        }
+        bool adjacent(Edge <T> *edge) {
+            return edges.contains(edge);
+        }
+        /**
+         * path exists to the node
+         */
         bool connects(Node<T>* node) {
-            return nodes.contains(node);
+            // todo
+            return false;
         }
-        bool connects(Edge<T>* node) {
-            return edges.contains(node);
+        /**
+         * path exists to a node in the edge
+         */
+        bool connects(Edge <T> *edge) {
+            // todo
+            return false;
         }
+
         bool operator == (Node const& node) {
             return this == &node;
+        }
+        void operator = (T value) {
+            item = value;
         }
     };
 }

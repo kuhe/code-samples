@@ -15,19 +15,25 @@ namespace Lehr {
             l->connect(this);
             r->connect(this);
         }
+        Edge(T* l, T* r) {
+            Node<T> a, b;
+            a = *l;
+            b = *r;
+            Edge(&a, &b); // C++11 constructor delegation
+        }
 
         Node<T>* other(Node<T>* node) {
             if (contains(node)) {
-                if (left == node) {
-                    return left;
+                if (*left == *node) {
+                    return right;
                 }
-                return right;
+                return left;
             }
             return node;
         }
 
         bool contains(Node<T>* node) {
-            return left == node || right == node;
+            return *left == *node || *right == *node;
         }
 
         bool operator == (Edge const& edge) {

@@ -17,6 +17,13 @@ namespace Lehr {
             }
             return *this;
         }
+        Graph& connect(Node<T>* a, Node<T>* b) {
+            if (!a->adjacent(b)) {
+                Edge<T> edge(a, b);
+                a->connect(&edge);
+            }
+            return *this;
+        }
         Graph& addEdge(Node<T>* a, Node<T>* b, int edgeWeight=0) {
             if (!nodes.contains(a)) {
                 nodes.push(a);
@@ -49,22 +56,6 @@ namespace Lehr {
         }
         bool contains(Edge<T>* edge) {
             return edges.contains(edge);
-        }
-        static int main_test() {
-            Graph<int> graph;
-            Node<int> n1, n2;
-            Edge<int> edge(&n1, &n2);
-
-            graph.addEdge(&n1, &n2);
-            graph.addEdge(&edge);
-
-            // wip todo
-
-            bool test1 = n1.connects(&n2);
-            bool test2 = n2.connects(&n1);
-            bool test3 = n1.connects(&edge);
-
-            return 0;
         }
     };
 }

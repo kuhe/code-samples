@@ -1,8 +1,7 @@
 #include <iostream>
 #include "Tests/test_lists.h"
 #include "Tests/test_map.h"
-
-#include "Data Structures/Student/Graph/_graph_common.h"
+#include "Tests/test_graph.h"
 
 using namespace std;
 
@@ -12,8 +11,7 @@ int main() {
 
     int test = test_lists();
     int test2 = test_map();
-
-    Lehr::Graph<int>::main_test();
+    int test3 = test_graph();
 
     cout << "Yay!" << endl;
     // cin.get();
