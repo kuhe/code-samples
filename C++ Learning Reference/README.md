@@ -9,4 +9,5 @@ Also adding learner's implementations of common data structures under the Lehr n
 
 todo:
 
-    Implement graphs,
+    test graphs
+    implement (hash) sets

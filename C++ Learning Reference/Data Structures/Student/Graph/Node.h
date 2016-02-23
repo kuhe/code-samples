@@ -8,6 +8,28 @@ namespace Lehr {
     template <typename T>
     class Node {
         T item;
+        List<Node<T>*> visited;
+        /**
+         * potentially multi-step path exists to the node
+         */
+        bool hasConnection(Node<T>* node) {
+            bool connected;
+            if (adjacent(node)) {
+                return true;
+            }
+            // @todo I should use a set instead of a list for visited nodes
+            for (int i = 0; i < nodes.count(); i++) {
+                Node<T>* n = nodes[i];
+                bool test = visited.contains(n);
+                if (!visited.contains(n)) {
+                    visited.push(n);
+                    connected = n->hasConnection(node);
+                    if (connected)
+                        return true;
+                }
+            }
+            return false;
+        }
     public:
         Node() {}
         Node(T item) : item(item) {}
@@ -25,29 +47,31 @@ namespace Lehr {
         List<Node<T>*> nodes;
         List<Edge<T>*> edges;
 
-        bool adjacent(Node<T> *node) {
+        bool adjacent(Node<T>* node) {
             return *this == *node || nodes.contains(node);
         }
-        bool adjacent(Edge <T> *edge) {
+        bool adjacent(Edge<T>* edge) {
             return edges.contains(edge);
         }
-        /**
-         * path exists to the node
-         */
         bool connects(Node<T>* node) {
-            // todo
-            return false;
+            while (visited.count() > 0) {
+                visited.pop();
+            }
+            bool connects = hasConnection(node);
+            return connects;
         }
         /**
          * path exists to a node in the edge
          */
         bool connects(Edge <T> *edge) {
-            // todo
-            return false;
+            return connects(edge->left); // the other node is by definition connected.
         }
 
         bool operator == (Node const& node) {
             return this == &node;
+        }
+        bool operator == (T const& item) {
+            return this->item == &item;
         }
         void operator = (T value) {
             item = value;
