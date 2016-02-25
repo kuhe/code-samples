@@ -4,6 +4,7 @@ using Lehr::Map;
 using Lehr::List;
 using Lehr::Hash;
 using Lehr::KeyValuePair;
+using Lehr::Set;
 
 #define yep true
 #define nope false
@@ -92,5 +93,79 @@ int test_map() {
     t2 = "I don\'t even know your name";
     test(map3[l2], t2);
     cout << endl;
+
+    /** test overloaded hash key */
+    Map<int, int> dictionary;
+    int k = 1000;
+    while (k > 0) {
+        dictionary[k] = 3;
+        k--;
+    }
+    dictionary[1001] = 5;
+    k = 1000;
+    while (k > 0) {
+        if (dictionary[k] != 3) {
+            test(dictionary[k], 3);
+        } else {
+            if (k % 100 == 0) {
+                test(dictionary[k], 3);
+            }
+        }
+        k--;
+    }
+    test(dictionary[1001], 5);
+
+    /** test hash set */
+    // note: bool keyed map is buggy :(
+    Map<int, bool> bMap;
+    bMap[0] = true;
+    bMap[1] = false;
+    test(bMap[0], true);
+    test(bMap[1], false);
+
+    bool test1, test2;
+    Set<int> s1;
+    test1 = s1.contains(false);
+    test2 = s1.contains(true);
+    test(test1, false);
+    test(test2, false);
+
+    s1.add(false);
+    test1 = s1.contains(false);
+    test2 = s1.contains(true);
+    test(test1, true);
+    test(test2, false);
+
+    s1.add(true);
+    test1 = s1.contains(false);
+    test2 = s1.contains(true);
+    test(test1, true);
+    test(test2, true);
+
+    s1.remove(false);
+    test1 = s1.contains(false);
+    test2 = s1.contains(true);
+    test(test1, false);
+    test(test2, true);
+
+    s1.remove(true);
+    test1 = s1.contains(false);
+    test2 = s1.contains(true);
+    test(test1, false);
+    test(test2, false);
+
+    s1.add(false);
+    s1.add(true);
+    test1 = s1.contains(false);
+    test2 = s1.contains(true);
+    test(test1, true);
+    test(test2, true);
+
+    s1.clear();
+    test1 = s1.contains(false);
+    test2 = s1.contains(true);
+    test(test1, false);
+    test(test2, false);
+
     return 0;
 };

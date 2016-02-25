@@ -4,6 +4,7 @@
 #include <string>
 #include "../Utilities/_std_symbols.h"
 #include "../Data Structures/Student/Map/Map.h"
+#include "../Data Structures/Student/Set/Set.h"
 
 int test_map();
 
