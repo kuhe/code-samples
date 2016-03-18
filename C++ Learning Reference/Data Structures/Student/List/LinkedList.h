@@ -7,6 +7,35 @@
 namespace Lehr {
     template <typename T>
     class LinkedList : public List<T> {
+    public:
+        int count();
+
+        LinkedList<T>();
+        LinkedList<T>(T item);
+        LinkedList<T>(const LinkedList<T>& copy);
+        ~LinkedList<T>();
+
+        T& operator[](int i);
+
+        LinkedList<T>* push(T item);
+        LinkedList<T>* unshift(T item);
+
+        T* pop();
+        T* shift();
+
+        int index(const T& item);
+        bool contains(const T& item);
+
+        /**
+         * mutation methods
+         */
+        LinkedList<T>* sort();
+        LinkedList<T>* excise(int at);
+        LinkedList<T>* excise(int from, int to);
+        LinkedList<T>* splice(int before, LinkedList<T>& list);
+        LinkedList<T>* splice(int before, T& item);
+        LinkedList<T>* slice(int index);
+        LinkedList<T>* slice(int index, int length);
     protected:
         int length = 0;
         struct Node {
@@ -25,34 +54,6 @@ namespace Lehr {
         Node* head = nullptr;
         Node* tail = nullptr;
         Node* nodeAt(int i);
-    public:
-        int count();
-
-        LinkedList<T>();
-        LinkedList<T>(T item);
-        LinkedList<T>(const LinkedList<T>& copy);
-        ~LinkedList<T>();
-
-        T& operator[](int i);
-
-        LinkedList<T>* push(T item);
-        LinkedList<T>* unshift(T item);
-
-        T pop();
-        T shift();
-
-        int index(T& item);
-        bool contains(T& item);
-
-        /**
-         * mutation methods
-         */
-        LinkedList<T>& excise(int at);
-        LinkedList<T>& excise(int from, int to);
-        LinkedList<T>& splice(int before, LinkedList<T>& list);
-        LinkedList<T>& splice(int before, T& item);
-        LinkedList<T>& slice(int index);
-        LinkedList<T>& slice(int index, int length);
     };
 
     template class LinkedList<std::string>;
@@ -142,8 +143,8 @@ namespace Lehr {
     }
 
     template <typename T>
-    T LinkedList<T>::pop() {
-        T data = tail->item;
+    T* LinkedList<T>::pop() {
+        T& data = tail->item;
         delete tail;
         if (length > 1) {
             LinkedList<T>::Node* new_tail = nodeAt(length - 2);
@@ -151,11 +152,11 @@ namespace Lehr {
             tail = new_tail;
         }
         length--;
-        return data;
+        return &data;
     }
     template <typename T>
-    T LinkedList<T>::shift() {
-        T data = head->item;
+    T* LinkedList<T>::shift() {
+        T& data = head->item;
         Node* current_head = head;
         head = nullptr;
         if (length > 1) {
@@ -163,10 +164,10 @@ namespace Lehr {
         }
         delete current_head;
         length--;
-        return data;
+        return &data;
     }
     template <typename T>
-    int LinkedList<T>::index(T& item) {
+    int LinkedList<T>::index(const T& item) {
         Node* cursor = head;
         int index = 0;
         while (nullptr != cursor) {
@@ -179,21 +180,26 @@ namespace Lehr {
         return -1;
     }
     template <typename T>
-    bool LinkedList<T>::contains(T& item) {
+    bool LinkedList<T>::contains(const T& item) {
         return index(item) > -1;
     }
     template <typename T>
-    LinkedList<T>& LinkedList<T>::excise(int at) {
+    LinkedList<T>* LinkedList<T>::sort() {
+        // todo
+        return this;
+    }
+    template <typename T>
+    LinkedList<T>* LinkedList<T>::excise(int at) {
         if (at > 1) {
             nodeAt(at - 1)->next = nodeAt(at + 1);
             length--;
         } else {
             shift();
         }
-        return *this;
+        return this;
     }
     template <typename T>
-    LinkedList<T>& LinkedList<T>::excise(int from, int to) {
+    LinkedList<T>* LinkedList<T>::excise(int from, int to) {
         if (from > 1) {
             nodeAt(from - 1)->next = nodeAt(to + 1);
             length -= to - from + 1;
@@ -203,10 +209,10 @@ namespace Lehr {
                 shift();
             }
         }
-        return *this;
+        return this;
     }
     template <typename T>
-    LinkedList<T>& LinkedList<T>::splice(int before, LinkedList<T>& list) {
+    LinkedList<T>* LinkedList<T>::splice(int before, LinkedList<T>& list) {
         int original_length = length;
         length += list.length;
         if (before > 0) {
@@ -214,7 +220,7 @@ namespace Lehr {
             Node* rejoin_at = nodeAt(before);
             Node* cursor = diverge_at;
             while (list.length) {
-                Node* node_copy = new Node(list.shift());
+                Node* node_copy = new Node(*list.shift());
                 cursor->next = node_copy;
                 cursor = cursor->next;
             }
@@ -227,29 +233,29 @@ namespace Lehr {
             head = list.head;
         }
         LinkedList<T>& examine = *this;
-        return *this;
+        return this;
     }
     template <typename T>
-    LinkedList<T>& LinkedList<T>::splice(int before, T& item) {
+    LinkedList<T>* LinkedList<T>::splice(int before, T& item) {
         LinkedList<T> container(item);
         return splice(before, container);
     }
     template <typename T>
-    LinkedList<T>& LinkedList<T>::slice(int index) {
+    LinkedList<T>* LinkedList<T>::slice(int index) {
         while (index--) {
             shift();
         }
-        return *this;
+        return this;
     }
     template <typename T>
-    LinkedList<T>& LinkedList<T>::slice(int index, int length) {
+    LinkedList<T>* LinkedList<T>::slice(int index, int length) {
         while (index--) {
             shift();
         }
         while (this->length > length) {
             pop();
         }
-        return *this;
+        return this;
     }
 }
 

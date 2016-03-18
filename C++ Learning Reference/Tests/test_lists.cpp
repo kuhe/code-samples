@@ -46,10 +46,10 @@ int test_lists() {
     console_test(lln[5], f);
     console_test(lln[6], g);
 
-    string a_test = lln.shift();
-    string b_test = lln.shift();
-    string g_test = lln.pop();
-    string f_test = lln.pop();
+    string a_test = *lln.shift();
+    string b_test = *lln.shift();
+    string g_test = *lln.pop();
+    string f_test = *lln.pop();
 
     // [c, d, e]
 

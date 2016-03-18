@@ -19,10 +19,13 @@ namespace Lehr {
         virtual List<T>* push(T item) = 0;
         virtual List<T>* unshift(T item) = 0;
 
-        virtual T pop() = 0;
-        virtual T shift() = 0;
+        virtual T* pop() = 0;
+        virtual T* shift() = 0;
 
-        virtual int index(T& item) = 0;
+        virtual int index(const T& item) = 0;
+        virtual bool contains(const T& item) = 0;
+
+        virtual List<T>* sort() = 0;
     };
 }
 
