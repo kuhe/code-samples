@@ -8,11 +8,12 @@ namespace Lehr {
     template <typename T>
     class LinkedList : public List<T> {
     public:
-        int count();
+        int size();
 
         LinkedList<T>();
         LinkedList<T>(T item);
         LinkedList<T>(const LinkedList<T>& copy);
+        List<T> instance();
         ~LinkedList<T>();
 
         T& operator[](int i);
@@ -30,6 +31,7 @@ namespace Lehr {
          * mutation methods
          */
         LinkedList<T>* sort();
+        using List<T>::mergesort;
         LinkedList<T>* excise(int at);
         LinkedList<T>* excise(int from, int to);
         LinkedList<T>* splice(int before, LinkedList<T>& list);
@@ -53,17 +55,17 @@ namespace Lehr {
         };
         Node* head = nullptr;
         Node* tail = nullptr;
-        Node* nodeAt(int i);
+        Node*node_at(int i);
     };
 
-    template class LinkedList<std::string>;
-    template class LinkedList<int>;
-    template class LinkedList<double>;
+//    template class LinkedList<std::string>;
+//    template class LinkedList<int>;
+//    template class LinkedList<double>;
 }
 
 namespace Lehr {
     template <typename T>
-    int LinkedList<T>::count() {
+    int LinkedList<T>::size() {
         return length;
     }
     template <typename T>
@@ -82,6 +84,11 @@ namespace Lehr {
             push(cursor->item);
             cursor = cursor->next;
         }
+    }
+    template <typename T>
+    List<T> LinkedList<T>::instance() {
+        LinkedList<T> blank;
+        return blank;
     }
     template <typename T>
     LinkedList<T>::~LinkedList() {
@@ -104,7 +111,7 @@ namespace Lehr {
     }
 
     template <typename T>
-    typename LinkedList<T>::Node* LinkedList<T>::nodeAt(int i) {
+    typename LinkedList<T>::Node* LinkedList<T>::node_at(int i) {
         LinkedList<T>::Node* cursor = this->head;
         while (nullptr != cursor->next && i--) {
             cursor = cursor->next;
@@ -144,24 +151,44 @@ namespace Lehr {
 
     template <typename T>
     T* LinkedList<T>::pop() {
+        if (length <= 0) {
+            length = 0;
+            tail = nullptr;
+            head = nullptr;
+            return nullptr;
+        }
         T& data = tail->item;
         delete tail;
         if (length > 1) {
-            LinkedList<T>::Node* new_tail = nodeAt(length - 2);
+            LinkedList<T>::Node* new_tail = node_at(length - 2);
             new_tail->next = nullptr;
             tail = new_tail;
+        } else if (length == 1) {
+            tail = nullptr;
+            head = nullptr;
+            length = 0;
+            return &data;
         }
         length--;
         return &data;
     }
     template <typename T>
     T* LinkedList<T>::shift() {
-        T& data = head->item;
-        Node* current_head = head;
-        head = nullptr;
-        if (length > 1) {
-            head = current_head->next;
+        if (length <= 0) {
+            length = 0;
+            tail = nullptr;
+            head = nullptr;
+            return nullptr;
         }
+        T& data = head->item;
+        if (length == 1) {
+            length = 0;
+            tail = nullptr;
+            head = nullptr;
+            return &data;
+        }
+        Node* current_head = head;
+        head = current_head->next;
         delete current_head;
         length--;
         return &data;
@@ -185,13 +212,15 @@ namespace Lehr {
     }
     template <typename T>
     LinkedList<T>* LinkedList<T>::sort() {
-        // todo
+        int middle = length / 2;
+        LinkedList<T> merge_staging;
+        mergesort(0, middle, merge_staging);
         return this;
     }
     template <typename T>
     LinkedList<T>* LinkedList<T>::excise(int at) {
         if (at > 1) {
-            nodeAt(at - 1)->next = nodeAt(at + 1);
+            node_at(at - 1)->next = node_at(at + 1);
             length--;
         } else {
             shift();
@@ -201,7 +230,7 @@ namespace Lehr {
     template <typename T>
     LinkedList<T>* LinkedList<T>::excise(int from, int to) {
         if (from > 1) {
-            nodeAt(from - 1)->next = nodeAt(to + 1);
+            node_at(from - 1)->next = node_at(to + 1);
             length -= to - from + 1;
         } else {
             int n = 0;
@@ -216,8 +245,8 @@ namespace Lehr {
         int original_length = length;
         length += list.length;
         if (before > 0) {
-            Node* diverge_at = nodeAt(before - 1);
-            Node* rejoin_at = nodeAt(before);
+            Node* diverge_at = node_at(before - 1);
+            Node* rejoin_at = node_at(before);
             Node* cursor = diverge_at;
             while (list.length) {
                 Node* node_copy = new Node(*list.shift());

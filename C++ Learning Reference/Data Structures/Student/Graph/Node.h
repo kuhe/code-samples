@@ -18,7 +18,7 @@ namespace Lehr {
                 return true;
             }
             // @todo I should use a set instead of a list for visited nodes
-            for (int i = 0; i < nodes.count(); i++) {
+            for (int i = 0; i < nodes.size(); i++) {
                 Node<T>* n = nodes[i];
                 bool test = visited.contains(n);
                 if (!visited.contains(n)) {
@@ -54,7 +54,7 @@ namespace Lehr {
             return edges.contains(edge);
         }
         bool connects(Node<T>* node) {
-            while (visited.count() > 0) {
+            while (visited.size() > 0) {
                 visited.pop();
             }
             bool connects = hasConnection(node);

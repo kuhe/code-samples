@@ -13,7 +13,7 @@ int main() {
     int test2 = test_map();
     int test3 = test_graph();
 
-    cout << "Yay!" << endl;
+    cout << "\nYay!" << endl;
     // cin.get();
     return 0;
 }

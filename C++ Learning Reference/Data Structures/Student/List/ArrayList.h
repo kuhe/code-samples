@@ -10,17 +10,13 @@ using std::array;
 namespace Lehr {
     template <typename T>
     class ArrayList : public List<T> {
-    protected:
-        const double RESIZE_SCALAR = 1.5;
-        int length = 0;
-        T* data = nullptr;
-        void resize(int n, int start_index = 0);
     public:
-        int count();
+        int size();
 
         ArrayList<T>();
         ArrayList<T>(T item);
         ArrayList<T>(const ArrayList<T>& copy);
+        List<T> instance();
         ~ArrayList<T>();
 
         T& operator[](int i);
@@ -38,36 +34,28 @@ namespace Lehr {
          * mutation methods
          */
         ArrayList<T>* sort();
+        using List<T>::mergesort;
         ArrayList<T>* excise(int at);
         ArrayList<T>* excise(int from, int to);
         ArrayList<T>* splice(int before, ArrayList<T>& list);
         ArrayList<T>* splice(int before, T& item);
         ArrayList<T>* slice(int index);
         ArrayList<T>* slice(int index, int length);
+    protected:
+        double resize_scalar = 1.5;
+        int length = 0;
+        T* data = nullptr;
+        void resize(int n, int start_index = 0);
     };
 
-    template class ArrayList<std::string>;
-    template class ArrayList<int>;
-    template class ArrayList<double>;
+//    template class ArrayList<std::string>;
+//    template class ArrayList<int>;
+//    template class ArrayList<double>;
 }
 
 namespace Lehr {
     template <typename T>
-    void ArrayList<T>::resize(int n, int start_index) {
-        T* transfer;
-        transfer = new T[n];
-        for (int i = 0; i + start_index < length && i < n; i++) {
-            transfer[i] = data[i + start_index];
-        }
-        if (data != nullptr) {
-            delete[] data;
-        }
-        length -= start_index;
-        data = transfer;
-    }
-
-    template <typename T>
-    int ArrayList<T>::count() {
+    int ArrayList<T>::size() {
         return length;
     }
     template <typename T>
@@ -85,8 +73,13 @@ namespace Lehr {
         resize(source.length);
         length = source.length;
         for (int i = 0; i < length; i++) {
-            data[i] = *(source.data + i);
+            data[i] = source.data[i];
         }
+    }
+    template <typename T>
+    List<T> ArrayList<T>::instance() {
+        ArrayList<T> blank;
+        return blank;
     }
     template <typename T>
     ArrayList<T>::~ArrayList() {
@@ -101,7 +94,7 @@ namespace Lehr {
     template <typename T>
     ArrayList<T>* ArrayList<T>::push(T item) {
         if (sizeof data >= length) {
-            resize((int) (RESIZE_SCALAR * (length + 1)));
+            resize((int) (resize_scalar * (length + 1)));
         }
         data[length] = item;
         length++;
@@ -110,7 +103,7 @@ namespace Lehr {
     template <typename T>
     ArrayList<T>* ArrayList<T>::unshift(T item) {
         if (sizeof data >= length + 1) {
-            resize((int) (RESIZE_SCALAR * (length + 2)));
+            resize((int) (resize_scalar * (length + 2)));
         }
         for (int i = length; i > 0; i--) {
             data[i] = data[i-1];
@@ -128,13 +121,12 @@ namespace Lehr {
             length--;
             return &value;
         }
-        T dummy;
         return nullptr;
     }
     template <typename T>
     T* ArrayList<T>::shift() {
         if (length > 0) {
-            T& value = data[0];
+            T value = data[0];
             resize(sizeof data, 1);
             return &value;
         }
@@ -159,7 +151,9 @@ namespace Lehr {
     }
     template <typename T>
     ArrayList<T>* ArrayList<T>::sort() {
-        // todo
+        int middle = length / 2;
+        ArrayList<T> merge_staging;
+        mergesort(0, middle, merge_staging);
         return this;
     }
     template <typename T>
@@ -222,6 +216,20 @@ namespace Lehr {
             pop();
         }
         return this;
+    }
+
+    template <typename T>
+    void ArrayList<T>::resize(int n, int start_index) {
+        T* transfer;
+        transfer = new T[n];
+        for (int i = 0; i + start_index < length && i < n; i++) {
+            transfer[i] = data[i + start_index];
+        }
+        if (data != nullptr) {
+            delete[] data;
+        }
+        length -= start_index;
+        data = transfer;
     }
 }
 

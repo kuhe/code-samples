@@ -1,14 +1,11 @@
-#include <string>
-#include <iostream>
 #include "test_lists.h"
-#include "../Utilities/_std_symbols.h"
 
 template <typename T, typename V>
 void console_test(T a, V b) {
     if (a == b) {
         cout << ".";
     } else {
-        cout << a << " ! " << b << endl;
+        cout << "\n" << a << " != " << b << endl;
     }
 }
 template void console_test<string, string>(string a, string b);
@@ -27,8 +24,11 @@ int test_lists() {
            g = "is.",
            h = "indexTest";
 
-    LinkedList<string> lln, lln2;
+    /** pick a list implementation */
+//    ArrayList<int> numbers;
 //    ArrayList<string> lln, lln2;
+    LinkedList<string> lln, lln2;
+    LinkedList<int> numbers;
 
     lln.push(c);
     lln.push(d);
@@ -70,7 +70,7 @@ int test_lists() {
     console_test(lln[2], f);
     console_test(lln[3], g);
 
-    console_test(lln.count(), 4);
+    console_test(lln.size(), 4);
 
     lln2.push(c);
     lln2.push(d);
@@ -78,7 +78,7 @@ int test_lists() {
     lln.splice(2, lln2);
     // [a, b, c, d, e, f, g]
 
-    console_test(lln.count(), 7);
+    console_test(lln.size(), 7);
     console_test(lln[2], c);
     console_test(lln[6], g);
 
@@ -103,9 +103,37 @@ int test_lists() {
     console_test(lln[6], g);
     console_test(0, lln.index(a));
 
-    console_test(lln.count(), 10);
+    console_test(lln.size(), 10);
     console_test(true, lln.contains(a));
     console_test(true, lln.contains(h));
+
+    numbers.push(4444);
+    numbers.push(333);
+    numbers.push(22);
+    numbers.push(1);
+    numbers.push(-1);
+    numbers.push(-22);
+    numbers.push(-333);
+    numbers.push(-4444);
+
+    numbers.sort();
+
+    console_test(numbers[0], -4444);
+    console_test(numbers[numbers.size() - 1], 4444);
+
+    numbers.push(55555);
+    numbers.push(333);
+    numbers.push(22);
+    numbers.push(1);
+    numbers.push(-1);
+    numbers.push(-22);
+    numbers.push(-333);
+    numbers.push(-55555);
+
+    numbers.sort();
+
+    console_test(numbers[0], -55555);
+    console_test(numbers[numbers.size() - 1], 55555);
 
     return 0;
 };
