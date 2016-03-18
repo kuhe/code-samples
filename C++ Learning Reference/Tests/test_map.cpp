@@ -1,7 +1,7 @@
 #include "test_map.h"
 
 using Lehr::Map;
-using Lehr::List;
+using Lehr::LinkedList;
 using Lehr::Hash;
 using Lehr::KeyValuePair;
 using Lehr::Set;

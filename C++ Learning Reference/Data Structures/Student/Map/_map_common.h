@@ -2,7 +2,7 @@
 #define _CPPREF_MAP_COMMON_H_
 
 #include <string>
-#include "../List/List.h"
+#include "../List/LinkedList.h"
 #include "../List/ArrayList.h"
 
 using std::string;

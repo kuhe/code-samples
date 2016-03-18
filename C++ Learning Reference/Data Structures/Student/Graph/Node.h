@@ -8,7 +8,7 @@ namespace Lehr {
     template <typename T>
     class Node {
         T item;
-        List<Node<T>*> visited;
+        LinkedList<Node<T>*> visited;
         /**
          * potentially multi-step path exists to the node
          */
@@ -44,8 +44,8 @@ namespace Lehr {
             }
         }
 
-        List<Node<T>*> nodes;
-        List<Edge<T>*> edges;
+        LinkedList<Node<T>*> nodes;
+        LinkedList<Edge < T>*> edges;
 
         bool adjacent(Node<T>* node) {
             return *this == *node || nodes.contains(node);

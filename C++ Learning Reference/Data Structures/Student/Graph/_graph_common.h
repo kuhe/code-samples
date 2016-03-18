@@ -3,7 +3,7 @@
 
 namespace Lehr {
     template <typename T>
-    class List;
+    class LinkedList;
     template <typename T>
     class Node;
     template <typename T>
@@ -12,7 +12,7 @@ namespace Lehr {
     class Graph;
 }
 
-#include "../List/List.h"
+#include "../List/LinkedList.h"
 #include "Node.h"
 #include "Edge.h"
 #include "Graph.h"

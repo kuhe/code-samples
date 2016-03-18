@@ -6,7 +6,7 @@
 
 namespace Lehr {
     /**
-     * Act as a Linked-List like store for hash collisions.
+     * Act as a Linked-LinkedList like store for hash collisions.
      */
     template <typename K, typename V>
     class KeyValuePair {

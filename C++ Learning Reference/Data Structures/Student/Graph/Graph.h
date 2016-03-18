@@ -8,8 +8,8 @@ namespace Lehr {
     template <typename T>
     class Graph {
     protected:
-        List<Node<T>*> nodes;
-        List<Edge<T>*> edges;
+        LinkedList<Node < T>*> nodes;
+        LinkedList<Edge < T>*> edges;
     public:
         Graph& addNode(Node<T>* node) {
             if (!nodes.contains(node)) {

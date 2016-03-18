@@ -1,7 +1,7 @@
 #ifndef CPPREF_ARRAYLIST_H
 #define CPPREF_ARRAYLIST_H
 
-#include "ListInterface.h"
+#include "List.h"
 #include "../Map/Map.h"
 #include <string>
 #include <array>
@@ -10,7 +10,7 @@ using std::array;
 
 namespace Lehr {
     template <typename T>
-    class ArrayList : public ListInterface<T> {
+    class ArrayList : public List<T> {
     protected:
         const double RESIZE_SCALAR = 1.5;
         int length = 0;
@@ -32,7 +32,7 @@ namespace Lehr {
         T pop();
         T shift();
 
-        int indexOf(T& item);
+        int index(T& item);
         bool contains(T& item);
 
         /**
@@ -142,7 +142,7 @@ namespace Lehr {
         return dummy;
     }
     template <typename T>
-    int ArrayList<T>::indexOf(T& item) {
+    int ArrayList<T>::index(T& item) {
         int index = 0;
         T& cursor = this->operator[](index);
         while (index < length) {
@@ -156,7 +156,7 @@ namespace Lehr {
     }
     template <typename T>
     bool ArrayList<T>::contains(T& item) {
-        return indexOf(item) > -1;
+        return index(item) > -1;
     }
     template <typename T>
     ArrayList<T>& ArrayList<T>::excise(int at) {

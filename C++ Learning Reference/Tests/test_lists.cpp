@@ -13,7 +13,7 @@ void console_test(T a, V b) {
 }
 template void console_test<string, string>(string a, string b);
 
-using Lehr::List;
+using Lehr::LinkedList;
 using Lehr::ArrayList;
 
 int test_lists() {
@@ -27,7 +27,7 @@ int test_lists() {
            g = "is.",
            h = "indexTest";
 
-    List<string> lln, lln2;
+    LinkedList<string> lln, lln2;
 //    ArrayList<string> lln, lln2;
 
     lln.push(c);
@@ -101,7 +101,7 @@ int test_lists() {
 
     console_test(lln[7], a);
     console_test(lln[6], g);
-    console_test(0, lln.indexOf(a));
+    console_test(0, lln.index(a));
 
     console_test(lln.count(), 10);
     console_test(true, lln.contains(a));
