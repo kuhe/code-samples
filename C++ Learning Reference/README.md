@@ -11,6 +11,7 @@ todo:
 
     harden (hash) sets
     more specialty graphs
+    round up the escapees (seriously though, don't return stack variables)
 
 
 ### Code Style Notes

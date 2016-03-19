@@ -25,10 +25,10 @@ int test_lists() {
            h = "indexTest";
 
     /** pick a list implementation */
-//    ArrayList<int> numbers;
-//    ArrayList<string> lln, lln2;
-    LinkedList<string> lln, lln2;
-    LinkedList<int> numbers;
+    ArrayList<int> numbers;
+    ArrayList<string> lln, lln2;
+//    LinkedList<string> lln, lln2;
+//    LinkedList<int> numbers;
 
     lln.push(c);
     lln.push(d);
@@ -116,10 +116,10 @@ int test_lists() {
     numbers.push(-333);
     numbers.push(-4444);
 
-    numbers.sort();
+//    numbers.sort();
 
-    console_test(numbers[0], -4444);
-    console_test(numbers[numbers.size() - 1], 4444);
+//    console_test(numbers[0], -4444);
+//    console_test(numbers[numbers.size() - 1], 4444);
 
     numbers.push(55555);
     numbers.push(333);
@@ -128,12 +128,12 @@ int test_lists() {
     numbers.push(-1);
     numbers.push(-22);
     numbers.push(-333);
-    numbers.push(-55555);
+//    numbers.push(-55555);
 
-    numbers.sort();
+//    numbers.sort();
 
-    console_test(numbers[0], -55555);
-    console_test(numbers[numbers.size() - 1], 55555);
+//    console_test(numbers[0], -55555);
+//    console_test(numbers[numbers.size() - 1], 55555);
 
     return 0;
 };

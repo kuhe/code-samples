@@ -2,7 +2,6 @@
 #define CPPREF_LISTINTERFACE_H
 
 #include "_list_common.h"
-class ListInterface;
 
 namespace Lehr {
     template <typename T>
@@ -13,7 +12,6 @@ namespace Lehr {
 //        List<T>(T item);
 //        List<T>(const List<T>& copy);
         virtual ~List<T>() {};
-        virtual List<T> instance() = 0;
 
         virtual T& operator[](int i) = 0;
 
@@ -73,7 +71,7 @@ namespace Lehr {
                 }
 
                 while (stage.size() > 0) {
-                    T& val = *stage.shift();
+                    T val = *stage.shift();
                     this->operator[](index) = val;
                     index++;
                 }

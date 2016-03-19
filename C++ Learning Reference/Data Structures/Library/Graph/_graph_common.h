@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <c++/algorithm>
 
 #ifndef _CPPREF_GRAPH_COMMON_H_
 #define _CPPREF_GRAPH_COMMON_H_

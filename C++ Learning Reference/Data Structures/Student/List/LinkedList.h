@@ -13,7 +13,6 @@ namespace Lehr {
         LinkedList<T>();
         LinkedList<T>(T item);
         LinkedList<T>(const LinkedList<T>& copy);
-        List<T> instance();
         ~LinkedList<T>();
 
         T& operator[](int i);
@@ -58,9 +57,9 @@ namespace Lehr {
         Node*node_at(int i);
     };
 
-//    template class LinkedList<std::string>;
-//    template class LinkedList<int>;
-//    template class LinkedList<double>;
+    template class LinkedList<std::string>;
+    template class LinkedList<int>;
+    template class LinkedList<double>;
 }
 
 namespace Lehr {
@@ -84,11 +83,6 @@ namespace Lehr {
             push(cursor->item);
             cursor = cursor->next;
         }
-    }
-    template <typename T>
-    List<T> LinkedList<T>::instance() {
-        LinkedList<T> blank;
-        return blank;
     }
     template <typename T>
     LinkedList<T>::~LinkedList() {
@@ -157,7 +151,7 @@ namespace Lehr {
             head = nullptr;
             return nullptr;
         }
-        T& data = tail->item;
+        T data = tail->item;
         delete tail;
         if (length > 1) {
             LinkedList<T>::Node* new_tail = node_at(length - 2);
@@ -180,7 +174,7 @@ namespace Lehr {
             head = nullptr;
             return nullptr;
         }
-        T& data = head->item;
+        T data = head->item;
         if (length == 1) {
             length = 0;
             tail = nullptr;

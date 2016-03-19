@@ -16,7 +16,6 @@ namespace Lehr {
         ArrayList<T>();
         ArrayList<T>(T item);
         ArrayList<T>(const ArrayList<T>& copy);
-        List<T> instance();
         ~ArrayList<T>();
 
         T& operator[](int i);
@@ -46,11 +45,12 @@ namespace Lehr {
         int length = 0;
         T* data = nullptr;
         void resize(int n, int start_index = 0);
+        int data_size = 0;
     };
 
-//    template class ArrayList<std::string>;
-//    template class ArrayList<int>;
-//    template class ArrayList<double>;
+    template class ArrayList<std::string>;
+    template class ArrayList<int>;
+    template class ArrayList<double>;
 }
 
 namespace Lehr {
@@ -77,13 +77,8 @@ namespace Lehr {
         }
     }
     template <typename T>
-    List<T> ArrayList<T>::instance() {
-        ArrayList<T> blank;
-        return blank;
-    }
-    template <typename T>
     ArrayList<T>::~ArrayList() {
-        delete[] data;
+        resize(0);
     }
 
     template <typename T>
@@ -93,7 +88,7 @@ namespace Lehr {
 
     template <typename T>
     ArrayList<T>* ArrayList<T>::push(T item) {
-        if (sizeof data >= length) {
+        if (data_size >= length) {
             resize((int) (resize_scalar * (length + 1)));
         }
         data[length] = item;
@@ -102,7 +97,7 @@ namespace Lehr {
     }
     template <typename T>
     ArrayList<T>* ArrayList<T>::unshift(T item) {
-        if (sizeof data >= length + 1) {
+        if (data_size >= length + 1) {
             resize((int) (resize_scalar * (length + 2)));
         }
         for (int i = length; i > 0; i--) {
@@ -127,7 +122,7 @@ namespace Lehr {
     T* ArrayList<T>::shift() {
         if (length > 0) {
             T value = data[0];
-            resize(sizeof data, 1);
+            resize(length - 1, 1);
             return &value;
         }
         return nullptr;
@@ -185,7 +180,7 @@ namespace Lehr {
             // hello how ___ ___ __ name is
             //         ^ are you my
 
-            for (int i = before; i <= length; i++) {
+            for (int i = before; i < length; i++) {
                 data[i + list.length] = data[i];
             }
             for (int j = before; j < before + list.length; j++) {
@@ -197,7 +192,8 @@ namespace Lehr {
     }
     template <typename T>
     ArrayList<T>* ArrayList<T>::splice(int before, T& item) {
-        ArrayList<T> container(item);
+        T copy = item;
+        ArrayList<T> container(copy);
         return splice(before, container);
     }
     template <typename T>
@@ -220,8 +216,8 @@ namespace Lehr {
 
     template <typename T>
     void ArrayList<T>::resize(int n, int start_index) {
-        T* transfer;
-        transfer = new T[n];
+        data_size = n;
+        T* transfer = new T[n];
         for (int i = 0; i + start_index < length && i < n; i++) {
             transfer[i] = data[i + start_index];
         }
