@@ -3,7 +3,9 @@
 #include "Tests/test_map.h"
 #include "Tests/test_graph.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::cin;
 
 int main() {
 

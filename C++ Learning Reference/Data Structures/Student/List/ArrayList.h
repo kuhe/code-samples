@@ -23,8 +23,10 @@ namespace Lehr {
         ArrayList<T>* push(T item);
         ArrayList<T>* unshift(T item);
 
-        T* pop();
-        T* shift();
+        void pop();
+        void shift();
+        void pop(T& into);
+        void shift(T& into);
 
         int index(const T& item);
         bool contains(const T& item);
@@ -107,25 +109,34 @@ namespace Lehr {
         length++;
         return this;
     }
-
     template <typename T>
-    T* ArrayList<T>::pop() {
+    void ArrayList<T>::pop() {
         if (length > 0) {
-            int index = length - 1;
-            T& value = data[index];
             length--;
-            return &value;
         }
-        return nullptr;
     }
     template <typename T>
-    T* ArrayList<T>::shift() {
+    void ArrayList<T>::shift() {
         if (length > 0) {
-            T value = data[0];
             resize(length - 1, 1);
-            return &value;
         }
-        return nullptr;
+    }
+    template <typename T>
+    void ArrayList<T>::pop(T& into) {
+        if (length > 0) {
+            int index = length - 1;
+            T copy = data[index];
+            into = copy;
+            length--;
+        }
+    }
+    template <typename T>
+    void ArrayList<T>::shift(T& into) {
+        if (length > 0) {
+            T copy = data[0];
+            into = copy;
+            resize(length - 1, 1);
+        }
     }
     template <typename T>
     int ArrayList<T>::index(const T& item) {

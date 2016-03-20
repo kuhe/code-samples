@@ -20,8 +20,10 @@ namespace Lehr {
         LinkedList<T>* push(T item);
         LinkedList<T>* unshift(T item);
 
-        T* pop();
-        T* shift();
+        void pop();
+        void shift();
+        void pop(T& into);
+        void shift(T& into);
 
         int index(const T& item);
         bool contains(const T& item);
@@ -144,48 +146,56 @@ namespace Lehr {
     }
 
     template <typename T>
-    T* LinkedList<T>::pop() {
-        if (length <= 0) {
-            length = 0;
-            tail = nullptr;
-            head = nullptr;
-            return nullptr;
-        }
-        T data = tail->item;
-        delete tail;
-        if (length > 1) {
-            LinkedList<T>::Node* new_tail = node_at(length - 2);
-            new_tail->next = nullptr;
-            tail = new_tail;
-        } else if (length == 1) {
-            tail = nullptr;
-            head = nullptr;
-            length = 0;
-            return &data;
-        }
-        length--;
-        return &data;
+    void LinkedList<T>::pop() {
+        T dummy;
+        pop(dummy);
     }
     template <typename T>
-    T* LinkedList<T>::shift() {
+    void LinkedList<T>::shift() {
+        T dummy;
+        shift(dummy);
+    }
+    template <typename T>
+    void LinkedList<T>::pop(T& into) {
         if (length <= 0) {
             length = 0;
             tail = nullptr;
             head = nullptr;
-            return nullptr;
+        } else {
+            T copy = tail->item;
+            into = copy;
+            delete tail;
+            if (length > 1) {
+                LinkedList<T>::Node* new_tail = node_at(length - 2);
+                new_tail->next = nullptr;
+                tail = new_tail;
+            } else if (length == 1) {
+                tail = nullptr;
+                head = nullptr;
+            }
+            length--;
         }
-        T data = head->item;
-        if (length == 1) {
+    }
+    template <typename T>
+    void LinkedList<T>::shift(T& into) {
+        if (length <= 0) {
             length = 0;
             tail = nullptr;
             head = nullptr;
-            return &data;
+        } else {
+            T copy = head->item;
+            into = copy;
+            if (length == 1) {
+                tail = nullptr;
+                head = nullptr;
+                length = 0;
+            } else {
+                Node* current_head = head;
+                head = current_head->next;
+                delete current_head;
+                length--;
+            }
         }
-        Node* current_head = head;
-        head = current_head->next;
-        delete current_head;
-        length--;
-        return &data;
     }
     template <typename T>
     int LinkedList<T>::index(const T& item) {
@@ -243,7 +253,9 @@ namespace Lehr {
             Node* rejoin_at = node_at(before);
             Node* cursor = diverge_at;
             while (list.length) {
-                Node* node_copy = new Node(*list.shift());
+                T new_item;
+                list.shift(new_item);
+                Node* node_copy = new Node(new_item);
                 cursor->next = node_copy;
                 cursor = cursor->next;
             }

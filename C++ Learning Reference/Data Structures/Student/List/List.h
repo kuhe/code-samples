@@ -18,8 +18,10 @@ namespace Lehr {
         virtual List<T>* push(T item) = 0;
         virtual List<T>* unshift(T item) = 0;
 
-        virtual T* pop() = 0;
-        virtual T* shift() = 0;
+        virtual void pop() = 0;
+        virtual void shift() = 0;
+        virtual void pop(T& into) = 0;
+        virtual void shift(T& into) = 0;
 
         virtual int index(const T& item) = 0;
         virtual bool contains(const T& item) = 0;
@@ -71,7 +73,8 @@ namespace Lehr {
                 }
 
                 while (stage.size() > 0) {
-                    T val = *stage.shift();
+                    T val;
+                    stage.shift(val);
                     this->operator[](index) = val;
                     index++;
                 }

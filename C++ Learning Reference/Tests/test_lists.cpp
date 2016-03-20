@@ -26,8 +26,8 @@ int test_lists() {
 
     /** pick a list implementation */
     ArrayList<int> numbers;
-    ArrayList<string> lln, lln2;
-//    LinkedList<string> lln, lln2;
+//    ArrayList<string> lln, lln2;
+    LinkedList<string> lln, lln2;
 //    LinkedList<int> numbers;
 
     lln.push(c);
@@ -46,10 +46,14 @@ int test_lists() {
     console_test(lln[5], f);
     console_test(lln[6], g);
 
-    string a_test = *lln.shift();
-    string b_test = *lln.shift();
-    string g_test = *lln.pop();
-    string f_test = *lln.pop();
+    string a_test;
+    lln.shift(a_test);
+    string b_test;
+    lln.shift(b_test);
+    string g_test;
+    lln.pop(g_test);
+    string f_test;
+    lln.pop(f_test);
 
     // [c, d, e]
 
