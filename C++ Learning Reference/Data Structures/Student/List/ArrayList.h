@@ -27,6 +27,8 @@ namespace Lehr {
         void shift();
         void pop(T& into);
         void shift(T& into);
+        T& begin();
+        T& end();
 
         int index(const T& item);
         bool contains(const T& item);
@@ -137,6 +139,14 @@ namespace Lehr {
             into = copy;
             resize(length - 1, 1);
         }
+    }
+    template <typename T>
+    T& ArrayList<T>::begin() {
+        return data[0];
+    }
+    template <typename T>
+    T& ArrayList<T>::end() {
+        return data[length - 1];
     }
     template <typename T>
     int ArrayList<T>::index(const T& item) {

@@ -22,6 +22,8 @@ namespace Lehr {
         virtual void shift() = 0;
         virtual void pop(T& into) = 0;
         virtual void shift(T& into) = 0;
+        virtual T& begin() = 0;
+        virtual T& end() = 0;
 
         virtual int index(const T& item) = 0;
         virtual bool contains(const T& item) = 0;

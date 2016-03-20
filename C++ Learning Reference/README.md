@@ -11,6 +11,7 @@ todo:
 
     harden (hash) sets
     more specialty graphs
+    add standard iterator compatibility? (is that even possible?)
 
 ### Code Style Notes
 

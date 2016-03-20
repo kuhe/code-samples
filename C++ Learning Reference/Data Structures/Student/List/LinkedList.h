@@ -24,6 +24,8 @@ namespace Lehr {
         void shift();
         void pop(T& into);
         void shift(T& into);
+        T& begin();
+        T& end();
 
         int index(const T& item);
         bool contains(const T& item);
@@ -196,6 +198,14 @@ namespace Lehr {
                 length--;
             }
         }
+    }
+    template <typename T>
+    T& LinkedList<T>::begin() {
+        return head->item;
+    }
+    template <typename T>
+    T& LinkedList<T>::end() {
+        return tail->item;
     }
     template <typename T>
     int LinkedList<T>::index(const T& item) {
