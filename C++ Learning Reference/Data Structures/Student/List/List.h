@@ -4,6 +4,10 @@
 #include "_list_common.h"
 
 namespace Lehr {
+    /**
+     * The List api here presents it as a deque, but implementations do not
+     * necessarily have equal complexity operating on either end.
+     */
     template <typename T>
     class List {
     public:
