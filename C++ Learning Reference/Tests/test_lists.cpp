@@ -25,10 +25,10 @@ int test_lists() {
            h = "indexTest";
 
     /** pick a list implementation */
-    ArrayList<int> numbers;
-//    ArrayList<string> lln, lln2;
-    LinkedList<string> lln, lln2;
-//    LinkedList<int> numbers;
+//    ArrayList<int> numbers;
+    ArrayList<string> lln, lln2;
+//    LinkedList<string> lln, lln2;
+    LinkedList<int> numbers;
 
     lln.push(c);
     lln.push(d);
