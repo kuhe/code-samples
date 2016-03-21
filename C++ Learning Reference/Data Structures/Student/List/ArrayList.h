@@ -18,7 +18,7 @@ namespace Lehr {
         ArrayList<T>(const ArrayList<T>& copy);
         ~ArrayList<T>();
 
-        T& operator[](int i);
+        T& operator [](int i);
 
         ArrayList<T>* push(T item);
         ArrayList<T>* unshift(T item);
@@ -27,6 +27,8 @@ namespace Lehr {
         void shift();
         void pop(T& into);
         void shift(T& into);
+        using List<T>::operator >>;
+        using List<T>::operator <<;
         T& begin();
         T& end();
 
@@ -86,7 +88,7 @@ namespace Lehr {
     }
 
     template <typename T>
-    T& ArrayList<T>::operator[](int i) {
+    T& ArrayList<T>::operator [](int i) {
         return data[i];
     }
 
@@ -151,13 +153,13 @@ namespace Lehr {
     template <typename T>
     int ArrayList<T>::index(const T& item) {
         int index = 0;
-        T& cursor = this->operator[](index);
+        T& cursor = this->operator [](index);
         while (index < length) {
-            if (this->operator[](index) == item) {
+            if (this->operator [](index) == item) {
                 return index;
             }
             index++;
-            cursor = this->operator[](index);
+            cursor = this->operator [](index);
         }
         return -1;
     }

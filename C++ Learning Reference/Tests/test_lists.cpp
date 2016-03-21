@@ -25,10 +25,10 @@ int test_lists() {
            h = "indexTest";
 
     /** pick a list implementation */
-//    ArrayList<int> numbers;
-    ArrayList<string> lln, lln2;
-//    LinkedList<string> lln, lln2;
-    LinkedList<int> numbers;
+    ArrayList<int> numbers;
+//    ArrayList<string> lln, lln2;
+    LinkedList<string> lln, lln2;
+//    LinkedList<int> numbers;
 
     lln.push(c);
     lln.push(d);
@@ -47,13 +47,14 @@ int test_lists() {
     console_test(lln[6], g);
 
     string a_test;
-    lln.shift(a_test);
+    lln << a_test;
     string b_test;
     lln.shift(b_test);
+
     string g_test;
     lln.pop(g_test);
     string f_test;
-    lln.pop(f_test);
+    lln >> f_test;
 
     // [c, d, e]
 

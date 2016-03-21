@@ -15,7 +15,7 @@ namespace Lehr {
         LinkedList<T>(const LinkedList<T>& copy);
         ~LinkedList<T>();
 
-        T& operator[](int i);
+        T& operator [](int i);
 
         LinkedList<T>* push(T item);
         LinkedList<T>* unshift(T item);
@@ -24,6 +24,8 @@ namespace Lehr {
         void shift();
         void pop(T& into);
         void shift(T& into);
+        using List<T>::operator >>;
+        using List<T>::operator <<;
         T& begin();
         T& end();
 
@@ -99,7 +101,7 @@ namespace Lehr {
     }
 
     template <typename T>
-    T& LinkedList<T>::operator[](int i) {
+    T& LinkedList<T>::operator [](int i) {
         LinkedList<T>::Node* cursor = this->head;
         while ((nullptr != cursor->next) && (i > 0)) {
             cursor = cursor->next;

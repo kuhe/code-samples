@@ -22,6 +22,12 @@ namespace Lehr {
         virtual void shift() = 0;
         virtual void pop(T& into) = 0;
         virtual void shift(T& into) = 0;
+        virtual void operator >>(T& into) {
+            pop(into);
+        }
+        virtual void operator <<(T& into) {
+            shift(into);
+        }
         virtual T& begin() = 0;
         virtual T& end() = 0;
 
