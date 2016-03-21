@@ -4,6 +4,9 @@
 
 #include "_graph_common.h"
 
+using Lehr::Node; // redundant, but to correct an IDE resolution failure
+using Lehr::Edge; // redundant, but to correct an IDE resolution failure
+
 namespace Lehr {
     template <typename T>
     class Node {
@@ -45,7 +48,7 @@ namespace Lehr {
         }
 
         LinkedList<Node<T>*> nodes;
-        LinkedList<Edge < T>*> edges;
+        LinkedList<Edge<T>*> edges;
 
         bool adjacent(Node<T>* node) {
             return *this == *node || nodes.contains(node);

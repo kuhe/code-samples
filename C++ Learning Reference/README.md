@@ -12,6 +12,7 @@ todo:
     harden (hash) sets
     more specialty graphs
     add standard iterator compatibility? (is that even possible?)
+    see 23.2 Container Requirements, refactor to meet requirements
 
 ### Code Style Notes
 

@@ -4,6 +4,9 @@
 
 #include "_graph_common.h"
 
+using Lehr::Node; // redundant, but to correct an IDE resolution failure
+using Lehr::Edge; // redundant, but to correct an IDE resolution failure
+
 namespace Lehr {
     template <typename T>
     class Graph {
