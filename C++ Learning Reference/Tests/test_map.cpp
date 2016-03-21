@@ -92,7 +92,6 @@ int test_map() {
     test(t1, t2);
     t2 = "I don\'t even know your name";
     test(map3[l2], t2);
-    cout << endl;
 
     /** test overloaded hash key */
     Map<int, int> dictionary;
@@ -167,5 +166,6 @@ int test_map() {
     test(test1, false);
     test(test2, false);
 
+    cout << endl;
     return 0;
 };

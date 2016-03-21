@@ -10,11 +10,15 @@ using std::cin;
 
 int main() {
 
-    cout << "Hello, World!" << endl;
+    cout << "Hello, World!" << endl << endl;
 
+    cout << "List: ";
     int test = test_lists();
+    cout << "Map: ";
     int test2 = test_map();
+    cout << "Graph: ";
     int test3 = test_graph();
+    cout << "Tree: ";
     int test4 = test_trees();
 
     cout << "\nYay!" << endl;

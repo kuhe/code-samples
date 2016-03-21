@@ -48,6 +48,7 @@ int test_graph() {
     console_test(test6);
     console_test(test7);
 
+    cout << endl;
     return 0;
 };
 

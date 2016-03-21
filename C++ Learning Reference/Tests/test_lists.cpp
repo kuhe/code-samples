@@ -144,6 +144,7 @@ int test_lists() {
     console_test(numbers[0], -55555);
     console_test(numbers[numbers.size() - 1], 55555);
 
+    cout << endl;
     return 0;
 };
 
