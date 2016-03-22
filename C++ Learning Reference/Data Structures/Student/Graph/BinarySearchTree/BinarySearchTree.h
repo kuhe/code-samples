@@ -92,7 +92,7 @@ namespace Lehr {
                 return other.key == key;
             }
         };
-        BinarySearchTree* ingest_copy(BSTNode* node) {
+        void ingest_copy(BSTNode* node) {
             if (nullptr != node) {
                 get(node->key);
                 BSTNode* own_node_at = node_at(node->key);
@@ -104,13 +104,11 @@ namespace Lehr {
                     ingest_copy(node->right);
                 }
             }
-            return this;
         }
-        BinarySearchTree* attach(BSTNode* node) {
+        void attach(BSTNode* node) {
             if (nullptr != node) {
                 node_at(node->key) = node;
             }
-            return this;
         }
         void delete_from(BSTNode*& node) {
             if (nullptr != node) {
