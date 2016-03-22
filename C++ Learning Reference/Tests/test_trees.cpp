@@ -40,10 +40,38 @@ int test_trees() {
     itree[7] = 7777777;
     itree[8] = 88888888;
 
-//    itree.excise(7);
+    itree.excise(7);
     console_test(itree.contains(8), true);
-//    console_test(itree.contains(7), false);
+    console_test(itree.contains_value(88888888), true);
+    console_test(itree.contains(7), false);
+    console_test(itree.contains_value(7777777), false);
     console_test(itree.contains(6), true);
+    console_test(itree.contains_value(666666), true);
+
+    BinarySearchTree<int, int> itree_copy = itree;
+    console_test(itree_copy.contains(8), true);
+    console_test(itree_copy.contains(7), false);
+    console_test(itree_copy.contains(6), true);
+    itree_copy[7] = 7777777;
+    console_test(itree.contains(7), false);
+
+    vector<int> keys = {5,6,4,7,3,8,2,9,1};
+    for (int k : keys) {
+        itree[k] = -k;
+        itree_copy[-k] = k;
+    }
+    vector<int> keys2 = {5,6,4,7,3,8,2,9,1};
+    for (int k : keys2) {
+        console_test(itree[k], -k);
+        console_test(itree.contains(-k), false);
+        console_test(itree_copy[-k], k);
+    }
+    itree.slice(8);
+    console_test(itree.contains(7), true); // left branch of 8
+    console_test(itree.contains(6), false); // sliced
+    console_test(itree.contains(8), true); // now the root
+    console_test(itree.contains(9), true); // right branch of 8
+    console_test(itree.root_key(), 8);
 
     BinarySearchTree<int, string> map_tree;
 

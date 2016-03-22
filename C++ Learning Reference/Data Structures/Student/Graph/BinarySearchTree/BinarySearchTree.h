@@ -6,7 +6,7 @@
 namespace Lehr {
 
     /**
-     * Should be self-balancing
+     * todo: Should be self-balancing
      */
     template<typename K, typename V = bool>
     class BinarySearchTree {
@@ -17,6 +17,9 @@ namespace Lehr {
         }
         BinarySearchTree(K key, V val) {
             root = new BSTNode(key, val);
+        }
+        BinarySearchTree(const BinarySearchTree& model) {
+            ingest_copy(model.root);
         }
         ~BinarySearchTree() {
             delete_from(root);
@@ -39,21 +42,29 @@ namespace Lehr {
             return this;
         }
         BinarySearchTree* excise(K key) {
-            // todo
+            delete_only(node_at(key));
             return this;
         }
         BinarySearchTree* excise_value(V val) {
-            // todo
-            BSTNode* node = node_with(val);
+            delete_only(node_with(val));
             return this;
         }
         BinarySearchTree* slice(K key) {
-            // todo
+            BinarySearchTree<K, V> copy;
+            copy.ingest_copy(node_at(key));
+            delete_from(root);
+            ingest_copy(copy.root);
             return this;
         }
         BinarySearchTree* slice_value(V val) {
-            // todo
+            BinarySearchTree<K, V> copy;
+            copy.ingest_copy(node_with(val));
+            delete_from(root);
+            ingest_copy(copy.root);
             return this;
+        }
+        K root_key() {
+            return root->key;
         }
     protected:
         struct BSTNode {
@@ -81,6 +92,20 @@ namespace Lehr {
                 return other.key == key;
             }
         };
+        BinarySearchTree* ingest_copy(BSTNode* node) {
+            if (nullptr != node) {
+                get(node->key);
+                BSTNode* own_node_at = node_at(node->key);
+                get(node->key) = node->value;
+                if (nullptr != node->left) {
+                    ingest_copy(node->left);
+                }
+                if (nullptr != node->right) {
+                    ingest_copy(node->right);
+                }
+            }
+            return this;
+        }
         BinarySearchTree* attach(BSTNode* node) {
             if (nullptr != node) {
                 node_at(node->key) = node;
@@ -97,6 +122,16 @@ namespace Lehr {
                 }
                 delete node;
                 node = nullptr;
+            }
+        }
+        void delete_only(BSTNode*& node) {
+            if (nullptr != node) {
+                BSTNode* left = node->left;
+                BSTNode* right = node->right;
+                delete node;
+                node = nullptr;
+                attach(left);
+                attach(right);
             }
         }
         BSTNode* root = nullptr;
