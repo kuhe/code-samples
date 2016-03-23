@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 #include "../Utilities/_std_symbols.h"
-#include "../Data Structures/Student/Graph/_graph_common.h"
+#include "../Data Structures/Graph/_graph_common.h"
 
 int test_graph();
 

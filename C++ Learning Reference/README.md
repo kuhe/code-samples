@@ -2,7 +2,7 @@
 
 ====
 
-The poor man's Computer Science revue, learning bits, hashes, maps, vectors, pointers, in the context of algorithms.
+The poor man's Computer Science revue, learning bits, hashes, maps, vectors, pointers, in the context of basic algorithms and data structures.
 
 Also adding learner's implementations of common data structures under the Lehr namespace.
 
@@ -10,9 +10,11 @@ Also adding learner's implementations of common data structures under the Lehr n
 todo:
 
     harden (hash) sets
+    add a TreeSet implementation
     more specialty graphs
     add standard iterator compatibility? (is that even possible?)
     see 23.2 Container Requirements, refactor to meet requirements
+
 
 ### Code Style Notes
 
@@ -29,6 +31,8 @@ namespace Lehr {
     class MyCoolClass {
     public:
         int my_cool_method(const int& input);
+    protected:
+        bool blah;
     }
 }
 ````

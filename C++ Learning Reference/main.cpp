@@ -4,10 +4,6 @@
 #include "Tests/test_graph.h"
 #include "Tests/test_trees.h"
 
-using std::cout;
-using std::endl;
-using std::cin;
-
 int main() {
 
     cout << "Hello, World!" << endl << endl;
