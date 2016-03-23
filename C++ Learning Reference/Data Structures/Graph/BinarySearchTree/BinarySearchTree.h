@@ -66,6 +66,58 @@ namespace Lehr {
         K root_key() {
             return root->key;
         }
+        int depth() {
+            // todo
+            return 0;
+        }
+        BinarySearchTree* balance() {
+            // todo
+            return this;
+        }
+        ArrayList<K> keys() {
+            ArrayList<K> key_list;
+            // todo
+            return key_list;
+        }
+    protected:
+        struct BSTNode;
+    public:
+        struct iterator {
+            iterator(BSTNode* from_node): cursor(0) {
+                recurse(from_node);
+            };
+            ArrayList<BSTNode*&> members;
+            int cursor;
+            void recurse(BSTNode* node) {
+                if (nullptr != node) {
+                    members.push(node);
+                    if (nullptr != node->left) {
+                        recurse(node->left);
+                    }
+                    if (nullptr != node->right) {
+                        recurse(node->right);
+                    }
+                }
+            }
+            BSTNode operator *() {
+                return *members[cursor];
+            }
+            // todo value for ::end() (?)
+            iterator operator ++() {
+                cursor++;
+                return this;
+            }
+            iterator operator --() {
+                cursor--;
+                return this;
+            }
+        };
+        BinarySearchTree<K, V>::iterator begin() {
+            return iterator(root);
+        }
+        BinarySearchTree<K, V>::iterator end() {
+            return --iterator(root);
+        }
     protected:
         struct BSTNode {
             friend class BinarySearchTree<K, V>;
@@ -83,6 +135,8 @@ namespace Lehr {
                 key = node.key;
                 value = node.value;
             }
+            explicit operator K*() const { return key; };
+//            explicit operator V*() const { return value; };
             K key;
             V value;
             BSTNode* parent = nullptr;

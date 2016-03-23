@@ -2,8 +2,10 @@
 #define CPPREF_TEST_TREES_CPP
 
 #include "./test_trees.h"
+#include "../Data Structures/List/ArrayList.h"
 
 using Lehr::BinarySearchTree;
+using Lehr::ArrayList;
 
 int test_trees() {
 
@@ -72,6 +74,11 @@ int test_trees() {
     console_test(itree.contains(8), true); // now the root
     console_test(itree.contains(9), true); // right branch of 8
     console_test(itree.root_key(), 8);
+
+    ArrayList<int> schluesseln;
+    schluesseln = itree.keys();
+
+    console_test(schluesseln.size(), 9);
 
     BinarySearchTree<int, string> map_tree;
 

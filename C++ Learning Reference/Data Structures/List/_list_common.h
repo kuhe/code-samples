@@ -7,4 +7,11 @@ using std::shared_ptr;
 using std::make_shared;
 using std::unique_ptr;
 
+namespace Lehr {
+    template <typename T>
+    class ArrayList;
+    template <typename T>
+    class LinkedList;
+}
+
 #endif //CPPREF__LIST_COMMON_H
