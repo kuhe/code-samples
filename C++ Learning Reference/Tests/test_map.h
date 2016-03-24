@@ -5,6 +5,7 @@
 #include "../Utilities/_std_symbols.h"
 #include "../Data Structures/Map/Map.h"
 #include "../Data Structures/Set/Set.h"
+#include "./test_common.h"
 
 int test_map();
 

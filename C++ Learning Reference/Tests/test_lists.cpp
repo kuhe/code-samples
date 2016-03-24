@@ -1,15 +1,5 @@
 #include "test_lists.h"
 
-template <typename T, typename V>
-void console_test(T a, V b) {
-    if (a == b) {
-        cout << ".";
-    } else {
-        cout << "\n" << a << " != " << b << endl;
-    }
-}
-template void console_test<string, string>(string a, string b);
-
 using Lehr::LinkedList;
 using Lehr::ArrayList;
 

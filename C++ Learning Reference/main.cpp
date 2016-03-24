@@ -3,6 +3,7 @@
 #include "Tests/test_map.h"
 #include "Tests/test_graph.h"
 #include "Tests/test_trees.h"
+Results results;
 
 int main() {
 
@@ -17,7 +18,8 @@ int main() {
     cout << "Tree: ";
     int test4 = test_trees();
 
-    cout << "\nYay!" << endl;
+    cout << "\nYay! " << to_string(results.score) << " passed." << endl;
+
     // cin.get();
     return 0;
 }

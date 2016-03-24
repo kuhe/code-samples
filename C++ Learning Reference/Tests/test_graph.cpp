@@ -1,22 +1,5 @@
 #include "test_graph.h"
 
-template <typename T, typename V>
-void console_test(T a, V b) {
-    if (a == b) {
-        cout << ".";
-    } else {
-        cout << a << " ! " << b << endl;
-    }
-}
-void console_test(bool evaluation) {
-    if (evaluation) {
-        cout << ".";
-    } else {
-        cout << " F " << endl;
-    }
-}
-template void console_test<string, string>(string a, string b);
-
 using Lehr::Graph;
 using Lehr::Node;
 using Lehr::Edge;

@@ -6,19 +6,9 @@ using Lehr::Hash;
 using Lehr::KeyValuePair;
 using Lehr::Set;
 
-#define yep true
-#define nope false
-
 template <typename T, typename V>
 void test(T a, V b) {
-    if (yep) {
-        yep;
-    }
-    if (a == b) {
-        cout << ".";
-    } else {
-        cout << endl << a << " vs " << b << endl;
-    }
+    console_test(a, b);
 }
 template void test<string, string>(string a, string b);
 
