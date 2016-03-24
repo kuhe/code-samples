@@ -75,10 +75,33 @@ int test_trees() {
     console_test(itree.contains(9), true); // right branch of 8
     console_test(itree.root_key(), 8);
 
-    ArrayList<int> schluesseln;
-    schluesseln = itree.keys();
+    vector<int> iteration_order_expected_integers = {7, 8, 9};
+    int n = 0;
+    for (auto i : itree) {
 
-    console_test(schluesseln.size(), 9);
+        console_test(i.first, iteration_order_expected_integers[n++]);
+
+    }
+
+    BinarySearchTree<int, string> iteration_tree;
+    iteration_tree[5] = "five";
+    iteration_tree[4] = "four";
+    iteration_tree[33] = "thirty-three";
+    iteration_tree[2] = "two";
+    iteration_tree[11] = "eleven";
+    vector<string> iteration_order_expected = {"two", "four", "five", "eleven", "thirty-three"};
+
+    {
+        ArrayList<int> schluesseln = iteration_tree.keys();
+        console_test(schluesseln.size(), 5);
+        console_test(iteration_tree.size(), 5);
+    }
+
+    n = 0;
+    for (auto i : iteration_tree) {
+        console_test(iteration_order_expected[n++], i.second);
+    }
+    console_test(iteration_tree.depth(), 3);
 
     BinarySearchTree<int, string> map_tree;
 

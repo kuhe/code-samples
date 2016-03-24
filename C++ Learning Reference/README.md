@@ -9,11 +9,16 @@ Also adding learner's implementations of common data structures under the Lehr n
 
 todo:
 
-    harden (hash) sets
-    add a TreeSet implementation
-    more specialty graphs
-    add standard iterator compatibility? (is that even possible?)
-    see 23.2 Container Requirements, refactor to meet requirements
+    Short
+        stack allocation of ArrayList (no constructor call?) results in faulty delete in destructor
+        add range-based-for-loop compatibility to List family
+
+        harden (hash) sets
+        add a TreeSet implementation
+        more specialty graphs
+
+    Long
+        see 23.2 Container Requirements, refactor to meet requirements
 
 
 ### Code Style Notes

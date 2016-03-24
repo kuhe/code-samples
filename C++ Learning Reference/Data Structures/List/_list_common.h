@@ -6,6 +6,7 @@
 using std::shared_ptr;
 using std::make_shared;
 using std::unique_ptr;
+using std::size_t;
 
 namespace Lehr {
     template <typename T>

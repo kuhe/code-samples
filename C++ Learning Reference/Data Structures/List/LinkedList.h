@@ -8,14 +8,14 @@ namespace Lehr {
     template <typename T>
     class LinkedList : public List<T> {
     public:
-        int size();
+        size_t size();
 
         LinkedList<T>();
         LinkedList<T>(T item);
         LinkedList<T>(const LinkedList<T>& copy);
         ~LinkedList<T>();
 
-        T& operator [](int i);
+        T& operator [](size_t i);
 
         LinkedList<T>* push(T item);
         LinkedList<T>* unshift(T item);
@@ -44,7 +44,7 @@ namespace Lehr {
         LinkedList<T>* slice(int index);
         LinkedList<T>* slice(int index, int length);
     protected:
-        int length = 0;
+        size_t length = 0;
         struct Node {
             friend class LinkedList<T>;
             T item;
@@ -70,7 +70,7 @@ namespace Lehr {
 
 namespace Lehr {
     template <typename T>
-    int LinkedList<T>::size() {
+    size_t LinkedList<T>::size() {
         return length;
     }
     template <typename T>
@@ -101,7 +101,7 @@ namespace Lehr {
     }
 
     template <typename T>
-    T& LinkedList<T>::operator [](int i) {
+    T& LinkedList<T>::operator [](size_t i) {
         LinkedList<T>::Node* cursor = this->head;
         while ((nullptr != cursor->next) && (i > 0)) {
             cursor = cursor->next;

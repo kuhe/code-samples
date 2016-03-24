@@ -11,13 +11,13 @@ namespace Lehr {
     template <typename T>
     class List {
     public:
-        virtual int size() = 0;
+        virtual size_t size() = 0;
 //        List<T>();
 //        List<T>(T item);
 //        List<T>(const List<T>& copy);
         virtual ~List<T>() {};
 
-        virtual T& operator[](int i) = 0;
+        virtual T& operator[](size_t i) = 0;
 
         virtual List<T>* push(T item) = 0;
         virtual List<T>* unshift(T item) = 0;
@@ -46,9 +46,9 @@ namespace Lehr {
             }
         }
 
-        void mergesort(int left, int right, List<T>& stage) {
-            int index = left;
-            int segment_length = (right - left);
+        void mergesort(size_t left, size_t right, List<T>& stage) {
+            size_t index = left;
+            size_t segment_length = (right - left);
             if (right != left) {
                 if (left + 1 != right) {
                     mergesort(left, left + segment_length / 2, stage);
@@ -58,7 +58,7 @@ namespace Lehr {
                 }
             }
             struct Assign {
-                static void from_index(List<T>& merge_to, List<T>* list, int& cursor) {
+                static void from_index(List<T>& merge_to, List<T>* list, size_t& cursor) {
                     T val = list->operator[](cursor);
                     merge_to.push(val);
                     cursor++;
@@ -66,8 +66,8 @@ namespace Lehr {
             };
 
             {
-                int left_limit = left + segment_length;
-                int right_limit = right + segment_length;
+                size_t left_limit = left + segment_length;
+                size_t right_limit = right + segment_length;
 
                 // merge from the segment provided
                 while (left < left_limit || right < right_limit) {

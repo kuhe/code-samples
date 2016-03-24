@@ -11,14 +11,14 @@ namespace Lehr {
     template <typename T>
     class ArrayList : public List<T> {
     public:
-        int size();
+        size_t size();
 
         ArrayList<T>();
         ArrayList<T>(T item);
         ArrayList<T>(const ArrayList<T>& copy);
         ~ArrayList<T>();
 
-        T& operator [](int i);
+        T& operator [](size_t i);
 
         ArrayList<T>* push(T item);
         ArrayList<T>* unshift(T item);
@@ -48,10 +48,10 @@ namespace Lehr {
         ArrayList<T>* slice(int index, int length);
     protected:
         double resize_scalar = 1.5;
-        int length = 0;
+        size_t length = 0;
         T* data = nullptr;
-        void resize(int n, int start_index = 0);
-        int data_size = 0;
+        void resize(size_t n, int start_index = 0);
+        size_t data_size = 0;
     };
 
     template class ArrayList<std::string>;
@@ -61,7 +61,7 @@ namespace Lehr {
 
 namespace Lehr {
     template <typename T>
-    int ArrayList<T>::size() {
+    size_t ArrayList<T>::size() {
         return length;
     }
     template <typename T>
@@ -88,14 +88,14 @@ namespace Lehr {
     }
 
     template <typename T>
-    T& ArrayList<T>::operator [](int i) {
+    T& ArrayList<T>::operator [](size_t i) {
         return data[i];
     }
 
     template <typename T>
     ArrayList<T>* ArrayList<T>::push(T item) {
         if (data_size >= length) {
-            resize((int) (resize_scalar * (length + 1)));
+            resize((size_t) (resize_scalar * (length + 1)));
         }
         data[length] = item;
         length++;
@@ -104,9 +104,9 @@ namespace Lehr {
     template <typename T>
     ArrayList<T>* ArrayList<T>::unshift(T item) {
         if (data_size >= length + 1) {
-            resize((int) (resize_scalar * (length + 2)));
+            resize((size_t) (resize_scalar * (length + 2)));
         }
-        for (int i = length; i > 0; i--) {
+        for (size_t i = length; i > 0; i--) {
             data[i] = data[i-1];
         }
         data[0] = item;
@@ -128,7 +128,7 @@ namespace Lehr {
     template <typename T>
     void ArrayList<T>::pop(T& into) {
         if (length > 0) {
-            int index = length - 1;
+            size_t index = length - 1;
             T copy = data[index];
             into = copy;
             length--;
@@ -169,7 +169,7 @@ namespace Lehr {
     }
     template <typename T>
     ArrayList<T>* ArrayList<T>::sort() {
-        int middle = length / 2;
+        size_t middle = length / 2;
         ArrayList<T> merge_staging;
         mergesort(0, middle, merge_staging);
         return this;
@@ -238,7 +238,7 @@ namespace Lehr {
     }
 
     template <typename T>
-    void ArrayList<T>::resize(int n, int start_index) {
+    void ArrayList<T>::resize(size_t n, int start_index) {
         data_size = n;
         T* transfer = new T[n];
         for (int i = 0; i + start_index < length && i < n; i++) {

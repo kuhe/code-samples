@@ -24,6 +24,7 @@ namespace Lehr {
         ~BinarySearchTree() {
             delete_from(root);
         }
+
         V& operator [](K key) {
             return get(key);
         }
@@ -66,57 +67,97 @@ namespace Lehr {
         K root_key() {
             return root->key;
         }
-        int depth() {
-            // todo
-            return 0;
+        size_t depth() {
+            return this->begin().depth; // todo expensive
+        }
+        size_t size() {
+            return this->begin().members.size(); // todo expensive
         }
         BinarySearchTree* balance() {
             // todo
             return this;
         }
         ArrayList<K> keys() {
-            ArrayList<K> key_list;
-            // todo
-            return key_list;
+            ArrayList<K> keys;
+            iterator iter = begin();
+
+            for (auto i : *this) {
+                keys.push(i.first);
+            }
+
+            return keys;
         }
     protected:
         struct BSTNode;
     public:
         struct iterator {
             iterator(BSTNode* from_node): cursor(0) {
-                recurse(from_node);
+                members.empty();
+                recurse(from_node, 1);
             };
-            ArrayList<BSTNode*&> members;
+
+            ArrayList<BSTNode*> members;
             int cursor;
-            void recurse(BSTNode* node) {
+            const int end = -1;
+            size_t depth = 0;
+
+            void recurse(BSTNode* node, size_t set_depth) {
                 if (nullptr != node) {
-                    members.push(node);
+                    depth = set_depth;
+
                     if (nullptr != node->left) {
-                        recurse(node->left);
+                        recurse(node->left, set_depth + 1);
                     }
+                    members.push(node); // in-order traversal
                     if (nullptr != node->right) {
-                        recurse(node->right);
+                        recurse(node->right, set_depth + 1);
                     }
                 }
             }
-            BSTNode operator *() {
+            BSTNode& operator ->() {
                 return *members[cursor];
             }
-            // todo value for ::end() (?)
+            pair<K, V> operator *() {
+                if (cursor == end) {
+                    return pair<K, V>();
+                }
+                auto ref = (*members[cursor]);
+                return pair<K, V>(ref.key, ref.value);
+            }
+            bool operator ==(iterator& right) {
+                return cursor == right.cursor;
+            }
+            bool operator !=(iterator& right) {
+                return !operator ==(right);
+            }
             iterator operator ++() {
-                cursor++;
-                return this;
+
+                int test1 = cursor;
+                long int test2 = members.size() - 1;
+
+                if (cursor >= members.size() - 1) {
+                    cursor = end;
+                } else {
+                    cursor++;
+                }
+                return *this;
             }
             iterator operator --() {
-                cursor--;
-                return this;
+                if (cursor <= 0) {
+                    cursor = end;
+                } else {
+                    cursor--;
+                }
+                return *this;
             }
         };
         BinarySearchTree<K, V>::iterator begin() {
             return iterator(root);
         }
         BinarySearchTree<K, V>::iterator end() {
-            return --iterator(root);
+            iterator iterator1 = iterator(root);
+            iterator1.cursor = iterator1.end;
+            return iterator1;
         }
     protected:
         struct BSTNode {

@@ -1,6 +1,8 @@
 #ifndef CPPREF_BST_COMMON_H
 #define CPPREF_BST_COMMON_H
 
+using std::pair;
+
 namespace Lehr {
     template<typename K, typename V>
     class BinarySearchTree;
