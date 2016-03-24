@@ -38,6 +38,7 @@ int test_trees() {
     console_test(itree.contains_value(4444), false);
     console_test(itree.contains_value(333), true);
 
+
     itree[6] = 666666;
     itree[7] = 7777777;
     itree[8] = 88888888;
@@ -119,6 +120,7 @@ int test_trees() {
 
     str_tree["excelsior!"];
     console_test(str_tree.contains("excelsior!"), true);
+
 
     cout << endl;
     return 0;

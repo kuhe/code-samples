@@ -2,6 +2,8 @@
 #define CPPREF_BST_COMMON_H
 
 using std::pair;
+using std::size_t;
+#include "../../List/_list_common.h"
 
 namespace Lehr {
     template<typename K, typename V>
