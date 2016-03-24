@@ -38,7 +38,6 @@ int test_trees() {
     console_test(itree.contains_value(4444), false);
     console_test(itree.contains_value(333), true);
 
-
     itree[6] = 666666;
     itree[7] = 7777777;
     itree[8] = 88888888;

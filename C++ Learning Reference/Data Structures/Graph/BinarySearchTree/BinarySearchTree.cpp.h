@@ -107,70 +107,6 @@ namespace Lehr {
     }
 
     template<typename K, typename V>
-    struct BinarySearchTree<K, V>::iterator {
-        friend class BinarySearchTree<K, V>;
-
-        iterator(BSTNode* from_node): cursor(0) {
-            members.empty();
-            recurse(from_node, 1);
-        };
-
-        ArrayList<BSTNode*> members;
-        int cursor;
-        const int end = -1;
-        size_t depth = 0;
-
-        void recurse(BSTNode* node, size_t set_depth) {
-            if (nullptr != node) {
-                depth = set_depth;
-
-                if (nullptr != node->left) {
-                    recurse(node->left, set_depth + 1);
-                }
-                members.push(node); // in-order traversal
-                if (nullptr != node->right) {
-                    recurse(node->right, set_depth + 1);
-                }
-            }
-        }
-        BSTNode& operator ->() {
-            return *members[cursor];
-        }
-        pair<K, V> operator *() {
-            if (cursor == end) {
-                return pair<K, V>();
-            }
-            auto ref = (*members[cursor]);
-            return pair<K, V>(ref.key, ref.value);
-        }
-        bool operator ==(iterator& right) {
-            return cursor == right.cursor;
-        }
-        bool operator !=(iterator& right) {
-            return !operator ==(right);
-        }
-        iterator operator ++() {
-            int test1 = cursor;
-            long int test2 = members.size() - 1;
-
-            if (cursor >= members.size() - 1) {
-                cursor = end;
-            } else {
-                cursor++;
-            }
-            return *this;
-        }
-        iterator operator --() {
-            if (cursor <= 0) {
-                cursor = end;
-            } else {
-                cursor--;
-            }
-            return *this;
-        }
-    };
-
-    template<typename K, typename V>
     typename BinarySearchTree<K, V>::iterator BinarySearchTree<K, V>::begin() {
         return iterator(root);
     }
@@ -182,38 +118,8 @@ namespace Lehr {
     }
 
     template<typename K, typename V>
-    struct BinarySearchTree<K, V>::BSTNode {
-        friend class BinarySearchTree<K, V>;
-        BSTNode(K key): key(key) {};
-        BSTNode(K key, V value): key(key), value(value) {};
-        BSTNode(K key, V value, BSTNode* parent): key(key), value(value), parent(parent) {};
-        BSTNode(K key, V value, BSTNode* left, BSTNode* right):
-                key(key), value(value), left(left), right(right) {};
-        BSTNode(K key, V value, BSTNode* parent, BSTNode* left, BSTNode* right):
-                key(key), value(value), parent(parent), left(left), right(right) {};
-        BSTNode(const BSTNode& node) {
-            parent = node.parent;
-            left = node.left;
-            right = node.right;
-            key = node.key;
-            value = node.value;
-        }
-        explicit operator K*() const { return key; };
-        //explicit operator V*() const { return value; };
-        K key;
-        V value;
-        BSTNode* parent = nullptr;
-        BSTNode* left = nullptr;
-        BSTNode* right = nullptr;
-        bool operator ==(BSTNode& other) {
-            return other.key == key;
-        }
-    };
-    template<typename K, typename V>
     void BinarySearchTree<K, V>::ingest_copy(BSTNode* node) {
         if (nullptr != node) {
-            get(node->key);
-            BSTNode* own_node_at = node_at(node->key);
             get(node->key) = node->value;
             if (nullptr != node->left) {
                 ingest_copy(node->left);
