@@ -29,6 +29,10 @@ namespace Lehr {
         BinarySearchTree* balance();
         ArrayList<K> keys();
 
+        struct iterator;
+        iterator begin();
+        iterator end();
+
     protected:
         struct BSTNode;
         void ingest_copy(BSTNode* node);
@@ -132,21 +136,10 @@ namespace Lehr {
                 }
                 return *this;
             }
-        };;
-        iterator begin();
-        iterator end();
+        };
     };
 
 }
-
-
-namespace Lehr {
-//    template<typename K, typename V>
-//    typename BinarySearchTree<K, V>::iterator BinarySearchTree<K, V>::begin() {
-//        return BinarySearchTree<K, V>::iterator(root);
-//    }
-};
-
 
 #include "./BinarySearchTree.cpp.h"
 
