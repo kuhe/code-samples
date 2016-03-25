@@ -20,6 +20,7 @@ todo:
         Dijkstra and A* on graphs
         add range-based-for-loop compatibility to List family
         more specialty graphs (e.g. BRTree)
+        copy-and-swap idiom
 
     Cleanup
         stack allocation of ArrayList (no constructor call?) results in faulty delete in destructor

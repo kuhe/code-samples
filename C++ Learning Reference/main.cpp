@@ -3,6 +3,7 @@
 #include "Tests/test_map.h"
 #include "Tests/test_graph.h"
 #include "Tests/test_trees.h"
+#include "Tests/test_rule_of_X.h"
 Results results;
 
 int main() {
@@ -17,6 +18,8 @@ int main() {
     int test3 = test_graph();
     cout << "Tree: ";
     int test4 = test_trees();
+    cout << "Rule of X: ";
+    test_rule_of_X();
 
     cout << "\nYay! " << to_string(results.score) << " passed." << endl;
 
