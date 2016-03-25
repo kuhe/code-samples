@@ -2,22 +2,31 @@
 
 ====
 
-The poor man's Computer Science revue, learning bits, hashes, maps, vectors, pointers, in the context of basic algorithms and data structures.
+#### The Poor Man's Computer Science Revue
 
-Also adding learner's implementations of common data structures under the Lehr namespace.
+Learning lists, hashes, graphs, in the context
+of basic algorithms and data structures.
+
+Adding learner's implementations of common data structures under the Lehr namespace.
+
+Thus, additionally serving as (for free) a good old-fashioned beat down courtesy of the C++ language, via
+pointers, references to pointers, pointers to pointers, segfaults, the mysterious const keyword, type deduction,
+templates, and a convenient google search index called "any and all g++ error messages".
 
 
 todo:
 
-    Short
-        stack allocation of ArrayList (no constructor call?) results in faulty delete in destructor
+    Interests
+        Dijkstra and A* on graphs
         add range-based-for-loop compatibility to List family
+        more specialty graphs (e.g. BRTree)
 
+    Cleanup
+        stack allocation of ArrayList (no constructor call?) results in faulty delete in destructor
         harden (hash) sets
-        add a TreeSet implementation
-        more specialty graphs
+        Implement TreeSet<T> (?) Maybe I already did with BSTree<T>, hah.
 
-    Long
+    Horizon
         see 23.2 Container Requirements, refactor to meet requirements
 
 
