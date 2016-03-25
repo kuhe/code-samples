@@ -19,7 +19,6 @@ void test_rule_of_X() {
     console_test(q4.state, Q::ctor_move);
     console_test(q5.state, Q::assign_copy);
     console_test(q6.state, Q::assign_move);
-    console_test(q6.state, Q::assign_move);
 
     // X is apparently 5 or 6
 
