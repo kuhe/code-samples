@@ -11,34 +11,34 @@ namespace Lehr {
     template <typename T>
     class ArrayList : public List<T> {
     public:
-        size_t size();
+        size_t size() override;
 
         ArrayList<T>();
         ArrayList<T>(T item);
         ArrayList<T>(const ArrayList<T>& copy);
-        ~ArrayList<T>();
+        ~ArrayList<T>() override;
 
-        T& operator [](size_t i);
+        T& operator [](size_t i) override;
 
-        ArrayList<T>* push(T item);
-        ArrayList<T>* unshift(T item);
+        ArrayList<T>* push(T item) override;
+        ArrayList<T>* unshift(T item) override;
 
-        void pop();
-        void shift();
-        void pop(T& into);
-        void shift(T& into);
+        void pop() override;
+        void shift() override;
+        void pop(T& into) override;
+        void shift(T& into) override;
         using List<T>::operator >>;
         using List<T>::operator <<;
-        T& begin();
-        T& end();
+        T& begin() override;
+        T& end() override;
 
-        int index(const T& item);
-        bool contains(const T& item);
+        int index(const T& item) override;
+        bool contains(const T& item) override;
 
         /**
          * mutation methods
          */
-        ArrayList<T>* sort();
+        ArrayList<T>* sort() override;
         using List<T>::mergesort;
         ArrayList<T>* excise(int at);
         ArrayList<T>* excise(int from, int to);

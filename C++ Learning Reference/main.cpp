@@ -4,6 +4,7 @@
 #include "Tests/test_graph.h"
 #include "Tests/test_trees.h"
 #include "Tests/test_rule_of_X.h"
+#include "Tests/test_const.h"
 Results results;
 
 int main() {
@@ -20,6 +21,8 @@ int main() {
     int test4 = test_trees();
     cout << "Rule of X: ";
     test_rule_of_X();
+    cout << "const: ";
+    test_const();
 
     cout << "\nYay! " << to_string(results.score) << " passed." << endl;
 

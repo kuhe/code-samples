@@ -8,34 +8,34 @@ namespace Lehr {
     template <typename T>
     class LinkedList : public List<T> {
     public:
-        size_t size();
+        size_t size() override;
 
         LinkedList<T>();
         LinkedList<T>(T item);
         LinkedList<T>(const LinkedList<T>& copy);
-        ~LinkedList<T>();
+        ~LinkedList<T>() override;
 
-        T& operator [](size_t i);
+        T& operator [](size_t i) override;
 
-        LinkedList<T>* push(T item);
-        LinkedList<T>* unshift(T item);
+        LinkedList<T>* push(T item) override;
+        LinkedList<T>* unshift(T item) override;
 
-        void pop();
-        void shift();
-        void pop(T& into);
-        void shift(T& into);
+        void pop() override;
+        void shift() override;
+        void pop(T& into) override;
+        void shift(T& into) override;
         using List<T>::operator >>;
         using List<T>::operator <<;
-        T& begin();
-        T& end();
+        T& begin() override;
+        T& end() override;
 
-        int index(const T& item);
-        bool contains(const T& item);
+        int index(const T& item) override;
+        bool contains(const T& item) override;
 
         /**
          * mutation methods
          */
-        LinkedList<T>* sort();
+        LinkedList<T>* sort() override;
         using List<T>::mergesort;
         LinkedList<T>* excise(int at);
         LinkedList<T>* excise(int from, int to);

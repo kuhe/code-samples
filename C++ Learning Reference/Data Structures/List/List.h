@@ -12,9 +12,9 @@ namespace Lehr {
     class List {
     public:
         virtual size_t size() = 0;
-//        List<T>();
-//        List<T>(T item);
-//        List<T>(const List<T>& copy);
+//        virtual List<T>();
+//        virtual List<T>(T item);
+//        virtual List<T>(const List<T>& copy);
         virtual ~List<T>() {};
 
         virtual T& operator[](size_t i) = 0;

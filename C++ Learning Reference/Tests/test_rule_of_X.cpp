@@ -21,5 +21,5 @@ void test_rule_of_X() {
     console_test(q6.state, Q::assign_move);
 
     // X is apparently 5 or 6
-
+    cout << endl;
 }
