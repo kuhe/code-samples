@@ -6,6 +6,7 @@
 #include "./test_common.h"
 
 namespace rule_of_X { // for x = 3, 4, five and a half, etc.
+
     class Q {
     public:
         Q() {
@@ -30,7 +31,9 @@ namespace rule_of_X { // for x = 3, 4, five and a half, etc.
             state = assign_move;
             data = other.data;
         }
+
         ~Q() {
+            results.dtor_count++;
             state = dtor; // well...
         }
 

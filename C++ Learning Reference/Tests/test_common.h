@@ -5,6 +5,8 @@
 
 struct Results {
     int score;
+    int failed;
+    int dtor_count;
 };
 
 extern Results results;
@@ -15,6 +17,7 @@ void console_test(T a, V b) {
         cout << ".";
         results.score++;
     } else {
+        results.failed++;
         cout << "\n" << a << " != " << b << endl;
     }
 }
@@ -24,6 +27,7 @@ void console_test(T a) {
         cout << ".";
         results.score++;
     } else {
+        results.failed++;
         cout << "\n" << a << " !! " << endl;
     }
 }
