@@ -24,7 +24,7 @@ int main() {
     cout << "const: ";
     test_const();
 
-    cout << "\nYay! " << to_string(results.score) << " passed." << endl;
+    cout << "\nYay! " << to_string(results.score) << " passed. " << to_string(results.failed) << " mysterious failure(s)." << endl;
 
     // cin.get();
     return 0;
