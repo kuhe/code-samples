@@ -5,6 +5,7 @@
 #include "Tests/test_trees.h"
 #include "Tests/test_rule_of_X.h"
 #include "Tests/test_const.h"
+#include "Tests/test_pointers.h"
 Results results;
 
 int main() {
@@ -23,6 +24,8 @@ int main() {
     test_rule_of_X();
     cout << "const: ";
     test_const();
+    cout << "Pointer: ";
+    int test7 = test_pointers();
 
     cout << "\nYay! " << to_string(results.score) << " passed. " << to_string(results.failed) << " mysterious failure(s)." << endl;
 

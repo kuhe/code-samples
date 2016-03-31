@@ -141,6 +141,6 @@ namespace Lehr {
 
 }
 
-#include "./BinarySearchTree.cpp.h"
+#include "BinarySearchTree.impl.h"
 
 #endif //CPPREF_BINARYSEARCHTREE_H
