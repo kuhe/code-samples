@@ -1,5 +1,6 @@
 #include "test_const.h"
 
+
 template<int A, typename T, T B>
 class ThingsInLife {
 public:
