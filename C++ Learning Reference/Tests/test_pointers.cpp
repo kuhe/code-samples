@@ -8,6 +8,7 @@ int test_pointers() {
     };
 
     using Lehr::UniquePointer;
+    using Lehr::make_unique_pointer;
 
     UniquePointer<Widget> u_ptr;
     UniquePointer<Widget> u_ptr2;
@@ -37,12 +38,38 @@ int test_pointers() {
             console_test(u_ptr2->id, 10);
             console_test(u_ptr->id, 3);
         }
-        u_ptr2 = new Widget(-10);
+        u_ptr2 = make_unique_pointer<Widget>(-10);
     }
 
     console_test(u_ptr->id, 3);
     console_test(u_ptr2->id, -10);
     console_test(u_ptr3 == nullptr);
+
+
+    using Lehr::SharedPointer;
+    using Lehr::make_shared_pointer;
+
+    SharedPointer<Widget> share_ptr1, share_ptr2, share_ptr3;
+
+    {
+        auto made = make_shared_pointer<Widget>(15);
+
+        share_ptr1 = made;
+        share_ptr2 = share_ptr1;
+
+        console_test(share_ptr1->id, 15);
+        console_test(share_ptr2->id, 15);
+        console_test(share_ptr2 == share_ptr1);
+
+        console_test(share_ptr1.count(), 3);
+    }
+    share_ptr3 = u_ptr;
+
+    console_test(u_ptr == nullptr);
+    console_test(share_ptr3->id, 3);
+    console_test(share_ptr1->id, 15);
+    console_test(share_ptr2->id, 15);
+    console_test(share_ptr1.count(), 2); // [made] destroyed in the stack frame above, leaving ptr1 and ptr2
 
     cout << endl;
     return 0;
